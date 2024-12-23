@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="pa-1 ma-0">
-    <v-row wrap no-gutters>
+    <v-row>
       <template v-if="props.isCreate">
         <id-selector>
           <template #id-selector-activator>
@@ -17,7 +17,7 @@
       </template>
     </v-row>
 
-    <v-row wrap no-gutters>
+    <v-row>
       <v-textarea v-model="nf.field_description" label="Field Description" :error-messages="errors.field_description"
         class="mr-1" filled />
       <v-textarea v-model="nf.specialist_description" label="Specialist Description"

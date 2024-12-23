@@ -1,12 +1,12 @@
 <template>
-  <v-container v-if="item">
-    <v-row wrap no-gutters>
+  <v-container v-if="item" fluid class="pa-0 ma-0">
+    <v-row>
       <v-text-field v-model="tag" label="Name" class="mr-1" readonly filled />
       <v-text-field v-model="item.surveyed_date" label="Surveyed Date" class="mr-1" readonly filled />
       <v-text-field v-model="item.elevation" label="Elevation (meters below sea-level)" readonly filled />
     </v-row>
 
-    <v-row wrap no-gutters>
+    <v-row>
       <v-textarea v-model="item.description" label="Description" class="mr-1" readonly filled />
       <v-textarea v-model="item.notes" label="Notes" readonly filled />
     </v-row>

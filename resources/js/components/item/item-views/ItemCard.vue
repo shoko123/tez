@@ -6,12 +6,19 @@
     <v-card-text>
       <v-container fluid>
         <div v-if="hasMedia">
-          <v-row dense>
+          <v-row no-gutters>
             <v-col :cols="widths[0]">
               <component :is="itemForm" />
             </v-col>
             <v-col :cols="widths[1]">
-              <MediaSquare v-bind="{ source: 'media', itemIndex: 0, }" />
+              <v-container fill-height fluid>
+                <v-row>
+                  <v-col>
+                    <MediaSquare v-bind="{ source: 'media', itemIndex: 0, }" />
+                  </v-col>
+                </v-row>
+              </v-container>
+
             </v-col>
           </v-row>
         </div>

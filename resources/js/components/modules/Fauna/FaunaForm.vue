@@ -1,5 +1,5 @@
 <template>
-  <v-container v-if="item" fluid class="pa-1 ma-0">
+  <v-container v-if="item" fluid class="pa-0 ma-0">
     <v-row class="ga-1">
       <v-text-field v-model="item.date_retrieved" label="Date Retrieved" readonly filled />
       <v-text-field v-model="item.square" label="Square" readonly filled />

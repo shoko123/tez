@@ -1,6 +1,6 @@
 <template>
-  <v-container v-if="item">
-    <v-row wrap no-gutters>
+  <v-container v-if="item" fluid class="pa-0 ma-0">
+    <v-row>
       <v-textarea v-model="item.description" label="Description" class="mr-1" rows="1" auto-grow readonly
         filled></v-textarea>
       <v-textarea v-model="item.notes" label="Notes" class="mr-1" rows="1" auto-grow readonly filled></v-textarea>
