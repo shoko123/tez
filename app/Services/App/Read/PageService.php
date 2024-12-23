@@ -107,7 +107,7 @@ class PageService extends DigModuleService
                 return $carry .= $item['label'] . '(' . $item['pivot']['value'] . '), ';
             });
 
-            $formatted['onps'] = $all;
+            $formatted['onps'] =  substr($all, 0, -2);
         }
         return $formatted;
     }

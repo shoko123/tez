@@ -11,7 +11,7 @@ class LithicInitDetails implements InitDetailsInterface
         return [
             'item_views' => ['Main', 'Media', 'Related'],
             'collection_views' => (object)[
-                'main' => ['Gallery', 'Tabular', 'Chips'],
+                'main' => ['Tabular', 'Gallery', 'Chips'],
                 'related' => ['Gallery', 'Tabular', 'Chips'],
                 'media' => ['Gallery'],
             ],
