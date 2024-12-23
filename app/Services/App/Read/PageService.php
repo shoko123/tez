@@ -63,7 +63,7 @@ class PageService extends DigModuleService
 
     public function parseTabularFields()
     {
-        //copy once. use to build query and parse result
+        // Copy once; use it to build query and parse result
         $this->tabularPageDetails = $this->details::tabularPage();
 
         foreach ($this->tabularPageDetails['fields'] as $key => $field_name) {
@@ -89,21 +89,21 @@ class PageService extends DigModuleService
         });
     }
 
-    public function formatTabularRecord(object $res)
+    public function formatTabularRecord(object $obj)
     {
         $formatted = [];
         foreach ($this->tabularPageDetails['fields'] as $key => $data) {
-            $formatted[$data] = $res->$data;
+            $formatted[$data] = $obj->$data;
         }
 
         if (array_key_exists('lookups', $this->tabularPageDetails)) {
             foreach ($this->tabularPageDetails['lookups'] as $key => $data) {
-                $formatted[$key] = $res->$data['name'];
+                $formatted[$key] = $obj->$data['name'];
             }
         }
 
         if (array_key_exists('onps', $this->tabularPageDetails)) {
-            $all = $res->onps->reduce(function (?string $carry, object $item) {
+            $all = $obj->onps->reduce(function (?string $carry, object $item) {
                 return $carry .= $item['label'] . '(' . $item['pivot']['value'] . '), ';
             });
 
