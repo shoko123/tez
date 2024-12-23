@@ -10,8 +10,8 @@ interface ReadDetailsInterface
 
     public static function defaultOrderBy(): array;
 
-    public static function fieldsForTabularPage(): array;
+    public static function tabularPage(): array;
 
-    public static function fieldsForGalleryPage(): array;
+    public static function galleryPage(): array;
     public static function relatedModules(string $id): array;
 }

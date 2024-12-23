@@ -56,12 +56,22 @@ class LithicReadDetails implements ReadDetailsInterface
         return ['id' => 'asc'];
     }
 
-    public static function fieldsForTabularPage(): array
+    public static function tabularPage(): array
     {
-        return ['id', 'date_retrieved', 'weight', 'field_description', 'registration_notes', 'specialist_notes'];
+        return [
+            'fields' => [
+                'id',
+                'date_retrieved',
+                'weight',
+                'field_description',
+                'registration_notes',
+                'specialist_notes'
+            ],
+            'onps' => []
+        ];
     }
 
-    public static function fieldsForGalleryPage(): array
+    public static function galleryPage(): array
     {
         return ['id', 'field_description'];
     }

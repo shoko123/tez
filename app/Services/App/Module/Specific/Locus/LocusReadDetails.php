@@ -19,12 +19,20 @@ class LocusReadDetails implements ReadDetailsInterface
         return ['id' => 'asc'];
     }
 
-    public static function fieldsForTabularPage(): array
+    public static function tabularPage(): array
     {
-        return ['id', 'date_opened', 'description', 'deposit', 'registration_notes'];
+        return [
+            'fields' => [
+                'id',
+                'date_opened',
+                'description',
+                'deposit',
+                'registration_notes'
+            ]
+        ];
     }
 
-    public static function fieldsForGalleryPage(): array
+    public static function galleryPage(): array
     {
         return ['id', 'description'];
     }

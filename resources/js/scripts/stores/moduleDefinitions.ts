@@ -140,6 +140,7 @@ const moduleDefinitions: TModuleDefinitionImplementation = {
       ['Name', 'start', 'tag'],
       ['Date Collected', 'start', 'date_retrieved'],
       ['Weight', 'start', 'weight'],
+      ['Type(s)', 'start', 'onps'],
       ['Field Reading', 'start', 'field_description'],
     ],
   },

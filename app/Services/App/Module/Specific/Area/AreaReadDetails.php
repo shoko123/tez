@@ -19,12 +19,12 @@ class AreaReadDetails implements ReadDetailsInterface
         return ['id' => 'asc'];
     }
 
-    public static function fieldsForTabularPage(): array
+    public static function tabularPage(): array
     {
-        return ['id', 'description', 'notes'];
+        return ['fields' => ['id', 'description', 'notes']];
     }
 
-    public static function fieldsForGalleryPage(): array
+    public static function galleryPage(): array
     {
         return ['id', 'description'];
     }

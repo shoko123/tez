@@ -19,12 +19,18 @@ class SeasonReadDetails implements ReadDetailsInterface
         return ['id' => 'asc'];
     }
 
-    public static function fieldsForTabularPage(): array
+    public static function tabularPage(): array
     {
-        return ['id', 'description', 'staff'];
+        return [
+            'fields' => [
+                'id',
+                'description',
+                'staff'
+            ]
+        ];
     }
 
-    public static function fieldsForGalleryPage(): array
+    public static function galleryPage(): array
     {
         return ['id', 'description'];
     }

@@ -19,12 +19,23 @@ class FaunaReadDetails implements ReadDetailsInterface
         return ['id' => 'asc'];
     }
 
-    public static function fieldsForTabularPage(): array
+    public static function tabularPage(): array
     {
-        return ['id', 'date_retrieved', ['fauna_taxon_id' => 'taxon'], ['fauna_element_id' => 'element'], 'description', 'notes'];
+        return [
+            'fields' => [
+                'id',
+                'date_retrieved',
+                'description',
+                'notes'
+            ],
+            'lookups' => [
+                'fauna_taxon_id' => 'taxon',
+                'fauna_element_id' => 'element'
+            ]
+        ];
     }
 
-    public static function fieldsForGalleryPage(): array
+    public static function galleryPage(): array
     {
         return ['id', 'description'];
     }

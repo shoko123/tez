@@ -81,12 +81,21 @@ class CeramicReadDetails implements ReadDetailsInterface
         return ['id' => 'asc'];
     }
 
-    public static function fieldsForTabularPage(): array
+    public static function tabularPage(): array
     {
-        return ['id', 'date_retrieved', 'field_description', 'field_notes', 'description', 'periods'];
+        return [
+            'fields' => [
+                'id',
+                'date_retrieved',
+                'field_description',
+                'field_notes',
+                'description',
+                'periods'
+            ]
+        ];
     }
 
-    public static function fieldsForGalleryPage(): array
+    public static function galleryPage(): array
     {
         return ['id', 'description'];
     }

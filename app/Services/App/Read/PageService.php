@@ -5,7 +5,7 @@ namespace App\Services\App\Read;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
-
+use App\Exceptions\GeneralJsonException;
 use App\Services\App\DigModuleService;
 use App\Services\App\Utils\GetService;
 use App\Services\App\Module\ReadDetailsInterface;
@@ -23,8 +23,10 @@ class PageService extends DigModuleService
 
     // Used by tabular to define columns collected and lookup values
     protected $selectArr = [];
-    protected  $withArr = [];
-    protected  $lookups = [];
+    protected $withArr = [];
+    protected $lookups = [];
+    protected $onps = [];
+    private $tabularPageDetails = [];
 
     public function __construct(string $module)
     {
@@ -54,6 +56,9 @@ class PageService extends DigModuleService
 
         // Return formatted results
         $response = $view === 'Tabular' ? $this->formatTabularResult($res) : $this->formatGalleryResult($res);
+        if ($view === 'Tabular') {
+            // dd($response);
+        }
         return $response->toArray();
     }
 
@@ -61,31 +66,89 @@ class PageService extends DigModuleService
     public function buildTabularQuery()
     {
         $this->parseTabularFields();
-
+        // dd('Query select: ' . print_r($this->selectArr) . '\nwith: ' . print_r($this->withArr));
         $this->builder = $this->model
-            ->select($this->selectArr)
+            ->select()
             ->with($this->withArr);
     }
 
     public function parseTabularFields()
     {
-        foreach ($this->details::fieldsForTabularPage() as $key => $data) {
-            if (is_array($data)) {
-                array_push($this->withArr, array_values($data)[0]);
-                array_push($this->selectArr, array_keys($data)[0]);
-                array_push($this->lookups, $data);
-            } else {
-                array_push($this->selectArr, $data);
+        // dd($this->details::tabularPage());
+        foreach ($this->details::tabularPage() as $cat => $data) {
+            switch ($cat) {
+                case 'fields':
+                    foreach ($data as $key => $field_name) {
+                        array_push($this->selectArr, $field_name);
+                    }
+                    break;
+
+                case 'lookups':
+                    foreach ($data as $lu_val => $access) {
+                        array_push($this->withArr, $access);
+                        array_push($this->selectArr, $lu_val);
+                        array_push($this->lookups, $lu_val);
+                    }
+                    break;
+                case 'onps':
+                    // array_push($this->withArr, 'onps.onp_group');
+                    break;
+                default:
+                    throw new GeneralJsonException('tabularPage() bad category: ' . $cat, 422);
             }
         }
+
+        // foreach ($this->details::tabularPage() as $key => $data) {
+        //     if (is_array($data)) {
+        //         array_push($this->withArr, array_values($data)[0]);
+        //         array_push($this->selectArr, array_keys($data)[0]);
+        //         array_push($this->lookups, $data);
+        //     } else {
+        //         array_push($this->selectArr, $data);
+        //     }
+        // }
     }
 
 
     // Awkwardly replace lookup FK with value
     public function formatTabularResult(Collection $res)
     {
+        $this->tabularPageDetails = $this->details::tabularPage();
+
+        return $res->map(function (object $rec) {
+            return $this->formatTabularRecord($rec);
+        });
+    }
+
+    public function formatTabularRecord(object $res)
+    {
+        $formatted = [];
+        foreach ($this->tabularPageDetails['fields'] as $key => $data) {
+            $formatted[$data] = $res->$data;
+        }
+
+        if (array_key_exists('lookups', $this->tabularPageDetails)) {
+            foreach ($this->tabularPageDetails['lookups'] as $key => $data) {
+                $formatted[$key] = $res->$data['name'];
+            }
+        }
+
+        if (array_key_exists('onps', $this->tabularPageDetails)) {
+
+            $all = $res->onps->reduce(function (?string $carry, object $item) {
+                return $carry .= $item['label'] . ',\n';
+            });
+
+            $formatted['onps'] = $all;
+        }
+        // dd($res);
+
+        return $formatted;
+
+        /////////////////
         return $res->map(function (object $rec) {
             $newRec = clone $rec;
+
             foreach ($this->lookups as $lookup) {
                 foreach ($lookup as $key => $val) {
                     $newRec->$key = $newRec->$val->name;
@@ -99,7 +162,7 @@ class PageService extends DigModuleService
     // Gallery
     public function buildGalleryQuery()
     {
-        $this->builder = $this->model->select($this->details::fieldsForGalleryPage())
+        $this->builder = $this->model->select($this->details::galleryPage())
             ->with(['media' => function ($query) {
                 $query->orderBy('order_column')->limit(1);
             }]);

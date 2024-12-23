@@ -19,12 +19,23 @@ class StoneReadDetails implements ReadDetailsInterface
         return ['id' => 'asc'];
     }
 
-    public static function fieldsForTabularPage(): array
+    public static function tabularPage(): array
     {
-        return ['id', 'date_retrieved', ['material_id' => 'material'], ['stone_primary_classification_id' => 'primaryClassification'], 'description', 'notes'];
+        return [
+            'fields' => [
+                'id',
+                'date_retrieved',
+                'description',
+                'notes'
+            ],
+            'lookups' => [
+                'material_id' => 'material',
+                'stone_primary_classification_id' => 'primaryClassification'
+            ]
+        ];
     }
 
-    public static function fieldsForGalleryPage(): array
+    public static function galleryPage(): array
     {
         return ['id', 'description'];
     }
