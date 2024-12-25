@@ -15,13 +15,32 @@ class PermissionsSeeder extends Seeder
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        $permissions = ['create', 'update', 'delete', 'media', 'tag'];
-        $models = ['Locus', 'Stone', 'Ceramic', 'Lithic'];
+        $permissions = [
+            'C' => 'create',
+            'D' => 'delete',
+            'U' => 'update',
+            'M' => 'media',
+            'T' => 'tag'
+        ];
 
-        foreach ($models as $m) {
+        $modules = [
+            'Area' => 'UM',
+            'Season' => 'UM',
+            'Survey' => 'CDUMT',
+            'Locus' => 'CDUMT',
+            'Ceramic' => 'CDUMT',
+            'Stone' => 'CDUMT',
+            'Lithic' => 'CDUMT',
+            'Fauna' => 'CDUMT',
+            'Metal' => 'CDUMT',
+            'Glass' => 'CDUMT',
+        ];
+
+        foreach ($modules as $m => $perms) {
             $role = Role::create(['name' => $m . ' Manager']);
-            foreach ($permissions as $p) {
-                $p_name = $m . '-' . $p;
+            $chars = str_split($perms);
+            foreach ($chars as $char) {
+                $p_name = $m . '-' . $permissions[$char];
                 Permission::create(['name' => $p_name]);
                 $role->givePermissionTo($p_name);
             }
@@ -29,7 +48,8 @@ class PermissionsSeeder extends Seeder
 
         $editor = User::findOrFail(2);
         $roles = [];
-        foreach ($models as $m) {
+
+        foreach ($modules as $m => $perms) {
             array_push($roles, $m . ' Manager');
         }
 

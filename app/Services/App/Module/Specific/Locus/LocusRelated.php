@@ -57,10 +57,7 @@ class LocusRelated extends DigModuleService
 
     private function formatResponse($res): array
     {
-        $formatted = [
-            FormatDbResult::transformOneItem('Belongs To', 'Area', $res->area),
-            FormatDbResult::transformOneItem('Belongs To', 'Season', $res->season),
-        ];
+        $formatted = [];
 
         $small = ['ceramics' => 'Ceramic', 'stones' => 'Stone',  'lithics' => 'Lithic', 'fauna' => 'Fauna', 'glass' => 'Glass', 'metals' => 'Metal'];
         foreach ($small as $key => $val) {
@@ -68,6 +65,10 @@ class LocusRelated extends DigModuleService
             $formatted = array_merge($formatted, $list);
         }
 
-        return $formatted;
+        $area_season = [
+            FormatDbResult::transformOneItem('Belongs To', 'Area', $res->area),
+            FormatDbResult::transformOneItem('Belongs To', 'Season', $res->season),
+        ];
+        return array_merge($formatted, $area_season);
     }
 }

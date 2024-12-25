@@ -1,7 +1,17 @@
 <template>
+  <v-btn v-if="isAllowed('create')" icon size="small" @click="itemCreate()">
+    <v-icon>mdi-note-plus-outline</v-icon>
+    <v-tooltip activator="parent" location="bottom"> Create a new {{ module }} item </v-tooltip>
+  </v-btn>
+
   <v-btn v-if="isAllowed('update')" icon size="small" @click="itemUpdate()">
     <v-icon>mdi-pencil</v-icon>
     <v-tooltip activator="parent" location="bottom"> Edit {{ module }} Entry </v-tooltip>
+  </v-btn>
+
+  <v-btn v-if="isAllowed('delete')" icon size="small" @click="itemDelete()">
+    <v-icon>mdi-delete</v-icon>
+    <v-tooltip activator="parent" location="bottom"> Delete {{ module }} </v-tooltip>
   </v-btn>
 
   <v-btn v-if="isAllowed('media')" icon size="small" @click="goToMedia()">
@@ -14,15 +24,9 @@
     <v-tooltip activator="parent" location="bottom"> Manage {{ module }} tags </v-tooltip>
   </v-btn>
 
-  <v-btn v-if="isAllowed('delete')" icon size="small" @click="itemDelete()">
-    <v-icon>mdi-delete</v-icon>
-    <v-tooltip activator="parent" location="bottom"> Delete {{ module }} </v-tooltip>
-  </v-btn>
 
-  <v-btn v-if="isAllowed('create')" icon size="small" @click="itemCreate()">
-    <v-icon>mdi-note-plus-outline</v-icon>
-    <v-tooltip activator="parent" location="bottom"> Create a new {{ module }} item </v-tooltip>
-  </v-btn>
+
+
 </template>
 
 <script lang="ts" setup>

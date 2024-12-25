@@ -26,9 +26,17 @@ import { useItemNewStore } from '../../scripts/stores/itemNew'
 import { useModuleStore } from '../../scripts/stores/module'
 import { useNotificationsStore } from '../../scripts/stores/notifications'
 
-const StoneNew = defineAsyncComponent(() => import('../modules/Stone/StoneNew.vue'))
+const SeasonNew = defineAsyncComponent(() => import('../modules/Season/SeasonNew.vue'))
+const AreaNew = defineAsyncComponent(() => import('../modules/Area/AreaNew.vue'))
+const SurveyNew = defineAsyncComponent(() => import('../modules/Survey/SurveyNew.vue'))
+const LocusNew = defineAsyncComponent(() => import('../modules/Locus/LocusNew.vue'))
 const CeramicNew = defineAsyncComponent(() => import('../modules/Ceramic/CeramicNew.vue'))
+const FaunaNew = defineAsyncComponent(() => import('../modules/Fauna/FaunaNew.vue'))
+const GlassNew = defineAsyncComponent(() => import('../modules/Glass/GlassNew.vue'))
 const LithicNew = defineAsyncComponent(() => import('../modules/Lithic/LithicNew.vue'))
+const MetalNew = defineAsyncComponent(() => import('../modules/Metal/MetalNew.vue'))
+const StoneNew = defineAsyncComponent(() => import('../modules/Stone/StoneNew.vue'))
+
 let { showSpinner, showSnackbar } = useNotificationsStore()
 let { upload } = useItemNewStore()
 let { isCreate } = storeToRefs(useItemNewStore())
@@ -40,14 +48,42 @@ const title = computed(() => {
   return isCreate.value ? 'Create' : 'Update'
 })
 
+// const loadComponent = () =>
+//   defineAsyncComponent(() => import(`./modules/${module.value}/${module.value}New.vue`)
+//   );
+
 const formNew = computed<Component>(() => {
   switch (module.value) {
+    case 'Area':
+      return AreaNew
+
+    case 'Season':
+      return SeasonNew
+
+    case 'Survey':
+      return SurveyNew
+
+    case 'Locus':
+      return LocusNew
+
     case 'Ceramic':
       return CeramicNew
-    case 'Stone':
-      return StoneNew
+
+    case 'Fauna':
+      return FaunaNew
+
+    case 'Glass':
+      return GlassNew
+
     case 'Lithic':
       return LithicNew
+
+    case 'Metal':
+      return MetalNew
+
+    case 'Stone':
+      return StoneNew
+
     default:
       console.log(`Update.vue invalid module ${module.value}`)
       pushHome(`Create/Update is currently not implemented for module "${module.value}""`)

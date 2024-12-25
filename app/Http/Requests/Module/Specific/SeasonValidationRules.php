@@ -21,15 +21,15 @@ class SeasonValidationRules extends ValidationRules
 
     public function create_rules(): array
     {
-        return [
-            'data.fields.id' => 'max:250',
-        ];
+        return [];
     }
 
     public function update_rules(): array
     {
         return [
-            'data.fields.id' => 'required|max:50',
+            'data.fields.id' => 'required|max:1',
+            'data.fields.description' => 'max:2000',
+            'data.fields.staff' => 'max:2000',
         ];
     }
 }
