@@ -3,12 +3,11 @@ type TSurvey<T extends TModuleInfo = TModuleInfo> = {
   url_name: 'survey'
   fields: {
     id: string
-    id_old: number
     area_id: string
     feature_no: number
     surveyed_date: string | null
     elevation: number
-    urinext_to: string
+    next_to: string
     description: string
     notes: string
   }

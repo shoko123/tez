@@ -37,6 +37,10 @@ const yearInfo = computed(() => {
   return ceramicFieldsWithOptions.value['area_id']!
 })
 
+function yearSelected(year: number) {
+  return year
+}
+
 const ready = computed(() => {
   return true
 })
@@ -45,18 +49,7 @@ const label = computed(() => {
   return ready.value ? `20${year.value}` : `ID not set`
 })
 
-
-
-function yearSelected(selected: number) {
-  console.log(`yearSelected(${selected})`)
-  year.value = selected
-  //
-}
-
-
-
 function accept() {
-
   openIdSelectorModal.value = false
   console.log(`id accepted: ${dataNew.value.fields.id}`)
 }

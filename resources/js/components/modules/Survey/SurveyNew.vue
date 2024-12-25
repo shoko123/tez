@@ -1,57 +1,64 @@
 <template>
-  <v-container fluid class="pa-1 ma-0">
-    <v-row>
-      <template v-if="props.isCreate">
-        <id-selector>
-          <template #id-selector-activator>
-            <v-btn v-model="newFields.id" label="tag" class="bg-grey text-black my-5"
-              @click="openIdSelectorModal = true">NEW ID: "{{ nf.id }}"</v-btn>
-          </template>
-          <template #id-selector-form>
-            <CeramicIdSelector></CeramicIdSelector>
-          </template>
-        </id-selector>
-      </template>
-      <template v-else>
-        <v-text-field v-model="nf.id" label="Label" class="mr-1" filled disabled />
-      </template>
-    </v-row>
+  <v-container fluid>
+    <template v-if="props.isCreate">
+      <v-row class="ga-1">
+        <v-col cols=2>
+          <id-selector>
+            <template #id-selector-activator>
+              <v-btn v-model="dataNew.fields.id" label="tag" class="bg-grey text-black my-1"
+                @click="openIdSelectorModal = true">{{ idSelectorTag }}</v-btn>
+            </template>
 
-    <v-row>
-      <v-textarea v-model="nf.field_description" label="Field Description" :error-messages="errors.field_description"
-        class="mr-1" filled />
-      <v-textarea v-model="nf.specialist_description" label="Specialist Description"
-        :error-messages="errors.specialist_description" class="mr-1" filled />
-      <v-textarea v-model="nf.notes" label="Notes" :error-messages="errors.notes" class="mr-1" filled />
+            <template #id-selector-form>
+              <SurveyIdSelector :defaults="defaultsForIdSelector"></SurveyIdSelector>
+            </template>
+
+          </id-selector>
+        </v-col>
+      </v-row>
+    </template>
+
+    <v-row class="ga-1">
+      <v-textarea v-model="nf.description" label="Description" :error-messages="fieldsErrorMessages.description"
+        filled />
+      <v-textarea v-model="nf.notes" label="Notes" :error-messages="fieldsErrorMessages.notes" filled />
     </v-row>
 
     <slot :id="nf.id" name="newItem" :v="v$" :new-fields="nf" />
+
   </v-container>
 </template>
 
 <script lang="ts" setup>
+import { TFields, TFieldsErrors, TFieldsDefaultsAndRules } from '@/types/moduleTypes'
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import type { TFields, TFieldsErrors, TFieldsDefaultsAndRules } from '@/types/moduleTypes'
 import { useVuelidate } from '@vuelidate/core'
-import { required, between, maxLength } from '@vuelidate/validators'
+import { required, helpers, between, maxLength } from '@vuelidate/validators'
+
+import { useModuleStore } from '../../../scripts/stores/module'
 import { useItemStore } from '../../../scripts/stores/item'
 import { useItemNewStore } from '../../../scripts/stores/itemNew'
 import IdSelector from '../../form-elements/IdSelector.vue'
-import CeramicIdSelector from './CeramicIdSelector.vue'
+import SurveyIdSelector from './SurveyIdSelector.vue'
+
+const { tagAndSlugFromId, prepareNewFields } = useModuleStore()
+const { fields } = storeToRefs(useItemStore())
+const { dataNew, openIdSelectorModal } = storeToRefs(useItemNewStore())
 
 const props = defineProps<{
   isCreate: boolean
 }>()
 
-const defaultsAndRules: TFieldsDefaultsAndRules<'Ceramic'> = {
-  id: { d: '', r: { required } },
-  id_year: { d: 20, r: { required, between: between(20, 24) } },
-  id_object_no: { d: 1, r: { required, between: between(1, 9) } },
-  field_description: { d: '', r: { maxLength: maxLength(50) } },
-  specialist_description: { d: '', r: { maxLength: maxLength(50) } },
-  notes: { d: '', r: { maxLength: maxLength(50) } },
-  base_type_id: { d: 1, r: { required, between: between(1, 9) } },
+const defaultsAndRules: TFieldsDefaultsAndRules<'Survey'> = {
+  id: { d: null, r: { required, maxLength: maxLength(20) } },
+  area_id: { d: 'S', r: { required, maxLength: maxLength(1) } },
+  feature_no: { d: 0, r: { required, maxLength: maxLength(1) } },
+  surveyed_date: { d: null, r: { required, maxLength: maxLength(1) } },
+  elevation: { d: 0, r: { required, maxLength: maxLength(1) } },
+  next_to: { d: '', r: { required, maxLength: maxLength(1) } },
+  description: { d: null, r: { maxLength: maxLength(100) } },
+  notes: { d: null, r: { maxLength: maxLength(100) } },
 }
 
 const defaultsObj = computed(() => {
@@ -59,48 +66,82 @@ const defaultsObj = computed(() => {
 })
 
 const rulesObj = computed(() => {
-  return Object.fromEntries(Object.entries(defaultsAndRules).map(([k, v]) => [k, v.r]))
+  const fieldsRules = Object.fromEntries(Object.entries(defaultsAndRules).map(([k, v]) => [k, v.r]))
+
+  return {
+    fields: fieldsRules,
+    onps: {
+      $each: helpers.forEach({
+        value: {
+          betweenValue: between(1, 999),
+        },
+      })
+    }
+  }
 })
-
-const { fields } = storeToRefs(useItemStore())
-const { newFields, openIdSelectorModal } = storeToRefs(useItemNewStore())
-
-// setup
-let newCeramic: Partial<TFields<'Ceramic'>> = {}
-if (props.isCreate) {
-  newCeramic = { ...defaultsObj.value }
-  openIdSelectorModal.value = true
-} else {
-  newCeramic = { ...fields.value }
-}
-dataNew.value.fields = { ...newCeramic }
-
-console.log(
-  `Ceramic(${props.isCreate ? 'Create' : 'Update'}) fields: ${JSON.stringify(fields.value, null, 2)}`,
-)
-
-const v$ = useVuelidate(rulesObj.value, dataNew.value.fields as TFields<'Ceramic'>, { $autoDirty: true })
 
 const nf = computed(() => {
-  return dataNew.value.fields as TFields<'Ceramic'>
+  return dataNew.value.fields as TFields<'Survey'>
 })
 
-const errors = computed(() => {
-  let errorObj: Partial<TFieldsErrors<'Ceramic'>> = {}
-  for (const key in dataNew.value.fields) {
-    const message = v$.value[key].$errors.length > 0 ? v$.value[key].$errors[0].$message : undefined
-    errorObj[key as keyof TFieldsErrors<'Ceramic'>] = message
+// setup
+console.log(
+  `Survey(${props.isCreate ? 'Create' : 'Update'}) fields: ${JSON.stringify(fields.value, null, 2)}`,
+)
+
+if (props.isCreate) {
+  dataNew.value.fields = { ...defaultsObj.value }
+  openIdSelectorModal.value = true
+} else {
+  dataNew.value.fields = prepareNewFields(fields.value)
+}
+
+// setup - end
+
+// ID selector related
+const defaultsForIdSelector = computed(() => {
+  const ds = nf.value.id ? nf.value : fields.value as TFields<'Survey'>
+  return {
+    season: ds.id.substring(0, 1),
+    area: ds.id.substring(1, 2),
+    locusNo: Number(ds.id.substring(2, 5)),
   }
-  return errorObj
 })
 
+const idSelectorTag = computed(() => {
+  if (nf.value.id === null) {
+    return `[ID Not Selected]`
+  }
+  const tg = tagAndSlugFromId(nf.value.id)
+  return tg.tag
+})
+// ID selector related - end
+
+// Lookup fields
+// none
+
+// Standard fields validations and errors
+
+// Used only for artifacts
+
+
+const v$ = useVuelidate(rulesObj.value, dataNew.value, { $autoDirty: true })
+
+const fieldsErrorMessages = computed(() => {
+  let errorMessagesObj: Partial<TFieldsErrors<'Survey'>> = {}
+  for (const key in dataNew.value.fields) {
+    const message = v$.value.fields[key].$errors.length > 0 ? v$.value.fields[key].$errors[0].$message : undefined
+    errorMessagesObj[key as keyof TFieldsErrors<'Survey'>] = message
+  }
+  return errorMessagesObj
+})
+
+// Module specific manipulations before upload
 function beforeStore() {
-  console.log(`Ceramic.beforeStore()`)
   return dataNew.value.fields
 }
 
 defineExpose({
   beforeStore
-});
-
+})
 </script>

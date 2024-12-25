@@ -5,92 +5,99 @@
         {{ title }}
       </v-card-title>
       <v-card-text>
-        <component :is="formNew" ref="childRef" :is-create="isCreate">
+        <!-- <component :is="formNewA" ref="childRef" :is-create="isCreate">
           <template #newItem="{ v }">
             <v-btn variant="outlined" @click="submit(v)"> Submit </v-btn>
             <v-btn variant="outlined" class="ml-1" @click="cancel"> Cancel </v-btn>
           </template>
-        </component>
+</component> -->
+        <Suspense>
+          <component :is="formNewB" ref="childRef" :is-create="isCreate">
+            <template #newItem="{ v }">
+              <v-btn variant="outlined" @click="submit(v)"> Submit </v-btn>
+              <v-btn variant="outlined" class="ml-1" @click="cancel"> Cancel </v-btn>
+            </template>
+          </component>
+        </Suspense>
       </v-card-text>
     </v-card>
   </v-container>
 </template>
 
 <script lang="ts" setup>
-import { computed, type Component, defineAsyncComponent, ref } from 'vue'
+import { computed, type Component, defineAsyncComponent, ref, markRaw } from 'vue'
 import { storeToRefs } from 'pinia'
 import { type Validation } from '@vuelidate/core'
-
+import type { TModule } from '@/types/moduleTypes'
 import { useRoutesMainStore } from '../../scripts/stores/routes/routesMain'
 import { useItemNewStore } from '../../scripts/stores/itemNew'
 import { useModuleStore } from '../../scripts/stores/module'
 import { useNotificationsStore } from '../../scripts/stores/notifications'
 
-const SeasonNew = defineAsyncComponent(() => import('../modules/Season/SeasonNew.vue'))
-const AreaNew = defineAsyncComponent(() => import('../modules/Area/AreaNew.vue'))
-const SurveyNew = defineAsyncComponent(() => import('../modules/Survey/SurveyNew.vue'))
-const LocusNew = defineAsyncComponent(() => import('../modules/Locus/LocusNew.vue'))
-const CeramicNew = defineAsyncComponent(() => import('../modules/Ceramic/CeramicNew.vue'))
-const FaunaNew = defineAsyncComponent(() => import('../modules/Fauna/FaunaNew.vue'))
-const GlassNew = defineAsyncComponent(() => import('../modules/Glass/GlassNew.vue'))
-const LithicNew = defineAsyncComponent(() => import('../modules/Lithic/LithicNew.vue'))
-const MetalNew = defineAsyncComponent(() => import('../modules/Metal/MetalNew.vue'))
-const StoneNew = defineAsyncComponent(() => import('../modules/Stone/StoneNew.vue'))
-
+const { module, moduleToUrlModuleName } = storeToRefs(useModuleStore())
+let { routerPush } = useRoutesMainStore()
 let { showSpinner, showSnackbar } = useNotificationsStore()
 let { upload } = useItemNewStore()
 let { isCreate } = storeToRefs(useItemNewStore())
 
-const { module } = storeToRefs(useModuleStore())
-let { routerPush, pushHome } = useRoutesMainStore()
+// OLD DYNAMIC FORM NEW LOADING
+// const SeasonNew = defineAsyncComponent(() => import('../modules/Season/SeasonNew.vue'))
+// const AreaNew = defineAsyncComponent(() => import('../modules/Area/AreaNew.vue'))
+// const SurveyNew = defineAsyncComponent(() => import('../modules/Survey/SurveyNew.vue'))
+// const LocusNew = defineAsyncComponent(() => import('../modules/Locus/LocusNew.vue'))
+// const CeramicNew = defineAsyncComponent(() => import('../modules/Ceramic/CeramicNew.vue'))
+// const FaunaNew = defineAsyncComponent(() => import('../modules/Fauna/FaunaNew.vue'))
+// const GlassNew = defineAsyncComponent(() => import('../modules/Glass/GlassNew.vue'))
+// const LithicNew = defineAsyncComponent(() => import('../modules/Lithic/LithicNew.vue'))
+// const MetalNew = defineAsyncComponent(() => import('../modules/Metal/MetalNew.vue'))
+// const StoneNew = defineAsyncComponent(() => import('../modules/Stone/StoneNew.vue'))
+// const formNewA = computed<Component>(() => {
+//   switch (module.value) {
+//     case 'Area':
+//       return AreaNew
+//     case 'Season':
+//       return SeasonNew
+//     case 'Survey':
+//       return SurveyNew
+//     case 'Locus':
+//       return LocusNew
+//     case 'Ceramic':
+//       return CeramicNew
+//     case 'Fauna':
+//       return FaunaNew
+//     case 'Glass':
+//       return GlassNew
+//     case 'Lithic':
+//       return LithicNew
+//     case 'Metal':
+//       return MetalNew
+//     case 'Stone':
+//       return StoneNew
+//     default:
+//       console.log(`Update.vue invalid module ${module.value}`)
+//       pushHome(`Create/Update is currently not implemented for module "${module.value}""`)
+//       return CeramicNew // Make editor happy
+//   }
+// })
+
+// setup -start
+
+// Vue needs to statically 'compile' components
+const formNewObj = ref<Partial<Record<TModule, Component>>>({})
+for (let key in moduleToUrlModuleName.value) {
+  formNewObj.value[key as TModule] = markRaw(defineAsyncComponent(() => import(`../modules/${module.value}/${module.value}New.vue`))
+  )
+}
+
+// setup - end
+
+const formNewB = computed<Component>(() => {
+  return formNewObj.value[module.value]!
+})
 
 const title = computed(() => {
   return isCreate.value ? 'Create' : 'Update'
 })
-
-// const loadComponent = () =>
-//   defineAsyncComponent(() => import(`./modules/${module.value}/${module.value}New.vue`)
-//   );
-
-const formNew = computed<Component>(() => {
-  switch (module.value) {
-    case 'Area':
-      return AreaNew
-
-    case 'Season':
-      return SeasonNew
-
-    case 'Survey':
-      return SurveyNew
-
-    case 'Locus':
-      return LocusNew
-
-    case 'Ceramic':
-      return CeramicNew
-
-    case 'Fauna':
-      return FaunaNew
-
-    case 'Glass':
-      return GlassNew
-
-    case 'Lithic':
-      return LithicNew
-
-    case 'Metal':
-      return MetalNew
-
-    case 'Stone':
-      return StoneNew
-
-    default:
-      console.log(`Update.vue invalid module ${module.value}`)
-      pushHome(`Create/Update is currently not implemented for module "${module.value}""`)
-      return CeramicNew // Make editor happy
-  }
-})
-
 
 const childRef = ref();
 

@@ -9,7 +9,7 @@
           </template>
 
           <template #id-selector-form>
-            <CeramicIdSelector :defaults="defaultsForIdSelector"></CeramicIdSelector>
+            <GlassIdSelector :defaults="defaultsForIdSelector"></GlassIdSelector>
           </template>
 
         </id-selector>
@@ -28,7 +28,7 @@
     </v-row>
 
     <v-row class="ga-1">
-      <v-select v-model="nf.ceramic_primary_classification_id" label="Select" item-title="text" item-value="extra"
+      <v-select v-model="nf.glass_primary_classification_id" label="Select" item-title="text" item-value="extra"
         :items="primaryClassificationInfo.options"></v-select>
     </v-row>
 
@@ -40,7 +40,6 @@
 
     <v-row class="ga-1">
       <v-textarea v-model="nf.description" label="Specialist Description" :error-messages="errors.description" filled />
-      <v-textarea v-model="nf.periods" label="Specialist Notes" :error-messages="errors.periods" filled />
     </v-row>
 
     <slot :id="nf.id" name="newItem" :v="v$" :new-fields="nf" />
@@ -58,7 +57,7 @@ import { useModuleStore } from '../../../scripts/stores/module'
 import { useItemStore } from '../../../scripts/stores/item'
 import { useItemNewStore } from '../../../scripts/stores/itemNew'
 import IdSelector from '../../form-elements/IdSelector.vue'
-import CeramicIdSelector from './CeramicIdSelector.vue'
+import GlassIdSelector from './GlassIdSelector.vue'
 import DatePicker from '../../form-elements/DatePicker.vue'
 
 const { tagAndSlugFromId, prepareNewFields } = useModuleStore()
@@ -67,7 +66,7 @@ const props = defineProps<{
   isCreate: boolean
 }>()
 
-const defaultsAndRules: TFieldsDefaultsAndRules<'Ceramic'> = {
+const defaultsAndRules: TFieldsDefaultsAndRules<'Glass'> = {
   id: { d: null, r: { required, maxLength: maxLength(20) } },
   locus_id: { d: '3S001', r: { required, minValue: minLength(5), maxValue: maxLength(5) } },
   code: { d: 'PT', r: { required, maxLength: maxLength(2) } },
@@ -82,8 +81,12 @@ const defaultsAndRules: TFieldsDefaultsAndRules<'Ceramic'> = {
   level_bottom: { d: null, r: { maxLength: maxLength(20) } },
   //
   description: { d: null, r: { maxLength: maxLength(400) } },
-  periods: { d: null, r: { maxLength: maxLength(400) } },
-  ceramic_primary_classification_id: { d: 1, r: { between: between(1, 255) } },
+  rim_diameter: { d: 99, r: { required, between: between(0, 99) } },
+  base_diameter: { d: 99, r: { required, between: between(0, 99) } },
+  bangle_diameter: { d: 99, r: { required, between: between(0, 99) } },
+  bead_diameter: { d: 99, r: { required, between: between(0, 99) } },
+  pontil_diameter: { d: 99, r: { required, between: between(0, 99) } },
+  glass_primary_classification_id: { d: 1, r: { between: between(1, 255) } },
 }
 
 const defaultsObj = computed(() => {
@@ -99,7 +102,7 @@ const { dataNew, openIdSelectorModal, fieldsWithOptions } = storeToRefs(useItemN
 
 // setup
 console.log(
-  `Ceramic(${props.isCreate ? 'Create' : 'Update'}) fields: ${JSON.stringify(fields.value, null, 2)}`,
+  `Glass(${props.isCreate ? 'Create' : 'Update'}) fields: ${JSON.stringify(fields.value, null, 2)}`,
 )
 
 if (props.isCreate) {
@@ -112,7 +115,7 @@ if (props.isCreate) {
 
 // ID selector related
 const defaultsForIdSelector = computed(() => {
-  const ds = nf.value.id ? nf.value : fields.value as TFields<'Ceramic'>
+  const ds = nf.value.id ? nf.value : fields.value as TFields<'Glass'>
   return {
     season: ds.id.substring(0, 1),
     area: ds.id.substring(1, 2),
@@ -133,26 +136,26 @@ const idSelectorTag = computed(() => {
 // ID selector related - end
 
 // Lookup fields
-const CeramicFieldsWithOptions = computed(() => {
-  return fieldsWithOptions.value as Partial<Record<keyof TFields<'Ceramic'>, TFieldInfo>>
+const GlassFieldsWithOptions = computed(() => {
+  return fieldsWithOptions.value as Partial<Record<keyof TFields<'Glass'>, TFieldInfo>>
 })
 
 const primaryClassificationInfo = computed(() => {
-  return CeramicFieldsWithOptions.value['ceramic_primary_classification_id']!
+  return GlassFieldsWithOptions.value['glass_primary_classification_id']!
 })
 
 // Standard fields validations and errors
 const nf = computed(() => {
-  return dataNew.value.fields as TFields<'Ceramic'>
+  return dataNew.value.fields as TFields<'Glass'>
 })
 
 const v$ = useVuelidate(rulesObj.value, dataNew.value.fields, { $autoDirty: true })
 
 const errors = computed(() => {
-  let errorObj: Partial<TFieldsErrors<'Ceramic'>> = {}
+  let errorObj: Partial<TFieldsErrors<'Glass'>> = {}
   for (const key in dataNew.value.fields) {
     const message = v$.value[key].$errors.length > 0 ? v$.value[key].$errors[0].$message : undefined
-    errorObj[key as keyof TFieldsErrors<'Ceramic'>] = message
+    errorObj[key as keyof TFieldsErrors<'Glass'>] = message
   }
   return errorObj
 })
