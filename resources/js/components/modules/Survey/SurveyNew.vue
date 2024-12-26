@@ -10,13 +10,19 @@
             </template>
 
             <template #id-selector-form>
-              <SurveyIdSelector :defaults="defaultsForIdSelector"></SurveyIdSelector>
+              <SurveyIdSelector></SurveyIdSelector>
             </template>
 
           </id-selector>
         </v-col>
       </v-row>
     </template>
+    <v-row class="ga-1">
+      <date-picker v-model="nf.surveyed_date" label="Survey Date" color="primary" clearable max-width="368">
+      </date-picker>
+      <v-text-field v-model="nf.elevation" label="Elevation" :error-messages="fieldsErrorMessages.elevation" filled />
+      <v-text-field v-model="nf.next_to" label="Next To" :error-messages="fieldsErrorMessages.next_to" filled />
+    </v-row>
 
     <v-row class="ga-1">
       <v-textarea v-model="nf.description" label="Description" :error-messages="fieldsErrorMessages.description"
@@ -41,6 +47,7 @@ import { useItemStore } from '../../../scripts/stores/item'
 import { useItemNewStore } from '../../../scripts/stores/itemNew'
 import IdSelector from '../../form-elements/IdSelector.vue'
 import SurveyIdSelector from './SurveyIdSelector.vue'
+import DatePicker from '../../form-elements/DatePicker.vue'
 
 const { tagAndSlugFromId, prepareNewFields } = useModuleStore()
 const { fields } = storeToRefs(useItemStore())
@@ -51,13 +58,13 @@ const props = defineProps<{
 }>()
 
 const defaultsAndRules: TFieldsDefaultsAndRules<'Survey'> = {
-  id: { d: null, r: { required, maxLength: maxLength(20) } },
+  id: { d: null, r: { required, maxLength: maxLength(4) } },
   area_id: { d: 'S', r: { required, maxLength: maxLength(1) } },
-  feature_no: { d: 0, r: { required, maxLength: maxLength(1) } },
-  surveyed_date: { d: null, r: { required, maxLength: maxLength(1) } },
-  elevation: { d: 0, r: { required, maxLength: maxLength(1) } },
-  next_to: { d: '', r: { required, maxLength: maxLength(1) } },
-  description: { d: null, r: { maxLength: maxLength(100) } },
+  feature_no: { d: 0, r: { required, between: between(1, 200) } },
+  surveyed_date: { d: null, r: {} },
+  elevation: { d: null, r: { between: between(1, 200) } },
+  next_to: { d: '', r: { maxLength: maxLength(50) } },
+  description: { d: null, r: { maxLength: maxLength(1000) } },
   notes: { d: null, r: { maxLength: maxLength(100) } },
 }
 
@@ -85,9 +92,7 @@ const nf = computed(() => {
 })
 
 // setup
-console.log(
-  `Survey(${props.isCreate ? 'Create' : 'Update'}) fields: ${JSON.stringify(fields.value, null, 2)}`,
-)
+console.log(`Survey(${props.isCreate ? 'Create' : 'Update'}) fields: ${JSON.stringify(fields.value, null, 2)}`)
 
 if (props.isCreate) {
   dataNew.value.fields = { ...defaultsObj.value }
@@ -98,16 +103,6 @@ if (props.isCreate) {
 
 // setup - end
 
-// ID selector related
-const defaultsForIdSelector = computed(() => {
-  const ds = nf.value.id ? nf.value : fields.value as TFields<'Survey'>
-  return {
-    season: ds.id.substring(0, 1),
-    area: ds.id.substring(1, 2),
-    locusNo: Number(ds.id.substring(2, 5)),
-  }
-})
-
 const idSelectorTag = computed(() => {
   if (nf.value.id === null) {
     return `[ID Not Selected]`
@@ -115,15 +110,9 @@ const idSelectorTag = computed(() => {
   const tg = tagAndSlugFromId(nf.value.id)
   return tg.tag
 })
-// ID selector related - end
 
 // Lookup fields
 // none
-
-// Standard fields validations and errors
-
-// Used only for artifacts
-
 
 const v$ = useVuelidate(rulesObj.value, dataNew.value, { $autoDirty: true })
 
