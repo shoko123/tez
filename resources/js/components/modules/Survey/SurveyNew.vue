@@ -58,12 +58,12 @@ const props = defineProps<{
 }>()
 
 const defaultsAndRules: TFieldsDefaultsAndRules<'Survey'> = {
-  id: { d: null, r: { required, maxLength: maxLength(4) } },
+  id: { d: undefined, r: { required, maxLength: maxLength(4) } },
   area_id: { d: 'S', r: { required, maxLength: maxLength(1) } },
-  feature_no: { d: 0, r: { required, between: between(1, 200) } },
+  feature_no: { d: undefined, r: { required, between: between(1, 200) } },
   surveyed_date: { d: null, r: {} },
   elevation: { d: null, r: { between: between(1, 200) } },
-  next_to: { d: '', r: { maxLength: maxLength(50) } },
+  next_to: { d: null, r: { maxLength: maxLength(50) } },
   description: { d: null, r: { maxLength: maxLength(1000) } },
   notes: { d: null, r: { maxLength: maxLength(100) } },
 }
@@ -104,7 +104,7 @@ if (props.isCreate) {
 // setup - end
 
 const idSelectorTag = computed(() => {
-  if (nf.value.id === null) {
+  if (nf.value.id === undefined) {
     return `[ID Not Selected]`
   }
   const tg = tagAndSlugFromId(nf.value.id)

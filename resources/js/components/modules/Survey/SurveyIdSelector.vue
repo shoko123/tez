@@ -3,9 +3,8 @@
     <v-card-text>
 
       <v-row class="ga-1">
-        <v-select v-model="area_id" label="Area" :items="areas" @update:model-value="areaChanged()"> </v-select>
-        <v-select v-model="featureNo" label="Feature No." :items="availableFeatureNos"> </v-select>
-        <v-text-field v-if="feature" v-model="feature" label="Selected Feature"></v-text-field>
+        <v-select v-model="nf.area_id" label="Area" :items="areas" @update:model-value="areaChanged()"> </v-select>
+        <v-select v-model="nf.feature_no" label="Feature No." :items="availableFeatureNos"> </v-select>
       </v-row>
 
       <v-row v-if="selectionIsOk" class="ga-1">
@@ -14,20 +13,19 @@
 
     </v-card-text>
   </v-card>
-
 </template>
-
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import type { TFields } from '@/types/moduleTypes'
 
+import type { TFields } from '@/types/moduleTypes'
 import { useModuleStore } from '../../../scripts/stores/module'
 import { useItemNewStore } from '../../../scripts/stores/itemNew'
 import { useTrioStore } from '../../../scripts/stores/trio/trio'
 import { useXhrStore } from '../../../scripts/stores/xhr'
 import { useRoutesMainStore } from '../../../scripts/stores/routes/routesMain'
+
 const { pushHome } = useRoutesMainStore()
 const { tagAndSlugFromId } = useModuleStore()
 const { openIdSelectorModal, dataNew } = storeToRefs(useItemNewStore())
@@ -35,19 +33,13 @@ const { groupLabelToGroupKeyObj, trio } = storeToRefs(useTrioStore())
 const { send } = useXhrStore()
 
 const nf = computed(() => {
-  return dataNew.value.fields as TFields<'Survey'>
+  return dataNew.value.fields as Partial<TFields<'Survey'>>
 })
 
 // setup - start
-const area_id = ref(nf.value.area_id)
 const existingFeatureNos = ref<number[]>([])
-const featureNo = ref<number | null>(null)
 await getExistingFeatureNos()
 // setup - end
-
-async function areaChanged() {
-  await getExistingFeatureNos()
-}
 
 const areas = computed(() => {
   const group = trio.value.groupsObj[groupLabelToGroupKeyObj.value['Area']!]
@@ -57,21 +49,17 @@ const areas = computed(() => {
   })
 })
 
-const feature = computed(() => {
-  return featureNo.value ? `${area_id.value}/${featureNo.value}` : null
-})
-
-const availableFeatureNos = computed(() => {
-  return Array.from(Array(200).keys()).map((v, i) => i + 1).filter(x => { return !existingFeatureNos.value.includes(x) })
-})
+async function areaChanged() {
+  await getExistingFeatureNos()
+}
 
 async function getExistingFeatureNos() {
-  if (area_id.value === null) {
+  if (!nf.value.area_id) {
     return []
   }
-  // console.log(`getExistingFeatureNos() area_id; ${JSON.stringify(area_id.value, null, 2)}`)
+  // console.log(`getExistingFeatureNos() area_id; ${JSON.stringify(nf.value.area_id, undefined, 2)}`)
 
-  featureNo.value = null
+  nf.value.feature_no = undefined
   const res = await send<string[]>('module/index', 'post', {
     module: 'Survey',
     query: {
@@ -79,7 +67,7 @@ async function getExistingFeatureNos() {
         {
           "label": "Area",
           "field_name": "area_id",
-          "vals": [area_id.value]
+          "vals": [nf.value.area_id]
         }
       ],
     }
@@ -95,25 +83,25 @@ async function getExistingFeatureNos() {
   }
 }
 
-const selectionIsOk = computed(() => {
-  return !(featureNo.value === null)
+const availableFeatureNos = computed(() => {
+  return Array.from(Array(200).keys()).map((v, i) => i + 1).filter(x => { return !existingFeatureNos.value.includes(x) })
+})
 
+const selectionIsOk = computed(() => {
+  return !(nf.value.feature_no === undefined)
 })
 
 const id = computed(() => {
-  return featureNo.value ? `${area_id.value}${featureNo.value}` : null
+  return nf.value.feature_no ? `${nf.value.area_id}${nf.value.feature_no}` : undefined
 })
 
 const tag = computed(() => {
-  return id.value ? `${tagAndSlugFromId(id.value).tag}` : null
+  return id.value ? `${tagAndSlugFromId(id.value).tag}` : undefined
 })
 
 function accept() {
-  console.log(`accept() id: ${id.value}, featureId: ${feature.value}`)
-
+  console.log(`accept() id: ${id.value}, dataNew:  ${JSON.stringify(nf.value, null, 2)}`)
   nf.value.id = id.value!
-  nf.value.area_id = area_id.value!
-  nf.value.feature_no = featureNo.value!
   openIdSelectorModal.value = false
 }
 

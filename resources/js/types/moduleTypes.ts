@@ -84,7 +84,7 @@ type TFieldsErrors<M extends TModule = TModule> = {
 }
 
 type TFieldsDefaultsAndRules<M extends TModule> = {
-  [Key in keyof TFields<M>]: { d: TFields<M>[Key] | null; r: object }
+  [Key in keyof TFields<M>]: { d: TFields<M>[Key] | undefined | null; r: object }
 }
 
 type TFieldInfo = {

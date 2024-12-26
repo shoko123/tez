@@ -7,6 +7,10 @@
     </v-row>
 
     <v-row>
+      <v-text-field v-model="item.next_to" label="Next To" class="mr-1" readonly filled />
+    </v-row>
+
+    <v-row>
       <v-textarea v-model="item.description" label="Description" class="mr-1" readonly filled />
       <v-textarea v-model="item.notes" label="Notes" readonly filled />
     </v-row>

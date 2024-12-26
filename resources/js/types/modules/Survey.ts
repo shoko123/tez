@@ -6,7 +6,7 @@ type TSurvey<T extends TModuleInfo = TModuleInfo> = {
     area_id: string
     feature_no: number
     surveyed_date: string | null
-    elevation: number | null
+    elevation: number
     next_to: string
     description: string
     notes: string
