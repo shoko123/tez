@@ -7,7 +7,7 @@
         <v-select v-model="nf.feature_no" label="Feature No." :items="availableFeatureNos"> </v-select>
       </v-row>
 
-      <v-row v-if="selectionIsOk" class="ga-1">
+      <v-row v-if="id" class="ga-1">
         <v-btn @click="accept()">Accept new id: "{{ tag }}"</v-btn>
       </v-row>
 
@@ -74,9 +74,7 @@ async function getExistingFeatureNos() {
   })
 
   if (res.success) {
-    existingFeatureNos.value = res.data.map(x => {
-      return Number(x.substring(1))
-    })
+    existingFeatureNos.value = res.data.map(x => { return Number(x.substring(1)) })
     // console.log(`existingFeatureNos(): ${existingFeatureNos.value}`)
   } else {
     pushHome(`DB access problem!  Redirected to home page.`)
@@ -85,10 +83,6 @@ async function getExistingFeatureNos() {
 
 const availableFeatureNos = computed(() => {
   return Array.from(Array(200).keys()).map((v, i) => i + 1).filter(x => { return !existingFeatureNos.value.includes(x) })
-})
-
-const selectionIsOk = computed(() => {
-  return !(nf.value.feature_no === undefined)
 })
 
 const id = computed(() => {
