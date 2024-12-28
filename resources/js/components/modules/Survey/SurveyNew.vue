@@ -10,7 +10,7 @@
             </template>
 
             <template #id-selector-form>
-              <SurveyIdSelector></SurveyIdSelector>
+              <SurveyIdSelector />
             </template>
 
           </id-selector>

@@ -10,7 +10,7 @@
             </template>
 
             <template #id-selector-form>
-              <LocusIdSelector :defaults="defaultsForIdSelector"></LocusIdSelector>
+              <LocusIdSelector />
             </template>
 
           </id-selector>
@@ -20,33 +20,32 @@
     <v-row class="ga-1">
       <v-text-field v-model="nf.square" label="Square" :error-messages="fieldsErrorMessages.square"
         filled></v-text-field>
-      <v-text-field v-model="nf.locus_above" readonly label="Locus Above"
-        :error-messages="fieldsErrorMessages.locus_above" filled></v-text-field>
-      <v-text-field v-model="nf.locus_below" readonly label="Locus Below"
-        :error-messages="fieldsErrorMessages.locus_below" filled></v-text-field>
-      <v-text-field v-model="nf.locus_co_existing" readonly label="Co-Existing"
+      <v-text-field v-model="nf.locus_above" label="Locus Above" :error-messages="fieldsErrorMessages.locus_above"
+        filled></v-text-field>
+      <v-text-field v-model="nf.locus_below" label="Locus Below" :error-messages="fieldsErrorMessages.locus_below"
+        filled></v-text-field>
+      <v-text-field v-model="nf.locus_co_existing" label="Co-Existing"
         :error-messages="fieldsErrorMessages.locus_co_existing" filled></v-text-field>
     </v-row>
 
     <v-row class="ga-1">
-      <v-text-field v-model="nf.date_opened" readonly label="Date Opened"
-        :error-messages="fieldsErrorMessages.date_opened" filled></v-text-field>
-      <v-text-field v-model="nf.date_closed" readonly label="Date Closed"
-        :error-messages="fieldsErrorMessages.date_closed" filled></v-text-field>
-      <v-text-field v-model="nf.level_opened" readonly label="Level Opened"
-        :error-messages="fieldsErrorMessages.level_opened" filled></v-text-field>
-      <v-text-field v-model="nf.level_closed" readonly label="Level Closed"
-        :error-messages="fieldsErrorMessages.level_closed" filled></v-text-field>
-      <v-text-field v-model="nf.clean" readonly label="Clean" :error-messages="fieldsErrorMessages.clean"
+      <date-picker v-model="nf.date_opened" label="Date Opened" color="primary" clearable max-width="368">
+      </date-picker>
+      <date-picker v-model="nf.date_closed" label="Date Closed" color="primary" clearable max-width="368">
+      </date-picker>
+      <v-text-field v-model="nf.level_opened" label="Level Opened" :error-messages="fieldsErrorMessages.level_opened"
         filled></v-text-field>
+      <v-text-field v-model="nf.level_closed" label="Level Closed" :error-messages="fieldsErrorMessages.level_closed"
+        filled></v-text-field>
+      <v-text-field v-model="nf.clean" label="Clean" :error-messages="fieldsErrorMessages.clean" filled></v-text-field>
     </v-row>
 
     <v-row class="ga-1">
-      <v-textarea v-model="nf.description" rows="1" auto-grow readonly label="Description"
+      <v-textarea v-model="nf.description" rows="1" auto-grow label="Description"
         :error-messages="fieldsErrorMessages.description" filled></v-textarea>
-      <v-textarea v-model="nf.deposit" rows="1" auto-grow readonly label="Deposit"
-        :error-messages="fieldsErrorMessages.deposit" filled></v-textarea>
-      <v-textarea v-model="nf.registration_notes" rows="1" auto-grow readonly label="Registration Notes"
+      <v-textarea v-model="nf.deposit" rows="1" auto-grow label="Deposit" :error-messages="fieldsErrorMessages.deposit"
+        filled></v-textarea>
+      <v-textarea v-model="nf.registration_notes" rows="1" auto-grow label="Registration Notes"
         :error-messages="fieldsErrorMessages.registration_notes" filled></v-textarea>
     </v-row>
 
@@ -67,6 +66,7 @@ import { useItemStore } from '../../../scripts/stores/item'
 import { useItemNewStore } from '../../../scripts/stores/itemNew'
 import IdSelector from '../../form-elements/IdSelector.vue'
 import LocusIdSelector from './LocusIdSelector.vue'
+import DatePicker from '../../form-elements/DatePicker.vue'
 
 const { tagAndSlugFromId, prepareNewFields } = useModuleStore()
 const { fields } = storeToRefs(useItemStore())
@@ -78,25 +78,25 @@ const props = defineProps<{
 
 const defaultsAndRules: TFieldsDefaultsAndRules<'Locus'> = {
   id: { d: null, r: { required, maxLength: maxLength(11) } },
-  area_id: { d: 'S', r: { required, maxLength: maxLength(1) } },
-  season_id: { d: '5', r: { required, maxLength: maxLength(1) } },
-  locus_no: { d: 0, r: { required, maxLength: maxLength(1) } },
-  square: { d: 'S', r: { required, maxLength: maxLength(1) } },
-  date_opened: { d: 'S', r: { required, maxLength: maxLength(1) } },
-  date_closed: { d: 'S', r: { required, maxLength: maxLength(1) } },
-  level_opened: { d: 'S', r: { required, maxLength: maxLength(1) } },
-  level_closed: { d: 'S', r: { required, maxLength: maxLength(1) } },
-  locus_above: { d: 'S', r: { required, maxLength: maxLength(1) } },
-  locus_below: { d: 'S', r: { required, maxLength: maxLength(1) } },
-  locus_co_existing: { d: 'S', r: { required, maxLength: maxLength(1) } },
-  description: { d: 'S', r: { required, maxLength: maxLength(1) } },
-  deposit: { d: 'S', r: { required, maxLength: maxLength(1) } },
-  registration_notes: { d: 'S', r: { required, maxLength: maxLength(1) } },
+  area_id: { d: null, r: { required, maxLength: maxLength(1) } },
+  season_id: { d: null, r: { required, maxLength: maxLength(1) } },
+  locus_no: { d: undefined, r: { required, between: between(1, 200) } },
+  square: { d: null, r: { maxLength: maxLength(20) } },
+  date_opened: { d: null, r: {} },
+  date_closed: { d: null, r: {} },
+  level_opened: { d: null, r: { maxLength: maxLength(20) } },
+  level_closed: { d: null, r: { maxLength: maxLength(20) } },
+  locus_above: { d: null, r: { maxLength: maxLength(50) } },
+  locus_below: { d: null, r: { maxLength: maxLength(50) } },
+  locus_co_existing: { d: null, r: { maxLength: maxLength(50) } },
+  description: { d: null, r: { maxLength: maxLength(1000) } },
+  deposit: { d: null, r: { maxLength: maxLength(500) } },
+  registration_notes: { d: null, r: { maxLength: maxLength(500) } },
   clean: { d: true, r: {} },
 }
 
 const defaultsObj = computed(() => {
-  return Object.fromEntries(Object.entries(defaultsAndRules).map(([k, v]) => [k, v.d]))
+  return Object.fromEntries(Object.entries(defaultsAndRules).map(([k, v]) => [k, v.d])) as Partial<TFields<'Locus'>>
 })
 
 const rulesObj = computed(() => {
@@ -119,9 +119,7 @@ const nf = computed(() => {
 })
 
 // setup
-console.log(
-  `Locus(${props.isCreate ? 'Create' : 'Update'}) fields: ${JSON.stringify(fields.value, null, 2)}`,
-)
+console.log(`Locus(${props.isCreate ? 'Create' : 'Update'}) fields: ${JSON.stringify(fields.value, null, 2)}`)
 
 if (props.isCreate) {
   dataNew.value.fields = { ...defaultsObj.value }
@@ -133,14 +131,6 @@ if (props.isCreate) {
 // setup - end
 
 // ID selector related
-const defaultsForIdSelector = computed(() => {
-  const ds = nf.value.id ? nf.value : fields.value as TFields<'Locus'>
-  return {
-    season: ds.id.substring(0, 1),
-    area: ds.id.substring(1, 2),
-    locusNo: Number(ds.id.substring(2, 5)),
-  }
-})
 
 const idSelectorTag = computed(() => {
   if (nf.value.id === null) {
