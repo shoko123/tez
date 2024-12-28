@@ -2,126 +2,145 @@
   <v-card class="mx-auto" width="600">
     <v-card-text>
       <v-row class="ga-1">
-        <v-select v-model="season" label="Season" :items="seasons" @update:model-value="seasonChanged()">
+        <v-select v-model="locusRelated.season" label="Season" :items="trioOptions['Season']"
+          @update:model-value="seasonChanged()">
         </v-select>
 
-        <v-select v-model="area" label="Area" :items="areas" @update:model-value="areaChanged()">
+        <v-select v-model="locusRelated.area" label="Area" :items="trioOptions['Area']"
+          @update:model-value="areaChanged()">
         </v-select>
 
-        <v-select v-model="locusNo" label="Locus No." :items="locusNos" @update:model-value="locusNoChanged()">
+        <v-select v-model="locusRelated.locus_no" label="Locus No." :items="existingLocusNos"
+          @update:model-value="locusNoChanged()">
         </v-select>
 
-        <v-text-field v-if="locus" v-model="locus" label="Selected Locus"></v-text-field>
+        <v-text-field v-if="locusIsSelected" v-model="locusTag" label="Selected Locus"></v-text-field>
       </v-row>
 
-      <v-row v-if="locus" class="ga-1">
-        <v-select v-model="code" label="Code" :items="codes" @update:model-value="codeChanged()">
+      <v-row v-if="locusIsSelected" class="ga-1">
+        <v-select v-model="nf.code" label="Code" :items="trioOptions['Registration Code']"
+          @update:model-value="codeChanged()">
         </v-select>
 
-        <v-select v-model="basketNo" label="Basket No." :items="availableBasketNos"
+        <v-select v-model="nf.basket_no" label="Basket No." :items="availableBasketNos"
           @update:model-value="basketNoChanged()">
         </v-select>
 
-        <v-select v-model="artifactNo" label="Artifact No." :items="availableArtifactNos">
+        <v-select v-model="nf.artifact_no" label="Artifact No." :items="availableArtifactNos"
+          @update:model-value="artifactNoChanged()">
         </v-select>
       </v-row>
 
-      <v-row v-if="selectionIsOk" class="ga-1">
-        <v-btn @click="accept()">Accept new id: "{{ tag }}"</v-btn>
+      <v-row v-if="idIsSelected" class="ga-1">
+        <v-btn @click="accept()">Accept new item: "{{ tag }}"</v-btn>
       </v-row>
 
     </v-card-text>
   </v-card>
-
 </template>
-
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import type { TFields } from '@/types/moduleTypes'
+import type { TFields, TFieldValue } from '@/types/moduleTypes'
 
+import { useModuleStore } from '../../../scripts/stores/module'
 import { useItemNewStore } from '../../../scripts/stores/itemNew'
 import { useTrioStore } from '../../../scripts/stores/trio/trio'
 import { useXhrStore } from '../../../scripts/stores/xhr'
 import { useRoutesMainStore } from '../../../scripts/stores/routes/routesMain'
+
+const { tagAndSlugFromId } = useModuleStore()
 const { pushHome } = useRoutesMainStore()
 const { openIdSelectorModal, dataNew } = storeToRefs(useItemNewStore())
 const { groupLabelToGroupKeyObj, trio } = storeToRefs(useTrioStore())
 const { send } = useXhrStore()
 
-type TCode = 'AR' | 'FL' | null
-const props = defineProps<{
-  defaults: {
-    season: string,
-    area: string,
-    locusNo: number,
-    code: TCode,
-    basketNo: number
-    artifactNo: number | null
-  }
-}>()
+const nf = computed(() => {
+  return dataNew.value.fields as Partial<TFields<'Lithic'>>
+})
 
-const season = ref(props.defaults.season)
-const area = ref(props.defaults.area)
-const locusNos = ref<number[]>([])
-const locusNo = ref<number | null>(null)
-const code = ref<TCode>(null)
-const basketNo = ref<number | null>(null)
-const artifactNo = ref<number | null>(null)
-const itemsForLocus = ref<string[]>([])
+const locusRelated = ref<{
+  season: string | null,
+  area: string | null,
+  locus_no: number | null
+}>({
+  season: null,
+  area: null,
+  locus_no: 0
+})
 
+const existingLocusNos = ref<number[]>([])
+const itemsForLocus = ref<{
+  code: string,
+  basketNo: number,
+  artifactNo: number
+}[]>([])
+
+// setup - start
+parseLocusId()
 await getExistingLocusNos()
-locusNo.value = props.defaults.locusNo
 await getExistingItemsForLocus()
-code.value = props.defaults.code
-basketNo.value = props.defaults.basketNo
-artifactNo.value = props.defaults.artifactNo  // null on initial call
+// setup - finish
+
+
+const trioOptions = computed(() => {
+  const groups = ['Season', 'Area', 'Registration Code']
+  let res = {} as Record<string, { title: string, value: TFieldValue }[]>
+  groups.forEach(x => {
+    const group = trio.value.groupsObj[groupLabelToGroupKeyObj.value[x]!]
+    res[x] = group ? group.optionKeys.map(k => {
+      const option = trio.value.optionsObj[k]!
+      return { title: option.text, value: option.extra }
+    }) : []
+  })
+  return res
+})
+
+function parseLocusId() {
+  if (nf.value.locus_id) {
+    locusRelated.value.season = nf.value.locus_id.substring(0, 1)
+    locusRelated.value.area = nf.value.locus_id.substring(1, 2)
+    locusRelated.value.locus_no = Number(nf.value.locus_id.substring(2, 5))
+  }
+}
 
 async function seasonChanged() {
   await getExistingLocusNos()
-  locusNo.value = locusNos.value.length ? props.defaults.locusNo : null
-  await getExistingItemsForLocus()
+  resetLocus()
 }
 
 async function areaChanged() {
   await getExistingLocusNos()
-  locusNo.value = locusNos.value.length ? props.defaults.locusNo : null
-  await getExistingItemsForLocus()
-  artifactNo.value = null
+  resetLocus()
+}
+
+async function resetLocus() {
+  locusRelated.value.locus_no = null
+  nf.value.locus_id = undefined
+  nf.value.basket_no = undefined
+  nf.value.artifact_no = undefined
 }
 
 async function locusNoChanged() {
-  basketNo.value = 0
-  artifactNo.value = null
+  nf.value.locus_id = `${locusRelated.value.season}${locusRelated.value.area}${String(locusRelated.value.locus_no).padStart(3, '0')}`
+  nf.value.basket_no = undefined
+  nf.value.artifact_no = undefined
   await getExistingItemsForLocus()
-  artifactNo.value = null
 }
 
-const seasons = computed(() => {
-  const group = trio.value.groupsObj[groupLabelToGroupKeyObj.value['Season']!]
-  return group?.optionKeys.map(k => {
-    const option = trio.value.optionsObj[k]!
-    return { title: option.text, value: option.extra }
-  })
+const locusIsSelected = computed(() => {
+  return !(locusRelated.value.locus_no == null)
 })
 
-const areas = computed(() => {
-  const group = trio.value.groupsObj[groupLabelToGroupKeyObj.value['Area']!]
-  return group?.optionKeys.map(k => {
-    const option = trio.value.optionsObj[k]!
-    return { title: option.text, value: option.extra }
-  })
-})
-
-const locus = computed(() => {
-  return locusNo.value === null ? null : `${season.value}/${area.value}/${locusNo.value}`
+const locusTag = computed(() => {
+  return locusIsSelected.value ? `${tagAndSlugFromId(nf.value.locus_id!, 'Locus').tag}` : ``
 })
 
 async function getExistingLocusNos() {
-  console.log(`getExistingLocusNos() season: ${JSON.stringify(season.value, null, 2)} , area; ${JSON.stringify(area.value, null, 2)}`)
-  locusNo.value = null
-  artifactNo.value = null
+  console.log(`getExistingLocusNos() season: ${locusRelated.value.season} , area; ${locusRelated.value.area}`)
+  locusRelated.value.locus_no = null
+  nf.value.artifact_no = undefined
   const res = await send<string[]>('module/index', 'post', {
     module: 'Locus',
     query: {
@@ -129,36 +148,29 @@ async function getExistingLocusNos() {
         {
           "label": "Season",
           "field_name": "season_id",
-          "vals": [season.value]
+          "vals": [locusRelated.value.season]
         },
         {
           "label": "Area",
           "field_name": "area_id",
-          "vals": [area.value]
+          "vals": [locusRelated.value.area]
         }
       ],
     }
   })
 
   if (res.success) {
-    locusNos.value = res.data.map(x => {
+    existingLocusNos.value = res.data.map(x => {
       return Number(x.substring(2))
     })
+    console.log(`existingLocusNos(): [${existingLocusNos.value}]`)
   } else {
     pushHome(`DB access problem!  Redirected to home page.`)
   }
 }
 
-const codes = computed(() => {
-  const group = trio.value.groupsObj[groupLabelToGroupKeyObj.value['Registration Code']!]
-  return group?.optionKeys.map(k => {
-    const option = trio.value.optionsObj[k]!
-    return { title: option.text, value: option.extra }
-  })
-})
-
 async function getExistingItemsForLocus() {
-  console.log(`getExistingItemsForLocus() season: ${season.value}, area; ${area.value}, locusNo: ${locusNo.value}`)
+  console.log(`getExistingItemsForLocus() season: ${locusRelated.value.season}, area; ${locusRelated.value.area}, locusNo: ${locusRelated.value.locus_no}`)
 
   const res = await send<string[]>('module/index', 'post', {
     module: 'Lithic',
@@ -167,94 +179,90 @@ async function getExistingItemsForLocus() {
         {
           "label": "Locus Id",
           "field_name": "locus_id",
-          "vals": [`${season.value}${area.value}${String(locusNo.value).padStart(3, '0')}`]
+          "vals": [`${nf.value.locus_id}`]
         },
       ],
     }
   })
 
   if (res.success) {
-    itemsForLocus.value = res.data
+    itemsForLocus.value = res.data.map((v) => {
+      return {
+        code: v.substring(5, 7),
+        basketNo: Number(v.substring(7, 9)),
+        artifactNo: Number(v.substring(9, 11)),
+      }
+    })
   } else {
     pushHome(`DB access problem!  Redirected to home page.`)
   }
 }
 
-const existingArtifacts = computed(() => {
-  if (locus.value === null) {
-    return []
-  }
-  return itemsForLocus.value.map((v) => {
-    return {
-      code: v.substring(5, 7),
-      basketNo: Number(v.substring(7, 9)),
-      artifactNo: Number(v.substring(9, 11)),
-    }
-  }).filter(x => x.code == code.value && x.basketNo == basketNo.value).map(x => x.artifactNo)
+const existingArtifactNos = computed(() => {
+  if (nf.value.basket_no == null) { return [] }
+  return itemsForLocus.value.filter(x => x.code === nf.value.code && x.basketNo === nf.value.basket_no).map(x => x.artifactNo)
 })
 
 const availableBasketNos = computed(() => {
-  if (locusNo.value === null) {
-    return []
-  }
-  switch (code.value) {
+  if (!locusIsSelected.value) { return [] }
+  switch (nf.value.code) {
     case 'AR':
       return [0]
     case 'FL':
-      return Array.from(Array(100).keys()).map((v, i) => i)
+      return Array.from(Array(100).keys()).map((v, i) => i + 1)
     default:
       return []
   }
 })
 
 const availableArtifactNos = computed(() => {
-  console.log(`availableArtifactNos() itemsForLocus: ${JSON.stringify(itemsForLocus.value, null, 2)}`)
-  console.log(`code: ${code.value}, basketNo: ${basketNo.value}\nexisting: ${JSON.stringify(existingArtifacts.value, null, 2)}`)
-  const all = Array.from(Array(100).keys()).map((v, i) => i)
-  // return all
-  return all.filter((v) => { return !existingArtifacts.value.includes(v) })
+  if (nf.value.basket_no == null) { return [] }
+  let all: number[] = []
+  switch (nf.value.code) {
+    case 'AR':
+      all = Array.from(Array(99).keys()).map((v, i) => i + 1)
+      break
+    case 'FL':
+      all = Array.from(Array(100).keys()).map((v, i) => i)
+      break
+    default:
+    //
+  }
+  return all.filter((v) => { return !existingArtifactNos.value.includes(v) })
 })
 
-const selectionIsOk = computed(() => {
-  switch (code.value) {
+const idIsSelected = computed(() => {
+  switch (nf.value.code) {
     case 'AR':
-      return basketNo.value === 0 && artifactNo.value && artifactNo.value > 0
+      return nf.value.basket_no === 0 && nf.value.artifact_no && nf.value.artifact_no > 0
     case 'FL':
-      return basketNo.value && basketNo.value > 0 && artifactNo.value !== null
+      return nf.value.basket_no && nf.value.basket_no > 0 && !(nf.value.artifact_no == null)
     default:
       return false
   }
 })
 
-const id = computed(() => {
-  return artifactNo.value === null ? null : `${season.value}${area.value}${String(locusNo.value).padStart(3, '0')}${code.value}${String(basketNo.value).padStart(2, '0')}${String(artifactNo.value).padStart(2, '0')}`
-})
 const tag = computed(() => {
-  return artifactNo.value === null ? null : `${season.value}/${area.value}/${locusNo.value}.${code.value}.${basketNo.value}.${artifactNo.value}`
+  return nf.value.id == null ? null : tagAndSlugFromId(nf.value.id!, 'Lithic').tag
 })
-
-function basketNoChanged() {
-  artifactNo.value = null
-}
 
 function codeChanged() {
-  artifactNo.value = null
+  nf.value.basket_no = undefined
+  nf.value.artifact_no = undefined
 }
 
-const nf = computed(() => {
-  return dataNew.value.fields as TFields<'Lithic'>
-})
+function basketNoChanged() {
+  nf.value.artifact_no = undefined
+}
+
+function artifactNoChanged() {
+  nf.value.id = `${nf.value.locus_id}${nf.value.code}${String(nf.value.basket_no).padStart(2, '0')}${String(nf.value.artifact_no).padStart(2, '0')}`
+  console.log(`artifactNoChanged. id: ${nf.value.id}`)
+}
 
 function accept() {
-  console.log(`accept() id: ${id.value}, locusId: ${locus.value}, code: ${code.value}, basketNo: ${basketNo.value}, artifactNo: ${artifactNo.value} `)
-
-  nf.value.id = id.value!//`${season.value}${area.value}${String(locusNo.value).padStart(3, '0')}${code.value}${String(basketNo.value).padStart(2, '0')}${String(artifactNo.value).padStart(2, '0')}`
-  nf.value.locus_id = id.value!.substring(0, 5)
-  nf.value.code = code.value!
-  nf.value.basket_no = basketNo.value!
-  nf.value.artifact_no = artifactNo.value!
+  console.log(`accept() nf:  ${JSON.stringify(nf.value, null, 2)}`)
   openIdSelectorModal.value = false
-
 }
 
 </script>
