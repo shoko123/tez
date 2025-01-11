@@ -21,8 +21,7 @@ class RawSqlFilesSeeder extends Seeder
             'metal_tables_seeder',
             'glass_tables_seeder',
             'media_table_seeder',
-            'sonyaRO',
-            'sonya3',
+            'fauna_ro',
         ];
 
         foreach ($files as $file_name) {
