@@ -23,7 +23,9 @@ return new class extends Migration
             $table->string('name', 50);
         });
 
+        /*
         Schema::create('fauna', function (Blueprint $table) {
+
             $table->string('id', 11)->primary();
             $table->string('locus_id', 5);
             $table->string('code', 2)->nullable();
@@ -97,7 +99,7 @@ return new class extends Migration
                 ->references('id')->on('fauna_elements')
                 ->onUpdate('cascade');
         });
-
+*/
         Schema::create('fauna_tag_groups', function (Blueprint $table) {
             $table->tinyIncrements('id');
             $table->string('name', 40);
@@ -116,6 +118,7 @@ return new class extends Migration
                 ->onUpdate('cascade');
         });
 
+        /*
         Schema::create('fauna-fauna_tags', function (Blueprint $table) {
             $table->string('item_id', 11);
             $table->foreign('item_id')->references('id')->on('fauna')->onUpdate('cascade');
@@ -125,6 +128,26 @@ return new class extends Migration
 
             $table->primary(['item_id', 'tag_id']);
         });
+        */
+
+        Schema::create('fauna_onps', function (Blueprint $table) {
+            $table->smallIncrements('id');
+            $table->unsignedTinyInteger('order_column');
+            $table->string('label', 50);
+            $table->string('unit', 5)->nullable()->default(null);
+            $table->unsignedSmallInteger('divide_by')->default(1);
+        });
+        /*
+        Schema::create('fauna-fauna_onps', function (Blueprint $table) {
+            $table->string('item_id', 11);
+            $table->unsignedSmallInteger('num_id');
+            $table->unsignedSmallInteger('value');
+
+            $table->foreign('num_id')->references('id')->on('fauna_onps')->onUpdate('cascade');
+            $table->foreign('item_id')->references('id')->on('faunas')->onUpdate('cascade');
+            $table->primary(['item_id', 'num_id']);
+        });
+        */
     }
 
     /**
