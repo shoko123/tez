@@ -13,77 +13,63 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('fauna_taxa', function (Blueprint $table) {
+        Schema::create('fauna_primary_taxa', function (Blueprint $table) {
             $table->tinyIncrements('id');
             $table->string('name', 50);
         });
 
-        Schema::create('fauna_elements', function (Blueprint $table) {
-            $table->tinyincrements('id');
-            $table->string('name', 50);
-        });
-
-        /*
         Schema::create('fauna', function (Blueprint $table) {
-
             $table->string('id', 11)->primary();
             $table->string('locus_id', 5);
             $table->string('code', 2)->nullable();
             $table->unsignedTinyInteger('basket_no');
             $table->unsignedTinyInteger('artifact_no');
-            $table->date('date_retrieved')->nullable();
-            $table->string('field_description', 400)->nullable();
-            $table->string('field_notes', 400)->nullable();
-            $table->string('artifact_count', 10)->nullable();
-            $table->string('square', 20)->nullable();
-            $table->string('level_top', 20)->nullable();
-            $table->string('level_bottom', 20)->nullable();
-            $table->string('description', 400)->nullable();
-            $table->string('notes', 200)->nullable();
-            $table->unsignedTinyInteger('fauna_taxon_id')->dafault(1);
-            $table->unsignedTinyInteger('fauna_element_id')->dafault(1);
-            $table->boolean('has_butchery_evidence')->nullable();
-            $table->boolean('has_burning_evidence')->nullable();
-            $table->boolean('has_other_bsm_evidence')->nullable();
-            $table->boolean('is_fused')->nullable();
-            $table->boolean('is_left')->nullable();
-            $table->string('d_and_r', 50)->nullable();
-            $table->unsignedTinyInteger('weathering')->nullable();
+            $table->unsignedTinyInteger('primary_taxon_id');
+            $table->string('taxa', 400)->nullable();
+            $table->string('bone', 400)->nullable();
+            $table->string('side', 10)->nullable();
+            $table->string('d_and_r', 30)->nullable();
             $table->string('age', 50)->nullable();
             $table->string('breakage', 50)->nullable();
-
-            $table->Decimal('GL', 4, 1)->nullable();
-            $table->Decimal('Glpe', 4, 1)->nullable();
-            $table->Decimal('GLl', 4, 1)->nullable();
-            $table->Decimal('GLP', 4, 1)->nullable();
-            $table->Decimal('Bd', 4, 1)->nullable();
-            $table->Decimal('BT', 4, 1)->nullable();
-            $table->Decimal('Dd', 4, 1)->nullable();
-            $table->Decimal('BFd', 4, 1)->nullable();
-            $table->Decimal('Bp', 4, 1)->nullable();
-            $table->Decimal('Dp', 4, 1)->nullable();
-            $table->Decimal('SD', 4, 1)->nullable();
-            $table->Decimal('HTC', 4, 1)->nullable();
-            $table->Decimal('Dl', 4, 1)->nullable();
-            $table->Decimal('DEM', 4, 1)->nullable();
-            $table->Decimal('DVM', 4, 1)->nullable();
-            $table->Decimal('WCM', 4, 1)->nullable();
-            $table->Decimal('DEL', 4, 1)->nullable();
-            $table->Decimal('DVL', 4, 1)->nullable();
-            $table->Decimal('WCL', 4, 1)->nullable();
-            $table->Decimal('LD', 4, 1)->nullable();
-            $table->Decimal('DLS', 4, 1)->nullable();
-            $table->Decimal('LG', 4, 1)->nullable();
-            $table->Decimal('BG', 4, 1)->nullable();
-            $table->Decimal('DID', 4, 1)->nullable();
-            $table->Decimal('BFcr', 4, 1)->nullable();
-            $table->Decimal('GD', 4, 1)->nullable();
-            $table->Decimal('GB', 4, 1)->nullable();
-            $table->Decimal('BF', 4, 1)->nullable();
-            $table->Decimal('LF', 4, 1)->nullable();
-            $table->Decimal('GLm', 4, 1)->nullable();
-            $table->Decimal('GH', 4, 1)->nullable();
-
+            $table->string('butchery', 20)->nullable();
+            $table->string('butchery_description', 100)->nullable();
+            $table->string('burning', 20)->nullable();
+            $table->string('burning_description', 400)->nullable();
+            $table->string('weathering', 50)->nullable();
+            $table->string('other_bsm', 200)->nullable();
+            $table->string('notes', 200)->nullable();
+            $table->string('measured', 200)->nullable();
+            $table->string('GL', 8)->nullable();
+            $table->string('Glpe', 8)->nullable();
+            $table->string('GLl', 8)->nullable();
+            $table->string('GLP', 8)->nullable();
+            $table->string('Bd', 8)->nullable();
+            $table->string('BT', 8)->nullable();
+            $table->string('Dd', 8)->nullable();
+            $table->string('BFd', 8)->nullable();
+            $table->string('Bp', 8)->nullable();
+            $table->string('Dp', 8)->nullable();
+            $table->string('SD', 8)->nullable();
+            $table->string('HTC', 8)->nullable();
+            $table->string('Dl', 8)->nullable();
+            $table->string('DEM', 8)->nullable();
+            $table->string('DVM', 8)->nullable();
+            $table->string('WCM', 8)->nullable();
+            $table->string('DEL', 8)->nullable();
+            $table->string('DVL', 8)->nullable();
+            $table->string('WCL', 8)->nullable();
+            $table->string('LD', 8)->nullable();
+            $table->string('DLS', 8)->nullable();
+            $table->string('LG', 8)->nullable();
+            $table->string('BG', 8)->nullable();
+            $table->string('DID', 8)->nullable();
+            $table->string('BFcr', 8)->nullable();
+            $table->string('GD', 8)->nullable();
+            $table->string('GB', 8)->nullable();
+            $table->string('BF', 8)->nullable();
+            $table->string('LF', 8)->nullable();
+            $table->string('GLm', 8)->nullable();
+            $table->string('GH', 8)->nullable();
 
             $table->foreign('locus_id')
                 ->references('id')->on('loci')
@@ -91,15 +77,11 @@ return new class extends Migration
 
             $table->unique(['locus_id', 'code', 'basket_no', 'artifact_no'], 'idx_unique_find');
 
-            $table->foreign('fauna_taxon_id')
-                ->references('id')->on('fauna_taxa')
-                ->onUpdate('cascade');
-
-            $table->foreign('fauna_element_id')
-                ->references('id')->on('fauna_elements')
+            $table->foreign('primary_taxon_id')
+                ->references('id')->on('fauna_primary_taxa')
                 ->onUpdate('cascade');
         });
-*/
+
         Schema::create('fauna_tag_groups', function (Blueprint $table) {
             $table->tinyIncrements('id');
             $table->string('name', 40);
