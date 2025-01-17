@@ -31,45 +31,12 @@ return new class extends Migration
             $table->string('d_and_r', 30)->nullable();
             $table->string('age', 50)->nullable();
             $table->string('breakage', 50)->nullable();
-            $table->string('butchery', 20)->nullable();
-            $table->string('butchery_description', 100)->nullable();
-            $table->string('burning', 20)->nullable();
-            $table->string('burning_description', 400)->nullable();
+            $table->string('butchery', 100)->nullable();
+            $table->string('burning', 400)->nullable();
             $table->string('weathering', 50)->nullable();
             $table->string('other_bsm', 200)->nullable();
             $table->string('notes', 200)->nullable();
             $table->string('measured', 200)->nullable();
-            $table->string('GL', 8)->nullable();
-            $table->string('Glpe', 8)->nullable();
-            $table->string('GLl', 8)->nullable();
-            $table->string('GLP', 8)->nullable();
-            $table->string('Bd', 8)->nullable();
-            $table->string('BT', 8)->nullable();
-            $table->string('Dd', 8)->nullable();
-            $table->string('BFd', 8)->nullable();
-            $table->string('Bp', 8)->nullable();
-            $table->string('Dp', 8)->nullable();
-            $table->string('SD', 8)->nullable();
-            $table->string('HTC', 8)->nullable();
-            $table->string('Dl', 8)->nullable();
-            $table->string('DEM', 8)->nullable();
-            $table->string('DVM', 8)->nullable();
-            $table->string('WCM', 8)->nullable();
-            $table->string('DEL', 8)->nullable();
-            $table->string('DVL', 8)->nullable();
-            $table->string('WCL', 8)->nullable();
-            $table->string('LD', 8)->nullable();
-            $table->string('DLS', 8)->nullable();
-            $table->string('LG', 8)->nullable();
-            $table->string('BG', 8)->nullable();
-            $table->string('DID', 8)->nullable();
-            $table->string('BFcr', 8)->nullable();
-            $table->string('GD', 8)->nullable();
-            $table->string('GB', 8)->nullable();
-            $table->string('BF', 8)->nullable();
-            $table->string('LF', 8)->nullable();
-            $table->string('GLm', 8)->nullable();
-            $table->string('GH', 8)->nullable();
 
             $table->foreign('locus_id')
                 ->references('id')->on('loci')
@@ -100,7 +67,6 @@ return new class extends Migration
                 ->onUpdate('cascade');
         });
 
-        /*
         Schema::create('fauna-fauna_tags', function (Blueprint $table) {
             $table->string('item_id', 11);
             $table->foreign('item_id')->references('id')->on('fauna')->onUpdate('cascade');
@@ -110,7 +76,6 @@ return new class extends Migration
 
             $table->primary(['item_id', 'tag_id']);
         });
-        */
 
         Schema::create('fauna_onps', function (Blueprint $table) {
             $table->smallIncrements('id');

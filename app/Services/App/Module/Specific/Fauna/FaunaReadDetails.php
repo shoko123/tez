@@ -24,20 +24,18 @@ class FaunaReadDetails implements ReadDetailsInterface
         return [
             'fields' => [
                 'id',
-                'date_retrieved',
-                'description',
-                'notes'
+                'taxa',
+                'bone',
             ],
             'lookups' => [
-                'fauna_taxon_id' => 'taxon',
-                'fauna_element_id' => 'element'
+                'primary_taxon_id' => 'primaryTaxon',
             ]
         ];
     }
 
     public static function galleryPage(): array
     {
-        return ['id', 'description'];
+        return ['id', 'taxa'];
     }
 
     public static function relatedModules(string $id): array

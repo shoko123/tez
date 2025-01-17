@@ -38,25 +38,20 @@ class Fauna extends DigModuleModel
         return $this->morphToMany(Tag::class, 'taggable');
     }
 
-    public function taxon()
+    public function primaryTaxon()
     {
-        return $this->belongsTo(FaunaTaxa::class, 'fauna_taxon_id');
+        return $this->belongsTo(FaunaTaxa::class, 'primary_taxon_id');
     }
 
-    public function element()
-    {
-        return $this->belongsTo(FaunaElement::class, 'fauna_element_id');
-    }
+    // protected function casts(): array
+    // {
+    //     return [
+    //         'has_butchery_evidence' => 'boolean',
+    //         'has_burning_evidence' => 'boolean',
+    //         'has_other_bsm_evidence' => 'boolean',
 
-    protected function casts(): array
-    {
-        return [
-            'has_butchery_evidence' => 'boolean',
-            'has_burning_evidence' => 'boolean',
-            'has_other_bsm_evidence' => 'boolean',
-
-        ];
-    }
+    //     ];
+    // }
 
     protected function derivedId(): Attribute
     {
@@ -68,7 +63,7 @@ class Fauna extends DigModuleModel
     protected function short(): Attribute
     {
         return Attribute::make(
-            get: fn(mixed $value, array $attributes) => $attributes['description'] ?? '[No description]'
+            get: fn(mixed $value, array $attributes) => $attributes['taxa'] ?? '[No description]'
         );
     }
 
@@ -87,8 +82,7 @@ class Fauna extends DigModuleModel
                 'length' => 1
             ],
             'Registration Code' => 'code',
-            'Taxa' => 'fauna_taxon_id',
-            'Element' => 'fauna_element_id',
+            'Taxa' => 'primary_taxon_id',
             'Code' => 'code',
             'Locus Id' => 'locus_id' // This one is required by create to avoid duplicate ids.
             // It is not a part of the tag/filter system.

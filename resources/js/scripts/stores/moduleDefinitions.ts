@@ -151,10 +151,8 @@ const moduleDefinitions: TModuleDefinitionImplementation = {
     idFormatter: smallFindsCommon.idFormatter,
     tabHeaders: [
       ['Name', 'start', 'tag'],
-      ['Date Collected', 'start', 'date_retrieved'],
-      ['Element', 'start', 'fauna_element_id'],
-      ['Taxa', 'start', 'fauna_taxon_id'],
-      ['Description', 'start', 'description'],
+      ['Taxa', 'start', 'primary_taxon_id'],
+      ['Bone', 'start', 'bone'],
     ],
   },
   Metal: {

@@ -8,5 +8,5 @@ class FaunaTaxa extends Model
 {
     public $timestamps = false;
 
-    protected $table = 'fauna_taxa';
+    protected $table = 'fauna_primary_taxa';
 }

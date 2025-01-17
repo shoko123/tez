@@ -50,17 +50,10 @@ class FaunaInitDetails implements InitDetailsInterface
                 'field_name' => 'code',
                 'dependency' => [],
             ],
-            'Element' => [
-                'code' => 'LV',
-                'field_name' => 'fauna_element_id',
-                'lookup_table_name' => 'fauna_elements',
-                'lookup_text_field' => 'name',
-                'dependency' => [],
-            ],
             'Taxa' => [
                 'code' => 'LV',
-                'field_name' => 'fauna_taxon_id',
-                'lookup_table_name' => 'fauna_taxa',
+                'field_name' => 'primary_taxon_id',
+                'lookup_table_name' => 'fauna_primary_taxa',
                 'lookup_text_field' => 'name',
                 'dependency' => [],
             ],
@@ -127,10 +120,10 @@ class FaunaInitDetails implements InitDetailsInterface
 
 
             ///
-            'Search-Description' => [
-                'label' => 'Search-Description',
+            'Search-Taxa' => [
+                'label' => 'Search-Taxa',
                 'code' => 'SF',
-                'field_name' => 'description',
+                'field_name' => 'taxa',
                 'options' => [],
             ],
             'Order By' => [
@@ -147,11 +140,9 @@ class FaunaInitDetails implements InitDetailsInterface
                 'Season',
                 'Area',
                 'Registration Code',
-                'Scope',
                 'Media',
             ],
             "Elements" => [
-                'Element',
                 'Bone-Name',
                 'Tooth-Name',
                 'Tooth-Age',
@@ -162,16 +153,16 @@ class FaunaInitDetails implements InitDetailsInterface
                 'Mammal',
                 'Bird'
             ],
-            "Charactaristics" => [
-                'Life-Stage',
-                'Symmetry',
-                'Fusion',
-                'Breakage',
-                'D&R',
-                'Weathering'
-            ],
+            // "Charactaristics" => [
+            //     'Life-Stage',
+            //     'Symmetry',
+            //     'Fusion',
+            //     'Breakage',
+            //     'D&R',
+            //     'Weathering'
+            // ],
             'Search' => [
-                'Search-Description',
+                'Search-Taxa',
             ],
             'Order By' => [
                 'Order By',

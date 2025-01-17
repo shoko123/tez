@@ -11,12 +11,12 @@ class FaunaValidationRules extends ValidationRules
 
     public function allowed_search_field_names(): array
     {
-        return ['description'];
+        return ['taxa', 'bone'];
     }
 
     public function allowed_tagger_field_names(): array
     {
-        return ['fauna_element_id', 'fauna_taxon_id'];
+        return ['primary_taxon_id'];
     }
 
     public function commonRules()
@@ -42,7 +42,7 @@ class FaunaValidationRules extends ValidationRules
             'data.fields.is_fused' => 'numeric|nullable|between:0,1',
             'data.fields.is_left' => 'required|numeric|between:0,1',
             'data.fields.fauna_element_id' => 'required|exists:fauna_elements,id',
-            'data.fields.fauna_taxon_id' => 'required|exists:fauna_taxa,id',
+            'data.fields.primary_taxon_id' => 'required|exists:fauna_primary_taxa,id',
             // TODO - convert decimal -> uint, rules
         ];
     }

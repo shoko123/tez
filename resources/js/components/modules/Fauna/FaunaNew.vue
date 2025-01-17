@@ -17,26 +17,26 @@
       <template v-else>
         <v-text-field v-model="tag" label="Label" filled disabled />
       </template>
-      <date-picker v-model="nf.date_retrieved" label="Date Retrieved" color="primary" clearable max-width="368">
-      </date-picker>
+      <!-- <date-picker v-model="nf.date_retrieved" label="Date Retrieved" color="primary" clearable max-width="368">
+      </date-picker> -->
     </v-row>
 
     <v-row class="ga-1">
-      <v-text-field v-model="nf.field_description" label="Field Description" :error-messages="errors.field_description"
+      <!-- <v-text-field v-model="nf.field_description" label="Field Description" :error-messages="errors.field_description"
         filled />
-      <v-text-field v-model="nf.field_notes" label="Field Notes" :error-messages="errors.field_notes" filled />
+      <v-text-field v-model="nf.field_notes" label="Field Notes" :error-messages="errors.field_notes" filled /> -->
     </v-row>
 
     <v-row class="ga-1">
-      <v-select v-model="nf.fauna_taxon_id" label="Select" item-title="text" item-value="extra"
+      <v-select v-model="nf.primary_taxon_id" label="Select" item-title="text" item-value="extra"
         :items="taxonInfo.options"></v-select>
 
-      <v-select v-model="nf.fauna_element_id" label="Select" item-title="text" item-value="extra"
-        :items="elementInfo.options"></v-select>
+      <!-- <v-select v-model="nf.fauna_element_id" label="Select" item-title="text" item-value="extra"
+        :items="elementInfo.options"></v-select> -->
     </v-row>
     <v-row class="ga-1">
-      <v-textarea v-model="nf.field_description" label="Specialist Description"
-        :error-messages="errors.field_description" filled />
+      <!-- <v-textarea v-model="nf.field_description" label="Specialist Description"
+        :error-messages="errors.field_description" filled /> -->
     </v-row>
 
     <slot :id="nf.id" name="newItem" :v="v$" :new-fields="nf" />
@@ -55,7 +55,7 @@ import { useItemStore } from '../../../scripts/stores/item'
 import { useItemNewStore } from '../../../scripts/stores/itemNew'
 import IdSelector from '../../form-elements/IdSelector.vue'
 import FaunaIdSelector from './FaunaIdSelector.vue'
-import DatePicker from '../../form-elements/DatePicker.vue'
+// import DatePicker from '../../form-elements/DatePicker.vue'
 
 const { tagAndSlugFromId, prepareNewFields } = useModuleStore()
 
@@ -63,64 +63,76 @@ const props = defineProps<{
   isCreate: boolean
 }>()
 
+/*
+ $table->string('taxa', 400)->nullable();
+            $table->string('bone', 400)->nullable();
+            $table->string('side', 10)->nullable();
+            $table->string('d_and_r', 30)->nullable();
+            $table->string('age', 50)->nullable();
+            $table->string('breakage', 50)->nullable();
+            $table->string('butchery', 100)->nullable();
+            $table->string('burning', 400)->nullable();
+            $table->string('weathering', 50)->nullable();
+            $table->string('other_bsm', 200)->nullable();
+            $table->string('notes', 200)->nullable();
+            $table->string('measured', 200)->nullable();
+
+*/
+
+
 const defaultsAndRules: TFieldsDefaultsAndRules<'Fauna'> = {
   id: { d: null, r: { required, maxLength: maxLength(20) } },
   locus_id: { d: '3S001', r: { required, minValue: minLength(5), maxValue: maxLength(5) } },
   code: { d: 'PT', r: { required, maxLength: maxLength(2) } },
   basket_no: { d: 9, r: { between: between(0, 99) } },
   artifact_no: { d: 99, r: { required, between: between(0, 99) } },
-  date_retrieved: { d: null, r: {} },
-  field_description: { d: null, r: { maxLength: maxLength(400) } },
-  field_notes: { d: null, r: { maxLength: maxLength(400) } },
-  artifact_count: { d: null, r: { maxLength: maxLength(10) } },
-  square: { d: null, r: { maxLength: maxLength(20) } },
-  level_top: { d: null, r: { maxLength: maxLength(20) } },
-  level_bottom: { d: null, r: { maxLength: maxLength(20) } },
-  description: { d: null, r: { maxLength: maxLength(400) } },
-  notes: { d: null, r: { maxLength: maxLength(400) } },
-  has_butchery_evidence: { d: null, r: {} },
-  has_burning_evidence: { d: null, r: {} },
-  has_other_bsm_evidence: { d: null, r: {} },
-  is_fused: { d: null, r: {} },
-  is_left: { d: null, r: {} },
+  // date_retrieved: { d: null, r: {} },
+  taxa: { d: null, r: { maxLength: maxLength(200) } },
+  bone: { d: null, r: { maxLength: maxLength(200) } },
+  side: { d: null, r: { maxLength: maxLength(4) } },
   d_and_r: { d: null, r: { maxLength: maxLength(400) } },
-  weathering: { d: null, r: {} },
   age: { d: null, r: { maxLength: maxLength(400) } },
   breakage: { d: null, r: { maxLength: maxLength(400) } },
+  butchery: { d: null, r: { maxLength: maxLength(400) } },
+  burning: { d: null, r: { maxLength: maxLength(400) } },
+  weathering: { d: null, r: {} },
+  other_bsm: { d: null, r: { maxLength: maxLength(400) } },
+  notes: { d: null, r: { maxLength: maxLength(400) } },
+  measured: { d: null, r: {} },
   //
-  GL: { d: null, r: { maxLength: maxLength(400) } },
-  Glpe: { d: null, r: { maxLength: maxLength(400) } },
-  GLl: { d: null, r: { maxLength: maxLength(400) } },
-  GLP: { d: null, r: { maxLength: maxLength(400) } },
-  Bd: { d: null, r: { maxLength: maxLength(400) } },
-  BT: { d: null, r: { maxLength: maxLength(400) } },
-  Dd: { d: null, r: { maxLength: maxLength(400) } },
-  BFd: { d: null, r: { maxLength: maxLength(400) } },
-  Bp: { d: null, r: { maxLength: maxLength(400) } },
-  Dp: { d: null, r: { maxLength: maxLength(400) } },
-  SD: { d: null, r: { maxLength: maxLength(400) } },
-  HTC: { d: null, r: { maxLength: maxLength(400) } },
-  Dl: { d: null, r: { maxLength: maxLength(400) } },
-  DEM: { d: null, r: { maxLength: maxLength(400) } },
-  DVM: { d: null, r: { maxLength: maxLength(400) } },
-  WCM: { d: null, r: { maxLength: maxLength(400) } },
-  DEL: { d: null, r: { maxLength: maxLength(400) } },
-  DVL: { d: null, r: { maxLength: maxLength(400) } },
-  WCL: { d: null, r: { maxLength: maxLength(400) } },
-  LD: { d: null, r: { maxLength: maxLength(400) } },
-  DLS: { d: null, r: { maxLength: maxLength(400) } },
-  LG: { d: null, r: { maxLength: maxLength(400) } },
-  BG: { d: null, r: { maxLength: maxLength(400) } },
-  DID: { d: null, r: { maxLength: maxLength(400) } },
-  BFcr: { d: null, r: { maxLength: maxLength(400) } },
-  GD: { d: null, r: { maxLength: maxLength(400) } },
-  GB: { d: null, r: { maxLength: maxLength(400) } },
-  BF: { d: null, r: { maxLength: maxLength(400) } },
-  LF: { d: null, r: { maxLength: maxLength(400) } },
-  GLm: { d: null, r: { maxLength: maxLength(400) } },
-  GH: { d: null, r: { maxLength: maxLength(400) } },
-  fauna_element_id: { d: 99, r: { required, between: between(0, 99) } },
-  fauna_taxon_id: { d: 99, r: { required, between: between(0, 99) } },
+  // GL: { d: null, r: { maxLength: maxLength(400) } },
+  // Glpe: { d: null, r: { maxLength: maxLength(400) } },
+  // GLl: { d: null, r: { maxLength: maxLength(400) } },
+  // GLP: { d: null, r: { maxLength: maxLength(400) } },
+  // Bd: { d: null, r: { maxLength: maxLength(400) } },
+  // BT: { d: null, r: { maxLength: maxLength(400) } },
+  // Dd: { d: null, r: { maxLength: maxLength(400) } },
+  // BFd: { d: null, r: { maxLength: maxLength(400) } },
+  // Bp: { d: null, r: { maxLength: maxLength(400) } },
+  // Dp: { d: null, r: { maxLength: maxLength(400) } },
+  // SD: { d: null, r: { maxLength: maxLength(400) } },
+  // HTC: { d: null, r: { maxLength: maxLength(400) } },
+  // Dl: { d: null, r: { maxLength: maxLength(400) } },
+  // DEM: { d: null, r: { maxLength: maxLength(400) } },
+  // DVM: { d: null, r: { maxLength: maxLength(400) } },
+  // WCM: { d: null, r: { maxLength: maxLength(400) } },
+  // DEL: { d: null, r: { maxLength: maxLength(400) } },
+  // DVL: { d: null, r: { maxLength: maxLength(400) } },
+  // WCL: { d: null, r: { maxLength: maxLength(400) } },
+  // LD: { d: null, r: { maxLength: maxLength(400) } },
+  // DLS: { d: null, r: { maxLength: maxLength(400) } },
+  // LG: { d: null, r: { maxLength: maxLength(400) } },
+  // BG: { d: null, r: { maxLength: maxLength(400) } },
+  // DID: { d: null, r: { maxLength: maxLength(400) } },
+  // BFcr: { d: null, r: { maxLength: maxLength(400) } },
+  // GD: { d: null, r: { maxLength: maxLength(400) } },
+  // GB: { d: null, r: { maxLength: maxLength(400) } },
+  // BF: { d: null, r: { maxLength: maxLength(400) } },
+  // LF: { d: null, r: { maxLength: maxLength(400) } },
+  // GLm: { d: null, r: { maxLength: maxLength(400) } },
+  // GH: { d: null, r: { maxLength: maxLength(400) } },
+  // fauna_element_id: { d: 99, r: { required, between: between(0, 99) } },
+  primary_taxon_id: { d: 99, r: { required, between: between(0, 99) } },
 }
 
 const defaultsObj = computed(() => {
@@ -175,11 +187,11 @@ const FaunaFieldsWithOptions = computed(() => {
 })
 
 const taxonInfo = computed(() => {
-  return FaunaFieldsWithOptions.value['fauna_taxon_id']!
+  return FaunaFieldsWithOptions.value['primary_taxon_id']!
 })
-const elementInfo = computed(() => {
-  return FaunaFieldsWithOptions.value['fauna_element_id']!
-})
+// const elementInfo = computed(() => {
+//   return FaunaFieldsWithOptions.value['fauna_element_id']!
+// })
 // Standard fields validations and errors
 const nf = computed(() => {
   return dataNew.value.fields as TFields<'Fauna'>
