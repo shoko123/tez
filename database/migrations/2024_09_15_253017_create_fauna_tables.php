@@ -18,13 +18,27 @@ return new class extends Migration
             $table->string('name', 50);
         });
 
+        Schema::create('fauna_scopes', function (Blueprint $table) {
+            $table->tinyIncrements('id');
+            $table->string('name', 50);
+        });
+
+        Schema::create('fauna_materials', function (Blueprint $table) {
+            $table->tinyIncrements('id');
+            $table->string('name', 50);
+        });
+
         Schema::create('fauna', function (Blueprint $table) {
             $table->string('id', 11)->primary();
             $table->string('locus_id', 5);
             $table->string('code', 2)->nullable();
             $table->unsignedTinyInteger('basket_no');
             $table->unsignedTinyInteger('artifact_no');
-            $table->unsignedTinyInteger('primary_taxon_id');
+            //
+            $table->unsignedTinyInteger('primary_taxon_id')->default(1);
+            $table->unsignedTinyInteger('scope_id')->default(1);
+            $table->unsignedTinyInteger('material_id')->default(1);
+            //
             $table->string('taxa', 400)->nullable();
             $table->string('bone', 400)->nullable();
             $table->string('side', 10)->nullable();
@@ -47,6 +61,14 @@ return new class extends Migration
             $table->foreign('primary_taxon_id')
                 ->references('id')->on('fauna_primary_taxa')
                 ->onUpdate('cascade');
+
+            $table->foreign('scope_id')
+                ->references('id')->on('fauna_scopes')
+                ->onUpdate('cascade');
+
+            // $table->foreign('material_id')
+            //     ->references('id')->on('fauna_materials')
+            //     ->onUpdate('cascade');
         });
 
         Schema::create('fauna_tag_groups', function (Blueprint $table) {

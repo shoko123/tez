@@ -57,17 +57,41 @@ class FaunaInitDetails implements InitDetailsInterface
                 'lookup_text_field' => 'name',
                 'dependency' => [],
             ],
-            'Mammal' => [
+            'Fauna Scope' => [
+                'code' => 'LV',
+                'field_name' => 'scope_id',
+                'lookup_table_name' => 'fauna_scopes',
+                'lookup_text_field' => 'name',
+                'dependency' => [],
+            ],
+            'Material' => [
+                'code' => 'LV',
+                'field_name' => 'material_id',
+                'lookup_table_name' => 'fauna_materials',
+                'lookup_text_field' => 'name',
+                'dependency' => [],
+            ],
+            'Mammal Taxa' => [
                 'code' => 'TM',
                 'dependency' => [],
                 'multiple' => true,
             ],
-            'Bird' => [
+            'Bird Taxa' => [
                 'code' => 'TM',
                 'dependency' => [],
                 'multiple' => true,
             ],
-            'Life-Stage' => [
+            'Common Bone' => [
+                'code' => 'TM',
+                'dependency' => [],
+                'multiple' => true,
+            ],
+            'Mammal Bone' => [
+                'code' => 'TM',
+                'dependency' => [],
+                'multiple' => true,
+            ],
+            'Bird Bone' => [
                 'code' => 'TM',
                 'dependency' => [],
                 'multiple' => true,
@@ -87,16 +111,7 @@ class FaunaInitDetails implements InitDetailsInterface
                 'dependency' => [],
                 'multiple' => true,
             ],
-            'D&R' => [
-                'code' => 'TM',
-                'dependency' => [],
-                'multiple' => true,
-            ],
-            'Weathering' => [
-                'code' => 'TM',
-                'dependency' => [],
-                'multiple' => true,
-            ],
+
             'Bone-Name' => [
                 'code' => 'TM',
                 'dependency' => [],
@@ -107,18 +122,6 @@ class FaunaInitDetails implements InitDetailsInterface
                 'dependency' => [],
                 'multiple' => true,
             ],
-            'Tooth-Age' => [
-                'code' => 'TM',
-                'dependency' => [],
-                'multiple' => true,
-            ],
-            'Tooth-Wear' => [
-                'code' => 'TM',
-                'dependency' => [],
-                'multiple' => true,
-            ],
-
-
             ///
             'Search-Taxa' => [
                 'label' => 'Search-Taxa',
@@ -142,16 +145,19 @@ class FaunaInitDetails implements InitDetailsInterface
                 'Registration Code',
                 'Media',
             ],
-            "Elements" => [
-                'Bone-Name',
-                'Tooth-Name',
-                'Tooth-Age',
-                'Tooth-Wear'
+            "Basic Characteristics" => [
+                'Taxa',
+                'Fauna Scope',
+                'Material'
             ],
             "Taxa" => [
-                'Taxa',
-                'Mammal',
-                'Bird'
+                'Mammal Taxa',
+                'Bird Taxa'
+            ],
+            "Bone" => [
+                'Common Bone',
+                'Mammal Bone',
+                'Bird Bone'
             ],
             // "Charactaristics" => [
             //     'Life-Stage',
