@@ -8,7 +8,11 @@ type TFauna<T extends TModuleInfo = TModuleInfo> = {
     code: string
     basket_no: number
     artifact_no: number
+    //
     primary_taxon_id: number
+    scope_id: number
+    material_id: number
+    //
     taxa: string
     bone: string
     side: string

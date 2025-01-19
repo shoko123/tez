@@ -66,9 +66,9 @@ return new class extends Migration
                 ->references('id')->on('fauna_scopes')
                 ->onUpdate('cascade');
 
-            // $table->foreign('material_id')
-            //     ->references('id')->on('fauna_materials')
-            //     ->onUpdate('cascade');
+            $table->foreign('material_id')
+                ->references('id')->on('fauna_materials')
+                ->onUpdate('cascade');
         });
 
         Schema::create('fauna_tag_groups', function (Blueprint $table) {
@@ -106,17 +106,16 @@ return new class extends Migration
             $table->string('unit', 5)->nullable()->default(null);
             $table->unsignedSmallInteger('divide_by')->default(1);
         });
-        /*
+
         Schema::create('fauna-fauna_onps', function (Blueprint $table) {
             $table->string('item_id', 11);
             $table->unsignedSmallInteger('num_id');
             $table->unsignedSmallInteger('value');
 
             $table->foreign('num_id')->references('id')->on('fauna_onps')->onUpdate('cascade');
-            $table->foreign('item_id')->references('id')->on('faunas')->onUpdate('cascade');
+            $table->foreign('item_id')->references('id')->on('fauna')->onUpdate('cascade');
             $table->primary(['item_id', 'num_id']);
         });
-        */
     }
 
     /**

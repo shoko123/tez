@@ -1,25 +1,33 @@
 <template>
   <v-container v-if="item" fluid class="pa-0 ma-0">
     <v-row class="ga-1">
-      <v-text-field v-model="item.taxa" label="Taxa" readonly filled />
-      <v-text-field v-model="item.bone" label="Bone" readonly filled />
-      <!-- <v-text-field v-model="item.level_bottom" label="Level Bottom" readonly filled />
-      <v-text-field v-model="item.artifact_count" label="Artifact Count" readonly filled /> -->
+      <v-text-field v-model="lf.primary_taxon_id" label="Primary Taxon" readonly filled />
+      <v-text-field v-model="lf.scope_id" label="Scope" readonly filled />
+      <v-text-field v-model="lf.material_id" label="Material" readonly filled />
     </v-row>
 
     <v-row class="ga-1">
-      <!-- <v-text-field v-model="item.field_description" label="Field Description" readonly filled />
-      <v-text-field v-model="item.field_notes" label="Field Notes" readonly filled /> -->
+      <v-text-field v-model="item.taxa" label="Taxa" readonly filled />
+      <v-text-field v-model="item.bone" label="Bone" readonly filled />
     </v-row>
+
+    <v-row class="ga-1">
+      <v-text-field v-model="item.side" label="Side" readonly filled />
+      <v-text-field v-model="item.d_and_r" label="Dobney & Rilley 1988" readonly filled />
+      <v-text-field v-model="item.age" label="Age" readonly filled />
+      <v-text-field v-model="item.breakage" label="Breakage" readonly filled />
+      <v-text-field v-model="item.weathering" label="Weathering" readonly filled />
+    </v-row>
+
+    <v-row class="ga-1">
+      <v-text-field v-model="item.butchery" label="Butchery" readonly filled />
+      <v-text-field v-model="item.burning" label="Burning" readonly filled />
+      <v-text-field v-model="item.other_bsm" label="Other Bone Surface Modifications" readonly filled />
+    </v-row>
+
     <v-row class="ga-1">
       <!-- <v-textarea v-model="item.description" label="Specialist Description" readonly filled /> -->
       <v-textarea v-model="item.notes" label="Specialist Notes" readonly filled />
-    </v-row>
-    <v-row class="ga-1">
-      <v-text-field v-model="lf.primary_taxon_id" label="Taxon" readonly filled />
-      <!-- <v-text-field v-model="item.has_butchery_evidence" label="Bitchery" readonly filled />
-      <v-text-field v-model="item.has_burning_evidence" label="Burning" readonly filled />
-      <v-text-field v-model="item.has_other_bsm_evidence" label="BSM" readonly filled /> -->
     </v-row>
 
     <!-- <v-row class="ga-1">
