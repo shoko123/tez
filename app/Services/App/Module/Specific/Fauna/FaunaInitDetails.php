@@ -50,7 +50,7 @@ class FaunaInitDetails implements InitDetailsInterface
                 'field_name' => 'code',
                 'dependency' => [],
             ],
-            'Taxa' => [
+            'Primary Taxa' => [
                 'code' => 'LV',
                 'field_name' => 'primary_taxon_id',
                 'lookup_table_name' => 'fauna_primary_taxa',
@@ -69,46 +69,51 @@ class FaunaInitDetails implements InitDetailsInterface
                 'field_name' => 'material_id',
                 'lookup_table_name' => 'fauna_materials',
                 'lookup_text_field' => 'name',
-                'dependency' => [],
+                'dependency' => [['Fauna Scope:Single Item', 'Fauna Scope:Anatomical Cluster', 'Fauna Scope:Skeleton']],
+            ],
+            'Integumentary Material' => [
+                'code' => 'TM',
+                'dependency' => [['Material:Integumentary']],
+                'multiple' => true,
             ],
             'Mammal Taxa' => [
                 'code' => 'TM',
-                'dependency' => [],
+                'dependency' => [['Primary Taxa:Mammal']],
                 'multiple' => true,
             ],
             'Bird Taxa' => [
                 'code' => 'TM',
-                'dependency' => [],
+                'dependency' => [['Primary Taxa:Bird']],
                 'multiple' => true,
             ],
             'Common Bone' => [
                 'code' => 'TM',
-                'dependency' => [],
+                'dependency' => [['Fauna Scope:Single Item'], ['Material:Bone', 'Material:Bone and Tooth']],
                 'multiple' => true,
             ],
             'Mammal Bone' => [
                 'code' => 'TM',
-                'dependency' => [],
+                'dependency' => [['Material:Bone'], ['Primary Taxa:Mammal']],
                 'multiple' => true,
             ],
             'Bird Bone' => [
                 'code' => 'TM',
-                'dependency' => [],
+                'dependency' => [['Material:Bone'], ['Primary Taxa:Bird']],
                 'multiple' => true,
             ],
             'Symmetry' => [
                 'code' => 'TM',
-                'dependency' => [],
+                'dependency' => [['Fauna Scope:Single Item'], ['Material:Bone']],
                 'multiple' => true,
             ],
             'Fusion' => [
                 'code' => 'TM',
-                'dependency' => [],
+                'dependency' => [['Fauna Scope:Single Item'], ['Material:Bone']],
                 'multiple' => true,
             ],
             'Breakage' => [
                 'code' => 'TM',
-                'dependency' => [],
+                'dependency' => [['Fauna Scope:Single Item'], ['Material:Bone']],
                 'multiple' => true,
             ],
 
@@ -146,7 +151,7 @@ class FaunaInitDetails implements InitDetailsInterface
                 'Media',
             ],
             "Basic Characteristics" => [
-                'Taxa',
+                'Primary Taxa',
                 'Fauna Scope',
                 'Material'
             ],
@@ -154,19 +159,20 @@ class FaunaInitDetails implements InitDetailsInterface
                 'Mammal Taxa',
                 'Bird Taxa'
             ],
+            "Integumentary" => [
+                'Integumentary Material'
+            ],
             "Bone" => [
                 'Common Bone',
                 'Mammal Bone',
                 'Bird Bone'
             ],
-            // "Charactaristics" => [
-            //     'Life-Stage',
-            //     'Symmetry',
-            //     'Fusion',
-            //     'Breakage',
-            //     'D&R',
-            //     'Weathering'
-            // ],
+            "Bone Charactaristics" => [
+                'Symmetry',
+                'Fusion',
+                'Breakage',
+                // 'Weathering'
+            ],
             'Search' => [
                 'Search-Taxa',
             ],

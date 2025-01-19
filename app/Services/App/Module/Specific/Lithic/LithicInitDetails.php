@@ -55,7 +55,7 @@ class LithicInitDetails implements InitDetailsInterface
             //     'field_name' => 'lithic_primary_classification_id',
             //     'lookup_table_name' => 'lithic_primary_classifications',
             //     'lookup_text_field' => 'name',
-            //     'dependency' => ['Scope.Artifact'],
+            //     'dependency' => [['Scope:Artifact']],
             // ],
 
             'Types' => [

@@ -238,35 +238,35 @@ class InitService extends DigModuleService
         ],
         'Neolithic Subperiods' => [
             'code' => 'TG',
-            'dependency' => ['Periods.Neolithic'],
+            'dependency' => [['Periods:Neolithic']],
         ],
         'Bronze Subperiods' => [
             'code' => 'TG',
-            'dependency' => ['Periods.Bronze'],
+            'dependency' => [['Periods:Bronze']],
         ],
         'Iron Subperiods' => [
             'code' => 'TG',
-            'dependency' => ['Periods.Iron'],
+            'dependency' => [['Periods:Iron']],
         ],
         'Hellenistic Subperiods' => [
             'code' => 'TG',
-            'dependency' => ['Periods.Hellenistic'],
+            'dependency' => [['Periods:Hellenistic']],
         ],
         'Roman Subperiods' => [
             'code' => 'TG',
-            'dependency' => ['Periods.Roman'],
+            'dependency' => [['Periods:Roman']],
         ],
         'Early-Islamic Subperiods' => [
             'code' => 'TG',
-            'dependency' => ['Periods.Early Islamic'],
+            'dependency' => [['Periods:Early Islamic']],
         ],
         'Medieval Subperiods' => [
             'code' => 'TG',
-            'dependency' => ['Periods.Medieval'],
+            'dependency' => [['Periods:Medieval']],
         ],
         'Modern Subperiods' => [
             'code' => 'TG',
-            'dependency' => ['Periods.Modern'],
+            'dependency' => [['Periods:Modern']],
         ],
     ];
 }

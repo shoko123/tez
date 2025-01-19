@@ -110,7 +110,7 @@ export const useTrioStore = defineStore('trio', () => {
     return tmp
   })
 
-  function dependencyConditionsMet(dependency: string[], trioSource: TrioSourceName) {
+  function dependencyConditionsMet(dependency: string[][], trioSource: TrioSourceName) {
     const selected =
       trioSource === 'Filter'
         ? filterAllOptionKeys
@@ -119,8 +119,10 @@ export const useTrioStore = defineStore('trio', () => {
           : taggerAllOptionKeys
     return (
       dependency.length === 0 ||
-      dependency.some((x) => {
-        return selected.value.includes(x)
+      dependency.every((y) => {
+        return y.some((x) => {
+          return selected.value.includes(x)
+        })
       })
     )
   }
@@ -547,19 +549,21 @@ export const useTrioStore = defineStore('trio', () => {
         continue
       }
 
-      if (
-        group.dependency!.includes(optionKey) &&
-        !group.dependency!.some((x) => {
-          return selectedOptionKeysByRoute.value.includes(x)
-        })
-      ) {
-        console.log(`group ${group.label} is dependent on "${value}"`)
-        groupsToUnselect.push({
-          grpKey: value,
-          label: group.label,
-          optionKeys: group.optionKeys,
-        })
-      }
+      group.dependency!.forEach((d) => {
+        if (
+          d.includes(optionKey) &&
+          !d.some((x) => {
+            return selectedOptionKeysByRoute.value.includes(x)
+          })
+        ) {
+          console.log(`group ${group.label} is dependent on "${value}"`)
+          groupsToUnselect.push({
+            grpKey: value,
+            label: group.label,
+            optionKeys: group.optionKeys,
+          })
+        }
+      })
     }
 
     console.log(`Extra Groups to be unselectable: ${JSON.stringify(groupsToUnselect, null, 2)}`)

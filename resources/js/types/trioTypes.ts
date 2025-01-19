@@ -9,10 +9,10 @@ type TDefs = {
     API: {
       table_name: string
       field_name: string
-      dependency: string[]
+      dependency: string[][]
       options: { id: number; label: string }[]
     }
-    TRIO: { field_name: string; dependency: string[] }
+    TRIO: { field_name: string; dependency: string[][] }
   }
   FO: {
     API: {
@@ -28,21 +28,21 @@ type TDefs = {
   }
   TM: {
     API: {
-      dependency: string[]
+      dependency: string[][]
       multiple: boolean
       tag_group_id: number
       options: { tag_id: number; label: string }[]
     }
-    TRIO: { multiple: boolean; dependency: string[] }
+    TRIO: { multiple: boolean; dependency: string[][] }
   }
   TG: {
     API: {
-      dependency: string[]
+      dependency: string[][]
       multiple: boolean
       tag_group_id: number
       options: { tag_id: number; label: string }[]
     }
-    TRIO: { group_id: number; multiple: boolean; dependency: string[] }
+    TRIO: { group_id: number; multiple: boolean; dependency: string[][] }
   }
   ON: {
     API: {
@@ -76,7 +76,7 @@ type TApiGroup<C extends TCode = TCode> = TGroupSpaceAndCode<'API', C> & {
   field_name?: string
   multiple?: boolean
   group_id?: number
-  dependency?: string[]
+  dependency?: string[][]
 }
 
 type TApiTrio = { name: string; groups: TApiGroup[] }[]
@@ -110,7 +110,7 @@ type TGroup<C extends TCode = TCode> = Omit<TDefs[C]['TRIO'], 'options'> & {
   optionKeys: string[]
   multiple?: boolean
   group_id?: number
-  dependency?: string[]
+  dependency?: string[][]
 }
 
 type TGroupObj = {

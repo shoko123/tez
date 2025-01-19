@@ -25,9 +25,8 @@ INSERT INTO `fauna_materials` VALUES
 (8,'Carapace'),
 (40,'Other');
 
-
 INSERT INTO `fauna_tag_groups` VALUES 
-(1,'Integumentary',0),
+(1,'Integumentary Material',0),
 (5,'Mammal Taxa',0),
 (7,'Bird Taxa',0),
 (11,'Symmetry',0),
@@ -106,9 +105,10 @@ INSERT INTO `fauna_tags` VALUES
 (3153,'Metatarsal',20,3),
 (3154,'Phalanx',20,3),
 (3156,'Calcanous',20,3),
-(3157,'Sesamoid',20,3),
+(3157,'Sesamoid',20,4),
 --
 (3180,'Talus (Astragulus)',21,3),
+(3181,'Antler',21,3),
 --
 (3200,'Furcula',23,1),
 (3201,'Coracoid',23,1),

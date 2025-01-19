@@ -56,7 +56,7 @@ class CeramicInitDetails implements InitDetailsInterface
                 'field_name' => 'ceramic_primary_classification_id',
                 'lookup_table_name' => 'ceramic_primary_classifications',
                 'lookup_text_field' => 'name',
-                'dependency' => ['Scope.Artifact'],
+                'dependency' => [['Scope:Artifact']],
             ],
             'Includes Date' => [
                 'label' => 'Includes Date',
@@ -77,100 +77,100 @@ class CeramicInitDetails implements InitDetailsInterface
             ],
             'Ware Coarseness' => [
                 'code' => 'TM',
-                'dependency' => ['Scope.Artifact'],
+                'dependency' => [['Scope:Artifact']],
                 'multiple' => true,
             ],
             'Ware Color' => [
                 'code' => 'TM',
-                'dependency' => ['Scope.Artifact'],
+                'dependency' => [['Scope:Artifact']],
                 'multiple' => true,
             ],
             'Ware Temper' => [
                 'code' => 'TM',
-                'dependency' => ['Scope.Artifact'],
+                'dependency' => [['Scope:Artifact']],
                 'multiple' => true,
             ],
             'Grit Color' => [
                 'code' => 'TM',
-                'dependency' => ['Scope.Artifact'],
+                'dependency' => [['Scope:Artifact']],
                 'multiple' => true,
             ],
 
             'Life Stage' => [
                 'code' => 'TM',
-                'dependency' => ['Scope.Artifact'],
+                'dependency' => [['Scope:Artifact']],
                 'multiple' => true,
             ],
             'Production' => [
                 'code' => 'TM',
-                'dependency' => ['Scope.Artifact'],
+                'dependency' => [['Scope:Artifact']],
                 'multiple' => true,
             ],
             'Vessel Typology' => [
                 'code' => 'TM',
-                'dependency' => ['Primary Classification.Vessel/Lid'],
+                'dependency' => [['Primary Classification:Vessel/Lid']],
                 'multiple' => true,
             ],
             'Vessel Part' => [
                 'code' => 'TM',
-                'dependency' => ['Primary Classification.Vessel/Lid'],
+                'dependency' => [['Primary Classification:Vessel/Lid']],
                 'multiple' => true,
             ],
             'Vessel Base' => [
                 'code' => 'TM',
-                'dependency' => ['Vessel Part.Base'],
+                'dependency' => [['Vessel Part:Base']],
                 'multiple' => true,
             ],
 
             'Foot' => [
                 'code' => 'TM',
-                'dependency' => ['Vessel Part.Foot'],
+                'dependency' => [['Vessel Part:Foot']],
                 'multiple' => true,
             ],
             'Rim' => [
                 'code' => 'TM',
-                'dependency' => ['Vessel Part.Rim'],
+                'dependency' => [['Vessel Part:Rim']],
                 'multiple' => true,
             ],
             'Handle' => [
                 'code' => 'TM',
-                'dependency' => ['Vessel Part.Handle'],
+                'dependency' => [['Vessel Part:Handle']],
                 'multiple' => true,
             ],
             'Ceramic Artifact Typology' => [
                 'code' => 'TM',
-                'dependency' => ['Primary Classification.Ceramic Artifact'],
+                'dependency' => [['Primary Classification:Ceramic Artifact']],
                 'multiple' => true,
             ],
             'Architectural/Installation Typology' => [
                 'code' => 'TM',
-                'dependency' => ['Primary Classification.Architectural/Installation'],
+                'dependency' => [['Primary Classification:Architectural/Installation']],
                 'multiple' => true,
             ],
             //// 
             'Plastic' => [
                 'code' => 'TM',
-                'dependency' => ['Scope.Artifact'],
+                'dependency' => [['Scope:Artifact']],
                 'multiple' => true,
             ],
             'Flat' => [
                 'code' => 'TM',
-                'dependency' => ['Scope.Artifact'],
+                'dependency' => [['Scope:Artifact']],
                 'multiple' => true,
             ],
             'Slip Color' => [
                 'code' => 'TM',
-                'dependency' => ['Flat.Slip'],
+                'dependency' => [['Flat:Slip']],
                 'multiple' => true,
             ],
             'Paint Color' => [
                 'code' => 'TM',
-                'dependency' => ['Flat.Paint'],
+                'dependency' => [['Flat:Paint']],
                 'multiple' => true,
             ],
             'Paint/Slip Pattern' => [
                 'code' => 'TM',
-                'dependency' => ['Flat.Paint', 'Flat.Slip'],
+                'dependency' => [['Flat:Paint', 'Flat:Slip']],
                 'multiple' => true,
             ],
             'Named Groups' => [

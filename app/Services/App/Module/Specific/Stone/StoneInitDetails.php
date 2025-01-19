@@ -92,42 +92,42 @@ class StoneInitDetails implements InitDetailsInterface
             ],
             'Type-Passive' => [
                 'code' => 'TM',
-                'dependency' => ['Primary Classification.Passive'],
+                'dependency' => [['Primary Classification:Passive']],
                 'multiple' => true,
             ],
             'Type-Active' => [
                 'code' => 'TM',
-                'dependency' => ['Primary Classification.Active (handheld)'],
+                'dependency' => [['Primary Classification:Active (handheld)']],
                 'multiple' => true,
             ],
             // 'Vessel Types' => [
             //     'code' => 'TM',
-            //     'dependency' => ['Basic Typology.Vessel'],
+            //     'dependency' => ['Basic Typology:Vessel'],
             //     'multiple' => true,
             // ],
             'Vessel-Part' => [
                 'code' => 'TM',
-                'dependency' => ['Primary Classification.Vessel'],
+                'dependency' => [['Primary Classification:Vessel']],
                 'multiple' => true,
             ],
             'Vessel-Base' => [
                 'code' => 'TM',
-                'dependency' => ['Primary Classification.Vessel'],
+                'dependency' => [['Primary Classification:Vessel']],
                 'multiple' => true,
             ],
             'Vessel-Wall' => [
                 'code' => 'TM',
-                'dependency' => ['Primary Classification.Vessel'],
+                'dependency' => [['Primary Classification:Vessel']],
                 'multiple' => true,
             ],
             'Vessel-Rim' => [
                 'code' => 'TM',
-                'dependency' => ['Primary Classification.Vessel'],
+                'dependency' => [['Primary Classification:Vessel']],
                 'multiple' => true,
             ],
             'Type-Non-Processor' => [
                 'code' => 'TM',
-                'dependency' => ['Primary Classification.Non-Processor'],
+                'dependency' => [['Primary Classification:Non-Processor']],
                 'multiple' => true,
             ],
             'Search-ID' => [
