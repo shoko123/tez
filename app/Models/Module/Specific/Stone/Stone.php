@@ -13,14 +13,19 @@ class Stone extends DigModuleModel
     protected $table = 'stones';
     protected $moduleTagTable = 'stone_tags';
 
-    static public function restrictedFieldValues(): array
+    static public function enumFields(): array
     {
-        return ['code' => ['GS', 'AR']];
+        return [];
     }
 
     static public function dateFields(): array
     {
         return ['date_retrieved'];
+    }
+
+    static public function restrictedFieldValues(): array
+    {
+        return ['code' => ['GS', 'AR']];
     }
 
     public function locus()

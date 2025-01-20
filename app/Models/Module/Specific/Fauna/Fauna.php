@@ -13,14 +13,19 @@ class Fauna extends DigModuleModel
     protected $table = 'fauna';
     protected $moduleTagTable = 'fauna_tags';
 
-    static public function restrictedFieldValues(): array
+    static public function enumFields(): array
     {
-        return ['code' => ['AR', 'LB']];
+        return [];
     }
 
     static public function dateFields(): array
     {
         return ['date_retrieved'];
+    }
+
+    static public function restrictedFieldValues(): array
+    {
+        return ['code' => ['AR', 'LB']];
     }
 
     public function locus()

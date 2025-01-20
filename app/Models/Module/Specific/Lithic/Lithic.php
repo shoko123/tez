@@ -15,14 +15,19 @@ class Lithic extends DigModuleModel
     protected $moduleTagTable = 'lithic_tags';
     protected $onpTable = 'lithic_onps';
 
-    static public function restrictedFieldValues(): array
+    static public function enumFields(): array
     {
-        return ['code' => ['AR', 'FL']];
+        return [];
     }
 
     static public function dateFields(): array
     {
         return ['date_retrieved'];
+    }
+
+    static public function restrictedFieldValues(): array
+    {
+        return ['code' => ['AR', 'FL']];
     }
 
     public function locus()

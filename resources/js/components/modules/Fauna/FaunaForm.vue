@@ -12,11 +12,11 @@
     </v-row>
 
     <v-row class="ga-1">
-      <v-text-field v-model="item.side" label="Side" readonly filled />
+      <v-text-field v-model="item.symmetry" label="Symmetry" readonly filled />
       <v-text-field v-model="item.d_and_r" label="Dobney & Rilley 1988" readonly filled />
       <v-text-field v-model="item.age" label="Age" readonly filled />
       <v-text-field v-model="item.breakage" label="Breakage" readonly filled />
-      <v-text-field v-model="item.weathering" label="Weathering" readonly filled />
+      <v-text-field v-model="item.weathering" label="Weathering (Behrensmeyer 1978)" readonly filled />
     </v-row>
 
     <v-row class="ga-1">

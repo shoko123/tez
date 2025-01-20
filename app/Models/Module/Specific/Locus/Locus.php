@@ -13,7 +13,7 @@ class Locus extends DigModuleModel
     protected $table = 'loci';
     protected $moduleTagTable = 'locus_tags';
 
-    static public function restrictedFieldValues(): array
+    static public function enumFields(): array
     {
         return [];
     }
@@ -21,6 +21,11 @@ class Locus extends DigModuleModel
     static public function dateFields(): array
     {
         return ['date_opened', 'date_closed'];
+    }
+
+    static public function restrictedFieldValues(): array
+    {
+        return [];
     }
 
     public function area()

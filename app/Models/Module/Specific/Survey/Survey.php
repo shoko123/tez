@@ -9,7 +9,7 @@ class Survey extends DigModuleModel
 {
     protected $table = 'survey';
 
-    static public function restrictedFieldValues(): array
+    static public function enumFields(): array
     {
         return [];
     }
@@ -17,6 +17,11 @@ class Survey extends DigModuleModel
     static public function dateFields(): array
     {
         return ['surveyed_date'];
+    }
+
+    static public function restrictedFieldValues(): array
+    {
+        return [];
     }
 
     protected function derivedId(): Attribute

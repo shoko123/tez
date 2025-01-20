@@ -10,14 +10,19 @@ class Season extends DigModuleModel
 {
     protected $table = 'seasons';
 
-    static public function restrictedFieldValues(): array
+    static public function enumFields(): array
     {
-        return ['id' => ['3', '4', '5', '6', '7', '8']];
+        return [];
     }
 
     static public function dateFields(): array
     {
         return [];
+    }
+
+    static public function restrictedFieldValues(): array
+    {
+        return ['id' => ['3', '4', '5', '6', '7', '8']];
     }
 
     protected function derivedId(): Attribute

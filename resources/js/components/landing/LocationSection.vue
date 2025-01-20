@@ -12,9 +12,10 @@
     </v-card>
 
     <v-card class="ma-2 pa-2">
-      <GoogleMap :api-key="googleMapsApiKey" style="width: 100%; height: 700px" :zoom="17" :center="center"
-        map-type-id="satellite" :street-view-control="false" :map-id="mapId">
-        <AdvancedMarker :options="{ position: center }" />
+      <GoogleMap v-if="isProduction" :api-key="mapInfo.apiKey" style="width: 100%; height: 700px" :zoom="mapInfo.zoom"
+        :center="mapInfo.center" :map-type-id="mapInfo.mapTypeId" :street-view-control="mapInfo.streetViewControl"
+        :map-id="mapInfo.mapId">
+        <AdvancedMarker :options="{ position: mapInfo.center }" />
       </GoogleMap>
     </v-card>
   </v-card>
@@ -23,14 +24,15 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { useLandingStore } from '../../scripts/stores/landing'
-const { locationText } = useLandingStore()
 import { storeToRefs } from 'pinia'
 import { GoogleMap, AdvancedMarker } from 'vue3-google-map'
 import { useMainStore } from '../../scripts/stores/main'
+
 const { bucketUrl } = storeToRefs(useMainStore())
+const { locationText } = useLandingStore()
 const { googleMapsApiKey } = storeToRefs(useMainStore())
-const center = { lat: 32.55864, lng: 35.33668 }
-const mapId = 'my_map_id'
+
+const isProduction = import.meta.env.PROD
 
 const bgUrls = computed(() => {
   return {
@@ -38,4 +40,16 @@ const bgUrls = computed(() => {
     tnUrl: `${bucketUrl.value}app/about/Location-tn.jpg`,
   }
 })
+
+const mapInfo = computed(() => {
+  return {
+    apiKey: googleMapsApiKey.value,
+    mapId: 'jez_map_id',
+    center: { lat: 32.55864, lng: 35.33668 },
+    mapTypeId: "satellite",
+    streetViewControl: false,
+    zoom: 17
+  }
+})
+
 </script>

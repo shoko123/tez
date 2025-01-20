@@ -13,14 +13,19 @@ class Ceramic extends DigModuleModel
     protected $table = 'ceramics';
     protected $moduleTagTable = 'ceramic_tags';
 
-    static public function restrictedFieldValues(): array
+    static public function enumFields(): array
     {
-        return ['code' => ['PT', 'AR']];
+        return [];
     }
 
     static public function dateFields(): array
     {
         return ['date_retrieved'];
+    }
+
+    static public function restrictedFieldValues(): array
+    {
+        return ['code' => ['PT', 'AR']];
     }
 
     public function locus()

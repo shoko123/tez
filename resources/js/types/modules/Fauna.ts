@@ -13,9 +13,10 @@ type TFauna<T extends TModuleInfo = TModuleInfo> = {
     scope_id: number
     material_id: number
     //
+
     taxa: string
     bone: string
-    side: string
+    symmetry: string
     d_and_r: string
     age: string
     breakage: string

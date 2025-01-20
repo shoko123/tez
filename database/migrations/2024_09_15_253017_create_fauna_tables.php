@@ -31,7 +31,8 @@ return new class extends Migration
         Schema::create('fauna', function (Blueprint $table) {
             $table->string('id', 11)->primary();
             $table->string('locus_id', 5);
-            $table->string('code', 2)->nullable();
+            $table->enum('code', ['LB', 'AR']);
+            // $table->string('code', 2)->nullable();
             $table->unsignedTinyInteger('basket_no');
             $table->unsignedTinyInteger('artifact_no');
             //
@@ -41,13 +42,13 @@ return new class extends Migration
             //
             $table->string('taxa', 400)->nullable();
             $table->string('bone', 400)->nullable();
-            $table->string('side', 10)->nullable();
+            $table->enum('symmetry', ['Unassigned', 'Irrelevant', 'Unknown', 'Left', 'Right']);
             $table->string('d_and_r', 30)->nullable();
             $table->string('age', 50)->nullable();
             $table->string('breakage', 50)->nullable();
             $table->string('butchery', 100)->nullable();
             $table->string('burning', 400)->nullable();
-            $table->string('weathering', 50)->nullable();
+            $table->enum('weathering', ['Unassigned', '0', '1', '2', '3', '4', '5']);
             $table->string('other_bsm', 200)->nullable();
             $table->string('notes', 200)->nullable();
             $table->string('measured', 200)->nullable();

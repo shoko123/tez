@@ -25,23 +25,15 @@ abstract class DigModuleModel extends Model implements HasMedia
 
     abstract protected function derivedId(): Attribute;
 
-    abstract static public function restrictedFieldValues(): array;
+    abstract static public function enumFields(): array;
 
     abstract static public function dateFields(): array;
+
+    abstract static public function restrictedFieldValues(): array;
 
     abstract static public function discreteFilterOptions(): array;
 
     abstract static public function orderByOptions(): array;
-
-    static public function restrictedFields(): array
-    {
-        return array_keys(static::restrictedFieldValues());
-    }
-
-    static public function allowedValues(string $field_name): array
-    {
-        return static::restrictedFieldValues()[$field_name];
-    }
 
     public function tableName(): string
     {
