@@ -9,11 +9,13 @@ class DigModuleService
 {
     protected DigModuleModel $model;
     protected static $module;
+    protected static $tableName;
 
     public function __construct(string $module)
     {
         $this->model = GetService::getModel($module, true);
         static::$module = $module;
+        static::$tableName = $this->model->tableName();
     }
 
     function uses_tags()

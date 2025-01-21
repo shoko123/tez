@@ -102,9 +102,14 @@ class FaunaInitDetails implements InitDetailsInterface
                 'multiple' => true,
             ],
             'Symmetry' => [
-                'code' => 'TM',
+                'code' => 'EM',
+                'enum_field_name' => 'symmetry',
                 'dependency' => [['Fauna Scope:Single Item'], ['Material:Bone']],
-                'multiple' => true,
+            ],
+            'Weathering' => [
+                'code' => 'EM',
+                'enum_field_name' => 'weathering',
+                'dependency' => [['Fauna Scope:Single Item'], ['Material:Bone']],
             ],
             'Fusion' => [
                 'code' => 'TM',
@@ -171,7 +176,7 @@ class FaunaInitDetails implements InitDetailsInterface
                 'Symmetry',
                 'Fusion',
                 'Breakage',
-                // 'Weathering'
+                'Weathering'
             ],
             'Search' => [
                 'Search-Taxa',

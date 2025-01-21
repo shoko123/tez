@@ -85,6 +85,9 @@ class InitService extends DigModuleService
                 // e.g. to filter Stone by area we use the area restricted values list
                 return $this->getFilterOnlyGroupDetails($label, $group);
 
+            case 'EM':  // enum columns
+                return $this->getEnumGroupDetails($label, $group);
+
             case 'OB': // order by values 
                 return $this->getOrderByGroupDetails($label, $group);
 
@@ -131,6 +134,37 @@ class InitService extends DigModuleService
             'label' => $label,
             'options' => $options,
         ]);
+    }
+
+    private function getEnumGroupDetails($label, $group)
+    {
+        $vals = self::getEnumValues(self::$tableName, $group['enum_field_name']);
+        $options = array();
+
+        foreach ($vals as $i => $value) {
+            array_push($options, ['label' => $value, 'index' => $i + 1]);
+        }
+
+        return array_merge($group, [
+            'tableName' => self::$tableName,
+            'label' => $label,
+            'options' => $options
+        ]);
+    }
+
+    protected static function getEnumValues($table, $column)
+    {
+        $expression = DB::raw("SHOW COLUMNS FROM $table WHERE Field = '$column'");
+        $string = $expression->getValue(DB::connection()->getQueryGrammar());
+        $type = DB::select($string)[0]->Type;
+
+        preg_match('/^enum\((.*)\)$/', $type, $matches);
+        $enum = [];
+        foreach (explode(',', $matches[1]) as $value) {
+            $v = trim($value, "'");
+            array_push($enum, $v);
+        }
+        return $enum;
     }
 
     private function getLookupFieldGroupDetails($label, $group)

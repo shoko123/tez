@@ -66,6 +66,7 @@ export const useTrioStore = defineStore('trio', () => {
       // i++
       switch (group.code) {
         case 'LV':
+        case 'EM':
           {
             if (dependencyConditionsMet(group.dependency!, 'Filter')) {
               tmp['Filter'].push(grpKey)

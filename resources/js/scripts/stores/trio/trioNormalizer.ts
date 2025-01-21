@@ -41,6 +41,10 @@ export async function normalizeTrio(apiTrio: TApiTrio) {
     cat.groups.forEach((grp) => {
       categories[catCnt]!.groupKeys.push(grpKey.value)
       switch (grp.code) {
+        case 'EM':
+          handleEM(grp as TApiGroup<'EM'>)
+          break
+
         case 'LV':
           handleLV(grp as TApiGroup<'LV'>)
           break
@@ -150,6 +154,14 @@ function processDependencyOrArray(dependencyOrArray: string[]) {
     }
     return res!
   })
+}
+
+function handleEM<C extends 'EM'>(grp: TApiGroup<C>) {
+  const options = grp.options.map((x) => {
+    return { text: x.label, extra: x.index }
+  })
+  grp.dependency = processDependency(grp.dependency)
+  addToGroupAndOptionObjects(grp, options)
 }
 
 function handleLV<C extends 'LV'>(grp: TApiGroup<C>) {

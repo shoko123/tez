@@ -5,6 +5,15 @@ type TrioSourceName = TrioSelectorSource | 'Item'
 
 // All groups have code & label keys.
 type TDefs = {
+  EM: {
+    API: {
+      table_name: string
+      field_name: string
+      dependency: string[][]
+      options: { index: number; label: string }[]
+    }
+    TRIO: { field_name: string; dependency: string[][] }
+  }
   LV: {
     API: {
       table_name: string
