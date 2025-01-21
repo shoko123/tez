@@ -92,6 +92,7 @@ class Fauna extends DigModuleModel
             'Primary Taxa' => 'primary_taxon_id',
             'Fauna Scope' => 'scope_id',
             'Material' => 'material_id',
+            'Symmetry' => 'symmetry',
             'Locus Id' => 'locus_id' // This one is required by create to avoid duplicate ids.
             // It is not a part of the tag/filter system.
         ];

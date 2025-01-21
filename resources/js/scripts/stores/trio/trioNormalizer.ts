@@ -119,8 +119,8 @@ function addToGroupAndOptionObjects(grp: TApiGroup, apiOptions: TOptionWithoutGr
 
   groupsObj[grpKey.value] = grpToSave
   groupLabelToGroupKeyObj[grpToSave.label] = grpKey.value
-
-  if ('LV' === grpToSave.code) {
+  if (['LV', 'EM'].includes(grpToSave.code)) {
+    // if ('LV' === grpToSave.code) {
     itemFieldsToGroupKeyObj[grpToSave.field_name!] = grpKey.value
   }
 }

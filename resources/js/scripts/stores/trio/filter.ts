@@ -54,6 +54,7 @@ export const useFilterStore = defineStore('filter', () => {
       switch (group.code) {
         case 'LV':
         case 'FO':
+        case 'EM':
           {
             const i = all.discrete_field_values.findIndex((x) => {
               return x.field_name === group.field_name

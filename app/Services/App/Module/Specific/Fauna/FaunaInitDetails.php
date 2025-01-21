@@ -103,12 +103,12 @@ class FaunaInitDetails implements InitDetailsInterface
             ],
             'Symmetry' => [
                 'code' => 'EM',
-                'enum_field_name' => 'symmetry',
+                'field_name' => 'symmetry',
                 'dependency' => [['Fauna Scope:Single Item'], ['Material:Bone']],
             ],
             'Weathering' => [
                 'code' => 'EM',
-                'enum_field_name' => 'weathering',
+                'field_name' => 'weathering',
                 'dependency' => [['Fauna Scope:Single Item'], ['Material:Bone']],
             ],
             'Fusion' => [

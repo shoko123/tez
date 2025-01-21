@@ -138,7 +138,7 @@ class InitService extends DigModuleService
 
     private function getEnumGroupDetails($label, $group)
     {
-        $vals = self::getEnumValues(self::$tableName, $group['enum_field_name']);
+        $vals = self::getEnumValues(self::$tableName, $group['field_name']);
         $options = array();
 
         foreach ($vals as $i => $value) {
