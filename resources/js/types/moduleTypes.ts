@@ -90,6 +90,7 @@ type TFieldsDefaultsAndRules<M extends TModule> = {
 type TFieldInfo = {
   fieldName: string
   fieldValue: TFieldValue
+  code: string
   optionKey: string
   optionLabel: string
   optionExtra: TFieldValue

@@ -6,6 +6,7 @@ import type {
   TGroupOrFieldToKeyObj,
   TrioSourceName,
   TrioSelectorSource,
+  TGroup,
 } from '../../../types/trioTypes'
 import type { TFields, TFieldInfo, TFieldValue } from '@/types/moduleTypes'
 import type { TApiTag } from '@/types/itemTypes'
@@ -335,27 +336,13 @@ export const useTrioStore = defineStore('trio', () => {
   function itemSetFieldsKeys(fields: TFields) {
     itemAllOptionKeys.value = []
 
-    // Lookup & Value fields
-    ////////////////////////
+    // Lookup, Enum & Value fields
+    //////////////////////////////
 
     Object.entries(itemFieldsToGroupKeyObj.value).forEach(([key, value]) => {
       const group = trio.value.groupsObj[value]!
       const val = fields[key as keyof TFields]
-      let index = -1
-      // console.log(
-      //   `[${key}]=> ${value}. gLabel: ${group.label} val: ${val} opKeys: ${group.optionKeys}`,
-      // )
-      index = group.optionKeys.findIndex(
-        // ** weak comparison because option.extra is either string, number or boolean
-        (y) => trio.value.optionsObj[y]!.extra == val,
-      )
-
-      if (index === -1) {
-        console.log(`itemSetFieldsKeys() - Can't find value ${val} in ${group.label} field ${key}`)
-        throw new Error(
-          `itemSetFieldsKeys() - Can't find value ${val} in ${group.label} field ${key}`,
-        )
-      }
+      const index = indexOfOptionOrThrow(group, val)
       itemAllOptionKeys.value.push(group!.optionKeys[index]!)
     })
 
@@ -405,24 +392,14 @@ export const useTrioStore = defineStore('trio', () => {
       // console.log(`[key: ${key}] => ${value}`)
       const group = trio.value.groupsObj[value]!
       val = fields[key as keyof TFields]
-      let index = -1
 
-      index = group.optionKeys.findIndex(
-        // ** weak comparison because option.extra is either string, number or boolean
-        (y) => trio.value.optionsObj[y]!.extra == val,
-      )
-
-      if (index === -1) {
-        console.log(`itemFieldsOptions() - Can't find value ${val} in ${group.label} field ${key}`)
-        throw new Error(
-          `itemFieldsOptions() - Can't find value ${val} in ${group.label} field ${key}`,
-        )
-      }
+      const index = indexOfOptionOrThrow(group, val)
       optionKey = group.optionKeys[index]!
 
       all.push({
         fieldName: group.field_name!,
         fieldValue: val,
+        code: group.code,
         optionKey: optionKey,
         optionLabel: trio.value.optionsObj[optionKey]!.text,
         optionExtra: trio.value.optionsObj[optionKey]!.extra,
@@ -437,6 +414,33 @@ export const useTrioStore = defineStore('trio', () => {
 
     // console.log(`itemFieldsOptions() options: ${JSON.stringify(all, null, 2)}`)
     return all
+  }
+
+  function indexOfOptionOrThrow(group: TGroup, val: TFieldValue) {
+    // Debug - Start
+    // const showOptions: Record<string, { extra: TFieldValue; text: string }> = {}
+    // group.optionKeys.forEach((x) => {
+    //   const op = trio.value.optionsObj[x]!
+    //   showOptions[x] = { extra: op.extra, text: op.text }
+    // })
+
+    // console.log(
+    //   `${group.label}(${group.code}) fieldVal: ${val} opKeys: ${JSON.stringify(showOptions, null, 2)}`,
+    // )
+    // Debug - End
+
+    const propertyToCompare = group.code === 'EM' ? 'text' : 'extra'
+    const index = group.optionKeys.findIndex(
+      // ** weak comparison because option.extra is either string, number or boolean
+      (y) => trio.value.optionsObj[y]![propertyToCompare] == val,
+    )
+
+    if (index === -1) {
+      const prompt = `indexOfOptionOrThrow() - Can't find value "${val}" in group: "${group.label}")`
+      console.log(prompt)
+      throw new Error(prompt)
+    }
+    return index
   }
 
   function optionClicked(prmKey: string) {

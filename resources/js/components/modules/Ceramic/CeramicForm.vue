@@ -30,13 +30,13 @@ import { storeToRefs } from 'pinia'
 import { TFields } from '@/types/moduleTypes'
 import { useItemStore } from '../../../scripts/stores/item'
 
-let { fields, lookupFields } = storeToRefs(useItemStore())
+let { fields, lookupEnums } = storeToRefs(useItemStore())
 
 const item = computed(() => {
   return fields.value as TFields<'Ceramic'>
 })
 
 const lf = computed(() => {
-  return lookupFields.value as TFields<'Ceramic'>
+  return lookupEnums.value as TFields<'Ceramic'>
 })
 </script>

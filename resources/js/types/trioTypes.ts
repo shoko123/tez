@@ -7,7 +7,6 @@ type TrioSourceName = TrioSelectorSource | 'Item'
 type TDefs = {
   EM: {
     API: {
-      table_name: string
       field_name: string
       dependency: string[][]
       options: { index: number; label: string }[]

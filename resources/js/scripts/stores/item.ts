@@ -40,7 +40,7 @@ export const useItemStore = defineStore('item', () => {
     }
   })
 
-  const lookupFields = computed(() => {
+  const lookupEnums = computed(() => {
     if (Object.keys(fields.value).length === 0 || current.value.module !== to.value.module) {
       return {}
     }
@@ -127,6 +127,6 @@ export const useItemStore = defineStore('item', () => {
     clearItem,
     saveitemFieldsPlus,
     itemRemove,
-    lookupFields,
+    lookupEnums,
   }
 })
