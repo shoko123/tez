@@ -9,9 +9,9 @@ type TDefs = {
     API: {
       field_name: string
       dependency: string[][]
-      options: { index: number; label: string }[]
+      options: { index: number; label: string; useInTagger: boolean }[]
     }
-    TRIO: { field_name: string; dependency: string[][] }
+    TRIO: { field_name: string; useInTagger: boolean; dependency: string[][] }
   }
   LV: {
     API: {
@@ -84,6 +84,7 @@ type TApiGroup<C extends TCode = TCode> = TGroupSpaceAndCode<'API', C> & {
   field_name?: string
   multiple?: boolean
   group_id?: number
+  useInTagger?: boolean
   dependency?: string[][]
 }
 
@@ -118,6 +119,7 @@ type TGroup<C extends TCode = TCode> = Omit<TDefs[C]['TRIO'], 'options'> & {
   optionKeys: string[]
   multiple?: boolean
   group_id?: number
+  useInTagger?: boolean
   dependency?: string[][]
 }
 

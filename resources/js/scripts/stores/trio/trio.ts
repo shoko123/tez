@@ -73,7 +73,7 @@ export const useTrioStore = defineStore('trio', () => {
               tmp['Filter'].push(grpKey)
             }
 
-            if (dependencyConditionsMet(group.dependency!, 'Tagger')) {
+            if (group.useInTagger && dependencyConditionsMet(group.dependency!, 'Tagger')) {
               tmp['Tagger'].push(grpKey)
             }
           }
@@ -491,6 +491,7 @@ export const useTrioStore = defineStore('trio', () => {
 
       case 'LV':
       case 'FO':
+      case 'EM':
         if (isSelected) {
           //do nothing
         } else {

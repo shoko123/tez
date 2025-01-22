@@ -15,7 +15,7 @@ class Fauna extends DigModuleModel
 
     static public function enumFields(): array
     {
-        return [];
+        return ['code', 'symmetry', 'weathering'];
     }
 
     static public function dateFields(): array
@@ -25,7 +25,7 @@ class Fauna extends DigModuleModel
 
     static public function restrictedFieldValues(): array
     {
-        return ['code' => ['AR', 'LB']];
+        return [];
     }
 
     public function locus()
@@ -71,7 +71,6 @@ class Fauna extends DigModuleModel
             get: fn(mixed $value, array $attributes) => $attributes['taxa'] ?? '[No description]'
         );
     }
-
 
     static public function discreteFilterOptions(): array
     {

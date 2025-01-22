@@ -146,7 +146,6 @@ class InitService extends DigModuleService
         }
 
         return array_merge($group, [
-            'tableName' => self::$tableName,
             'label' => $label,
             'options' => $options
         ]);

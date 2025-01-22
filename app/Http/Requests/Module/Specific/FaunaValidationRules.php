@@ -16,7 +16,7 @@ class FaunaValidationRules extends ValidationRules
 
     public function allowed_tagger_field_names(): array
     {
-        return ['primary_taxon_id'];
+        return ['primary_taxon_id', 'scope_id', 'material_id', 'symmetry', 'weathering'];
     }
 
     public function commonRules()

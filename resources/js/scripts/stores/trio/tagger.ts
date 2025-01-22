@@ -47,12 +47,15 @@ export const useTaggerStore = defineStore('tagger', () => {
           break
 
         case 'LV':
+        case 'EM':
           {
-            const option = trio.value.optionsObj[optionKey]!
-            optionsParams.fields.push({
-              field_name: group.field_name!,
-              val: option.extra,
-            })
+            if (group.useInTagger) {
+              const option = trio.value.optionsObj[optionKey]!
+              optionsParams.fields.push({
+                field_name: group.field_name!,
+                val: group.code === 'LV' ? option.extra : option.text,
+              })
+            }
           }
           break
       }

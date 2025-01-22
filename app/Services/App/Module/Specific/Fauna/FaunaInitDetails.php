@@ -45,9 +45,9 @@ class FaunaInitDetails implements InitDetailsInterface
                 'dependency' => [],
             ],
             'Registration Code' => [
-                'code' => 'FO',
-                'source' => ['module' => 'Fauna', 'field' => 'code'],
+                'code' => 'EM',
                 'field_name' => 'code',
+                'useInTagger' => false,
                 'dependency' => [],
             ],
             'Primary Taxa' => [
@@ -55,6 +55,7 @@ class FaunaInitDetails implements InitDetailsInterface
                 'field_name' => 'primary_taxon_id',
                 'lookup_table_name' => 'fauna_primary_taxa',
                 'lookup_text_field' => 'name',
+                'useInTagger' => true,
                 'dependency' => [],
             ],
             'Fauna Scope' => [
@@ -62,6 +63,7 @@ class FaunaInitDetails implements InitDetailsInterface
                 'field_name' => 'scope_id',
                 'lookup_table_name' => 'fauna_scopes',
                 'lookup_text_field' => 'name',
+                'useInTagger' => true,
                 'dependency' => [],
             ],
             'Material' => [
@@ -69,6 +71,7 @@ class FaunaInitDetails implements InitDetailsInterface
                 'field_name' => 'material_id',
                 'lookup_table_name' => 'fauna_materials',
                 'lookup_text_field' => 'name',
+                'useInTagger' => true,
                 'dependency' => [['Fauna Scope:Single Item', 'Fauna Scope:Anatomical Cluster', 'Fauna Scope:Skeleton']],
             ],
             'Integumentary Material' => [
@@ -104,11 +107,13 @@ class FaunaInitDetails implements InitDetailsInterface
             'Symmetry' => [
                 'code' => 'EM',
                 'field_name' => 'symmetry',
+                'useInTagger' => true,
                 'dependency' => [['Fauna Scope:Single Item'], ['Material:Bone']],
             ],
             'Weathering' => [
                 'code' => 'EM',
                 'field_name' => 'weathering',
+                'useInTagger' => true,
                 'dependency' => [['Fauna Scope:Single Item'], ['Material:Bone']],
             ],
             'Fusion' => [
