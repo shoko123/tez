@@ -48,6 +48,7 @@ class FaunaInitDetails implements InitDetailsInterface
                 'code' => 'EM',
                 'field_name' => 'code',
                 'useInTagger' => false,
+                'showAsTag' => false,
                 'dependency' => [],
             ],
             'Primary Taxa' => [
@@ -56,6 +57,7 @@ class FaunaInitDetails implements InitDetailsInterface
                 'lookup_table_name' => 'fauna_primary_taxa',
                 'lookup_text_field' => 'name',
                 'useInTagger' => true,
+                'showAsTag' => true,
                 'dependency' => [],
             ],
             'Fauna Scope' => [
@@ -64,6 +66,7 @@ class FaunaInitDetails implements InitDetailsInterface
                 'lookup_table_name' => 'fauna_scopes',
                 'lookup_text_field' => 'name',
                 'useInTagger' => true,
+                'showAsTag' => true,
                 'dependency' => [],
             ],
             'Material' => [
@@ -72,6 +75,7 @@ class FaunaInitDetails implements InitDetailsInterface
                 'lookup_table_name' => 'fauna_materials',
                 'lookup_text_field' => 'name',
                 'useInTagger' => true,
+                'showAsTag' => true,
                 'dependency' => [['Fauna Scope:Single Item', 'Fauna Scope:Anatomical Cluster', 'Fauna Scope:Skeleton']],
             ],
             'Integumentary Material' => [
@@ -108,12 +112,14 @@ class FaunaInitDetails implements InitDetailsInterface
                 'code' => 'EM',
                 'field_name' => 'symmetry',
                 'useInTagger' => true,
+                'showAsTag' => true,
                 'dependency' => [['Fauna Scope:Single Item'], ['Material:Bone']],
             ],
             'Weathering' => [
                 'code' => 'EM',
                 'field_name' => 'weathering',
                 'useInTagger' => true,
+                'showAsTag' => true,
                 'dependency' => [['Fauna Scope:Single Item'], ['Material:Bone']],
             ],
             'Fusion' => [

@@ -48,6 +48,7 @@ class MetalInitDetails   implements InitDetailsInterface
                 'code' => 'EM',
                 'field_name' => 'code',
                 'useInTagger' => false,
+                'showAsTag' => false,
                 'dependency' => [],
             ],
             'Primary Classification' => [
@@ -55,6 +56,8 @@ class MetalInitDetails   implements InitDetailsInterface
                 'field_name' => 'metal_primary_classification_id',
                 'lookup_table_name' => 'metal_primary_classifications',
                 'lookup_text_field' => 'name',
+                'useInTagger' => true,
+                'showAsTag' => true,
                 'dependency' => [],
             ],
             'Material' => [
@@ -62,6 +65,8 @@ class MetalInitDetails   implements InitDetailsInterface
                 'field_name' => 'material_id',
                 'lookup_table_name' => 'metal_materials',
                 'lookup_text_field' => 'name',
+                'useInTagger' => true,
+                'showAsTag' => true,
                 'dependency' => [],
             ],
             'Modern Weaponry' => [

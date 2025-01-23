@@ -50,7 +50,7 @@ export async function normalizeTrio(apiTrio: TApiTrio) {
           break
 
         case 'RV':
-          handleOF(grp as TApiGroup<'RV'>)
+          handleRV(grp as TApiGroup<'RV'>)
           break
 
         case 'SF':
@@ -171,7 +171,7 @@ function handleLV<C extends 'LV'>(grp: TApiGroup<C>) {
   addToGroupAndOptionObjects(grp, options)
 }
 
-function handleOF<C extends 'RV'>(grp: TApiGroup<C>) {
+function handleRV<C extends 'RV'>(grp: TApiGroup<C>) {
   const options = grp.options.map((x) => {
     return { text: x.label, extra: x.id }
   })

@@ -48,6 +48,7 @@ class LithicInitDetails implements InitDetailsInterface
                 'code' => 'EM',
                 'field_name' => 'code',
                 'useInTagger' => false,
+                'showAsTag' => false,
                 'dependency' => [],
             ],
             // 'Primary Classification' => [

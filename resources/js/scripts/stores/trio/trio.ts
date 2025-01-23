@@ -265,16 +265,30 @@ export const useTrioStore = defineStore('trio', () => {
 
     // Build groups
     for (const key of selected) {
-      // selected.forEach((key) => {
       const groupKey = trio.value.optionsObj[key]!.groupKey
       const group = trio.value.groupsObj[groupKey]!
-      if (
-        source === 'Item' &&
-        (group.code === 'CT' ||
-          (group.code === 'LV' && trio.value.optionsObj[key]?.text === 'Unassigned'))
-      ) {
-        continue
+      // If item, don't show CT groups , show LV & EM groups only if showAsTag is true and don't show if 'Unassigned'
+      if (source === 'Item') {
+        switch (group.code) {
+          case 'CT':
+            continue
+
+          case 'LV':
+          case 'EM':
+            if (!group.showAsTag) {
+              continue
+            } else {
+              if (trio.value.optionsObj[key]?.text === 'Unassigned') {
+                continue
+              }
+            }
+            break
+
+          default:
+          // show tags that belong to TM & TG group types
+        }
       }
+
       const index = displayGroups.findIndex(
         (x) => x.groupKey === trio.value.optionsObj[key]!.groupKey,
       )

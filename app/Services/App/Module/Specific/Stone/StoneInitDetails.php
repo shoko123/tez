@@ -49,6 +49,7 @@ class StoneInitDetails implements InitDetailsInterface
                 'code' => 'EM',
                 'field_name' => 'code',
                 'useInTagger' => false,
+                'showAsTag' => false,
                 'dependency' => [],
             ],
             'Material' => [
@@ -56,6 +57,8 @@ class StoneInitDetails implements InitDetailsInterface
                 'field_name' => 'material_id',
                 'lookup_table_name' => 'stone_materials',
                 'lookup_text_field' => 'name',
+                'useInTagger' => true,
+                'showAsTag' => true,
                 'dependency' => [],
             ],
             'Primary Classification' => [
@@ -63,6 +66,8 @@ class StoneInitDetails implements InitDetailsInterface
                 'field_name' => 'stone_primary_classification_id',
                 'lookup_table_name' => 'stone_primary_classifications',
                 'lookup_text_field' => 'name',
+                'useInTagger' => true,
+                'showAsTag' => true,
                 'dependency' => [],
             ],
             'Life-Stage' => [

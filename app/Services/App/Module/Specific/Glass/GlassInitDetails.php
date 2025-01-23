@@ -49,6 +49,8 @@ class GlassInitDetails implements InitDetailsInterface
                 'field_name' => 'glass_primary_classification_id',
                 'lookup_table_name' => 'glass_primary_classifications',
                 'lookup_text_field' => 'name',
+                'useInTagger' => true,
+                'showAsTag' => true,
                 'dependency' => [],
             ],
             'Production' => [

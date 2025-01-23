@@ -49,6 +49,7 @@ class CeramicInitDetails implements InitDetailsInterface
                 'code' => 'EM',
                 'field_name' => 'code',
                 'useInTagger' => false,
+                'showAsTag' => false,
                 'dependency' => [],
             ],
             'Primary Classification' => [
@@ -56,6 +57,8 @@ class CeramicInitDetails implements InitDetailsInterface
                 'field_name' => 'ceramic_primary_classification_id',
                 'lookup_table_name' => 'ceramic_primary_classifications',
                 'lookup_text_field' => 'name',
+                'useInTagger' => true,
+                'showAsTag' => true,
                 'dependency' => [['Scope:Artifact']],
             ],
             'Includes Date' => [
