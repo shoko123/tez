@@ -53,7 +53,7 @@ export const useFilterStore = defineStore('filter', () => {
 
       switch (group.code) {
         case 'LV':
-        case 'FO':
+        case 'RV':
         case 'EM':
           {
             const i = all.discrete_field_values.findIndex((x) => {

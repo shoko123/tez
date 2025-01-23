@@ -80,10 +80,10 @@ class InitService extends DigModuleService
             case 'LV': // lookup values 
                 return $this->getLookupFieldGroupDetails($label, $group);
 
-            case 'FO':  // only filter options come from specific restricted values lists;
+            case 'RV':  // only filter options come from specific restricted values lists;
                 // they often belong to a different module.
                 // e.g. to filter Stone by area we use the area restricted values list
-                return $this->getFilterOnlyGroupDetails($label, $group);
+                return $this->getRVGroupDetails($label, $group);
 
             case 'EM':  // enum columns
                 return $this->getEnumGroupDetails($label, $group);
@@ -113,9 +113,9 @@ class InitService extends DigModuleService
         return array_merge(['label' => $label], $group);
     }
 
-    private function getFilterOnlyGroupDetails($label, $group)
+    private function getRVGroupDetails($label, $group)
     {
-        throw_if(is_null($group['source']['module']), new GeneralJsonException('** MODEL INIT ERROR - FilterOnly Bad format for "' . $label . '" ***', 500));
+        throw_if(is_null($group['source']['module']), new GeneralJsonException('** MODEL INIT ERROR - RVGroup Bad format for "' . $label . '" ***', 500));
 
         $model = GetService::getModel($group['source']['module']);
         $res =  $model::restrictedFieldValues();

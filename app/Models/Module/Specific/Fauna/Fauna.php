@@ -23,11 +23,6 @@ class Fauna extends DigModuleModel
         return ['date_retrieved'];
     }
 
-    static public function restrictedFieldValues(): array
-    {
-        return [];
-    }
-
     public function locus()
     {
         return $this->belongsTo(Locus::class);

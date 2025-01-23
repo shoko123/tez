@@ -21,7 +21,7 @@ return new class extends Migration
         Schema::create('glass', function (Blueprint $table) {
             $table->string('id', 11)->primary();
             $table->string('locus_id', 5);
-            $table->string('code', 2)->nullable();
+            $table->enum('code', ['AR']);
             $table->unsignedTinyInteger('basket_no');
             $table->unsignedTinyInteger('artifact_no');
             $table->date('date_retrieved')->nullable();

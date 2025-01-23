@@ -32,7 +32,6 @@ return new class extends Migration
             $table->string('id', 11)->primary();
             $table->string('locus_id', 5);
             $table->enum('code', ['LB', 'AR']);
-            // $table->string('code', 2)->nullable();
             $table->unsignedTinyInteger('basket_no');
             $table->unsignedTinyInteger('artifact_no');
             //

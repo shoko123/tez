@@ -31,7 +31,7 @@ class StoneInitDetails implements InitDetailsInterface
     {
         return [
             'Season' => [
-                'code' => 'FO',
+                'code' => 'RV',
                 'source' => ['module' => 'Season', 'field' => 'id'],
                 'field_name' => 'locus_id',
                 'dependency' => [],
@@ -40,15 +40,15 @@ class StoneInitDetails implements InitDetailsInterface
                 },
             ],
             'Area' => [
-                'code' => 'FO',
+                'code' => 'RV',
                 'source' => ['module' => 'Area', 'field' => 'id'],
                 'field_name' => 'area_id',
                 'dependency' => [],
             ],
             'Registration Code' => [
-                'code' => 'FO',
-                'source' => ['module' => 'Stone', 'field' => 'code'],
+                'code' => 'EM',
                 'field_name' => 'code',
+                'useInTagger' => false,
                 'dependency' => [],
             ],
             'Material' => [

@@ -29,8 +29,6 @@ abstract class DigModuleModel extends Model implements HasMedia
 
     abstract static public function dateFields(): array;
 
-    abstract static public function restrictedFieldValues(): array;
-
     abstract static public function discreteFilterOptions(): array;
 
     abstract static public function orderByOptions(): array;

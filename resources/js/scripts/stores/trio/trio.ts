@@ -79,7 +79,7 @@ export const useTrioStore = defineStore('trio', () => {
           }
           break
 
-        case 'FO':
+        case 'RV':
           {
             tmp['Filter'].push(grpKey)
           }
@@ -490,7 +490,7 @@ export const useTrioStore = defineStore('trio', () => {
         break
 
       case 'LV':
-      case 'FO':
+      case 'RV':
       case 'EM':
         if (isSelected) {
           //do nothing

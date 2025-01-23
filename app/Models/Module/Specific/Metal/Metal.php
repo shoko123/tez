@@ -25,7 +25,7 @@ class Metal extends DigModuleModel
 
     static public function restrictedFieldValues(): array
     {
-        return ['code' => ['AR']];
+        return [];
     }
 
     public function locus()

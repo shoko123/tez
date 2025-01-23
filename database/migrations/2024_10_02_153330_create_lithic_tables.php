@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('lithics', function (Blueprint $table) {
             $table->string('id', 11)->primary();
             $table->string('locus_id', 5);
-            $table->string('code', 2)->nullable();
+            $table->enum('code', ['FL', 'AR']);
             $table->unsignedTinyInteger('basket_no');
             $table->unsignedTinyInteger('artifact_no');
             $table->date('date_retrieved')->nullable();

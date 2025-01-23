@@ -19,11 +19,6 @@ class Survey extends DigModuleModel
         return ['surveyed_date'];
     }
 
-    static public function restrictedFieldValues(): array
-    {
-        return [];
-    }
-
     protected function derivedId(): Attribute
     {
         return Attribute::make(

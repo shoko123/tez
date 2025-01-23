@@ -30,7 +30,7 @@ class SurveyInitDetails implements InitDetailsInterface
     {
         return [
             'Area' => [
-                'code' => 'FO',
+                'code' => 'RV',
                 'source' => ['module' => 'Area', 'field' => 'id'],
                 'field_name' => 'area_id',
                 'dependency' => [],

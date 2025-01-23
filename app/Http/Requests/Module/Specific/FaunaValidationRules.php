@@ -23,7 +23,7 @@ class FaunaValidationRules extends ValidationRules
     {
         return [
             'data.fields.locus_id' => 'required|exists:loci,id',
-            'data.fields.code' => 'required|in:FL,AR,LB',
+            'data.fields.code' => 'required|in:AR,LB',
             'data.fields.basket_no' => 'required|numeric|between:0,99',
             'data.fields.artifact_no' => 'required|numeric|between:0,99',
             'data.fields.date_retrieved' => 'date|nullable',

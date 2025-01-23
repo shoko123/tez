@@ -23,11 +23,6 @@ class Ceramic extends DigModuleModel
         return ['date_retrieved'];
     }
 
-    static public function restrictedFieldValues(): array
-    {
-        return ['code' => ['PT', 'AR']];
-    }
-
     public function locus()
     {
         return $this->belongsTo(Locus::class);

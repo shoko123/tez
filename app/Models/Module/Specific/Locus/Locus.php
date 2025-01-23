@@ -23,11 +23,6 @@ class Locus extends DigModuleModel
         return ['date_opened', 'date_closed'];
     }
 
-    static public function restrictedFieldValues(): array
-    {
-        return [];
-    }
-
     public function area()
     {
         return $this->belongsTo(GetService::getModel('Area'));

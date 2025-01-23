@@ -30,7 +30,7 @@ class GlassInitDetails implements InitDetailsInterface
     {
         return [
             'Season' => [
-                'code' => 'FO',
+                'code' => 'RV',
                 'source' => ['module' => 'Season', 'field' => 'id'],
                 'field_name' => 'locus_id',
                 'dependency' => [],
@@ -39,7 +39,7 @@ class GlassInitDetails implements InitDetailsInterface
                 },
             ],
             'Area' => [
-                'code' => 'FO',
+                'code' => 'RV',
                 'source' => ['module' => 'Area', 'field' => 'id'],
                 'field_name' => 'area_id',
                 'dependency' => [],

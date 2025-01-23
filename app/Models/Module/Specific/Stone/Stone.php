@@ -15,17 +15,12 @@ class Stone extends DigModuleModel
 
     static public function enumFields(): array
     {
-        return [];
+        return ['code'];
     }
 
     static public function dateFields(): array
     {
         return ['date_retrieved'];
-    }
-
-    static public function restrictedFieldValues(): array
-    {
-        return ['code' => ['GS', 'AR']];
     }
 
     public function locus()
