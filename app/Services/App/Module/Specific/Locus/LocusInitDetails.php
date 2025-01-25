@@ -36,13 +36,13 @@ class LocusInitDetails  implements InitDetailsInterface
             ],
             'Square' => [
                 'code' => 'TM',
-                'dependency' => [],
                 'multiple' => true,
+                'dependency' => [],
             ],
             'Locus Type' => [
                 'code' => 'TM',
-                'dependency' => [],
                 'multiple' => true,
+                'dependency' => [],
             ],
             'Order By' => [
                 'code' => 'OB',

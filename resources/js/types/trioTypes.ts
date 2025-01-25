@@ -43,7 +43,6 @@ type TDefs = {
     API: {
       dependency: string[][]
       multiple: boolean
-      tag_group_id: number
       options: { tag_id: number; label: string }[]
     }
     TRIO: { multiple: boolean; dependency: string[][] }
@@ -53,7 +52,6 @@ type TDefs = {
     API: {
       dependency: string[][]
       multiple: boolean
-      tag_group_id: number
       options: { tag_id: number; label: string }[]
     }
     TRIO: { group_id: number; multiple: boolean; dependency: string[][] }

@@ -55,11 +55,10 @@ class InitService extends DigModuleService
         foreach ($this->details::categories() as $name => $labels) {
             $category = ['name' => $name, 'groups' => []];
             foreach ($labels as $label) {
-                array_push($category['groups'], $this->getGroupDetails($label));
+                array_push($category['groups'], array_merge(['label' => $label], $this->getGroupDetails($label)));
             }
             array_push($trio, $category);
         }
-
         return $trio;
     }
 
@@ -69,72 +68,109 @@ class InitService extends DigModuleService
         throw_if(is_null($group), new GeneralJsonException('***MODEL INIT() ERROR*** getGroupDetails() invalid label: ' . $label, 500));
 
         switch ($group['code']) {
-            case 'TG': //global tags
+            case 'TG': // global tags
                 return $this->getGlobalTagsGroupDetails($label, $group);
 
-            case 'TM': //module tags
+            case 'TM': // module tags
                 return $this->getModelTagsGroupDetails($label, $group);
 
-            case 'ON':
+            case 'ON': // optional numeric properties
                 return $this->getOptionalNumericPropertyGroupDetails($label, $group);
-
-            case 'LV': // lookup values 
-                return $this->getLookupFieldGroupDetails($label, $group);
-
-            case 'RV':  // only filter options come from specific restricted values lists;
-                // they often belong to a different module.
-                // e.g. to filter Stone by area we use the area restricted values list
-                return $this->getRVGroupDetails($label, $group);
 
             case 'EM':  // enum columns
                 return $this->getEnumGroupDetails($label, $group);
 
-            case 'OB': // order by values 
-                return $this->getOrderByGroupDetails($label, $group);
+            case 'LV': // lookup values 
+                return $this->getLookupFieldGroupDetails($label, $group);
+
+            case 'RV':  // restricted value lists;
+                // they often belong to a different module.
+                // e.g. to filter Stone by area we use the area restricted values list
+                return $this->getRestrictedValuesGroupDetails($label, $group);
+
+            case 'CT': //categorized group
+                return $this->getCategorizedGroupDetails($label, $group);
 
             case 'SF': //field search
-            case 'CT': //categorized group
             case 'MD': //media
                 return $group;
+
+            case 'OB': // order by values 
+                return $this->getOrderByGroupDetails($label, $group);
 
             default:
                 throw new GeneralJsonException('***MODEL INIT() ERROR*** getGroupDetails() invalid code: ' . $group['code'], 500);
         }
     }
 
-    private function getOrderByGroupDetails($label, $group)
+    private function getModelTagsGroupDetails($label, $group)
     {
-        $options = $this->model::orderByOptions();
+        $tg = $this->moduleTagGroup->with(['tags' => function ($q) {
+            $q->select('id', 'name', 'tag_group_id');
+        }])
+            ->select('id', 'multiple')
+            ->where('name', $label)
+            ->first();
 
-        foreach ($group['options'] as $item) {
-            if (!array_key_exists($item, $options)) {
-                throw new GeneralJsonException('***MODEL INIT() ERROR*** Order By option "' . $item . '" does not exist!', 500);
-            }
-        }
-        return array_merge(['label' => $label], $group);
+        throw_if(is_null($tg), new GeneralJsonException('** MODEL INIT ERROR - Group "' . $label . '" not found in module.tag_groups table ***', 500));
+
+        unset($group['tag_group_id']);
+
+        return array_merge(
+            $group,
+            [
+                'options' => $tg->tags->map(function ($y) {
+                    return [
+                        'label' => $y->name,
+                        'tag_id' => $y->id,
+                    ];
+                })
+            ]
+        );
     }
 
-    private function getRVGroupDetails($label, $group)
+    private function getGlobalTagsGroupDetails($label, $group)
     {
-        // throw_if(is_null(self::$restrictedValues[$label]), new GeneralJsonException('** MODEL INIT ERROR - RVGroup Bad format for "' . $label . '" ***', 500));
+        $gtg = TagGroup::with(['tags' => function ($q) {
+            $q->select('id', 'name', 'tag_group_id');
+        }])
+            ->select('id', 'name')
+            ->where('name', $label)
+            ->first();
 
-        $model = GetService::getModel($group['values_source_module']);
-        $resVals =  $model::restrictedValues();
-        $specific = $resVals[$group['values_source_field']];
-        $manipulator = array_key_exists('manipulator', $specific) ? $specific['manipulator'] : function ($val) {
-            return $val;
-        };
-
-        $mapFunc = function ($y) use ($manipulator) {
-            return ['label' => $manipulator($y), 'id' => $y];
-        };
-
-        $options = array_map($mapFunc, $specific['vals']);
+        $group['multiple'] = true;
 
         return array_merge($group, [
-            'label' => $label,
-            'options' => $options,
-            'dependency' => []
+            'options' => $gtg->tags->map(function ($y) {
+                return [
+                    'label' => $y->name,
+                    'tag_id' => $y->id,
+                ];
+            }),
+        ]);
+    }
+
+    private function getOptionalNumericPropertyGroupDetails($label, $group)
+    {
+        $onpName = get_class($this->model) . 'OnpGroup';
+        $onpGroupModel = new $onpName;
+        $onpGroup = $onpGroupModel->with(['onps' => function ($q) {
+            $q->select('id', 'label', 'onp_group_id');
+        }])
+            ->select('id')
+            ->where('label', $label)
+            ->first();
+
+        throw_if(is_null($onpGroup), new GeneralJsonException('** MODEL INIT ERROR - Group "' . $label . '" not found in module.onps table ***', 500));
+
+        return array_merge($group, [
+            'onp_group_id' => $onpGroup->id,
+            'options' => $onpGroup->onps->map(function ($y) {
+                return [
+                    'label' => $y->label,
+                    'onp_id' => $y->id,
+                ];
+            }),
         ]);
     }
 
@@ -147,10 +183,10 @@ class InitService extends DigModuleService
             array_push($options, ['label' => $value, 'index' => $i + 1]);
         }
 
-        return array_merge($group, [
-            'label' => $label,
-            'options' => $options
-        ]);
+        return array_merge(
+            $group,
+            ['options' => $options]
+        );
     }
 
     protected static function getEnumValues($table, $column)
@@ -176,83 +212,64 @@ class InitService extends DigModuleService
         unset($group['lookup_table_name']);
         unset($group['lookup_text_field']); // May or may not exist!
 
-        return array_merge($group, [
-            'label' => $label,
-            'options' => $options->map(function ($y, $key) use ($text_field) {
+        return array_merge(
+            $group,
+            ['options' => $options->map(function ($y, $key) use ($text_field) {
                 return ['label' => $y->$text_field, 'id' => $y->id];
-            }),
-        ]);
+            })]
+        );
     }
 
-    private function getModelTagsGroupDetails($label, $group)
+
+    private function getRestrictedValuesGroupDetails($label, $group)
     {
-        $tg = $this->moduleTagGroup->with(['tags' => function ($q) {
-            $q->select('id', 'name', 'tag_group_id');
-        }])
-            ->select('id', 'multiple')
-            ->where('name', $label)
-            ->first();
+        // throw_if(is_null(self::$restrictedValues[$label]), new GeneralJsonException('** MODEL INIT ERROR - RVGroup Bad format for "' . $label . '" ***', 500));
 
-        throw_if(is_null($tg), new GeneralJsonException('** MODEL INIT ERROR - Group "' . $label . '" not found in module.tag_groups table ***', 500));
+        $model = GetService::getModel($group['values_source_module']);
+        $resVals =  $model::restrictedValues();
+        $specific = $resVals[$group['values_source_field']];
+        $manipulator = array_key_exists('manipulator', $specific) ? $specific['manipulator'] : function ($val) {
+            return $val;
+        };
 
-        return array_merge($group, [
-            'label' => $label,
-            'tag_group_id' => $tg->id,
-            'multiple' => $tg->multiple,
-            'options' => $tg->tags->map(function ($y) {
-                return [
-                    'label' => $y->name,
-                    'tag_id' => $y->id,
+        $mapFunc = function ($y) use ($manipulator) {
+            return ['label' => $manipulator($y), 'id' => $y];
+        };
 
-                ];
-            }),
-        ]);
+        $options = array_map($mapFunc, $specific['vals']);
+
+        unset($group['values_source_module']);
+        unset($group['values_source_field']);
+
+        return array_merge(
+            $group,
+            [
+                'dependency' => [],
+                'options' => $options,
+            ]
+        );
     }
 
-    private function getGlobalTagsGroupDetails($label, $group)
+    private function getCategorizedGroupDetails($label, $group)
     {
-        $gtg = TagGroup::with(['tags' => function ($q) {
-            $q->select('id', 'name', 'tag_group_id');
-        }])
-            ->select('id', 'name')
-            ->where('name', $label)
-            ->first();
+        $mapFunc = function ($v, $k) {
+            return ['label' => $v, 'index' => $k];
+        };
 
-        return array_merge($group, [
-            'label' => $label,
-            'tag_group_id' => $gtg->id,
-            'multiple' => true,
-            'options' => $gtg->tags->map(function ($y) {
-                return [
-                    'label' => $y->name,
-                    'tag_id' => $y->id,
-                ];
-            }),
-        ]);
+        $options = array_map($mapFunc, $group['option_labels'], array_keys($group['option_labels']));
+        unset($group['option_labels']);
+        return array_merge($group, ['options' => $options]);
     }
 
-    private function getOptionalNumericPropertyGroupDetails($label, $group)
+    private function getOrderByGroupDetails($label, $group)
     {
-        $onpName = get_class($this->model) . 'OnpGroup';
-        $onpGroupModel = new $onpName;
-        $onpGroup = $onpGroupModel->with(['onps' => function ($q) {
-            $q->select('id', 'label', 'onp_group_id');
-        }])
-            ->select('id')
-            ->where('label', $label)
-            ->first();
+        $options = $this->model::orderByOptions();
 
-        throw_if(is_null($onpGroup), new GeneralJsonException('** MODEL INIT ERROR - Group "' . $label . '" not found in module.onps table ***', 500));
-
-        return array_merge($group, [
-            'label' => $label,
-            'onp_group_id' => $onpGroup->id,
-            'options' => $onpGroup->onps->map(function ($y) {
-                return [
-                    'label' => $y->label,
-                    'onp_id' => $y->id,
-                ];
-            }),
-        ]);
+        foreach ($group['options'] as $item) {
+            if (!array_key_exists($item, $options)) {
+                throw new GeneralJsonException('***MODEL INIT() ERROR*** Order By option "' . $item . '" does not exist!', 500);
+            }
+        }
+        return $group;
     }
 }

@@ -65,33 +65,33 @@ class FaunaInitDetails implements InitDetailsInterface
             ],
             'Integumentary Material' => [
                 'code' => 'TM',
-                'dependency' => [['Material:Integumentary']],
                 'multiple' => true,
+                'dependency' => [['Material:Integumentary']],
             ],
             'Mammal Taxa' => [
                 'code' => 'TM',
-                'dependency' => [['Primary Taxa:Mammal']],
                 'multiple' => true,
+                'dependency' => [['Primary Taxa:Mammal']],
             ],
             'Bird Taxa' => [
                 'code' => 'TM',
-                'dependency' => [['Primary Taxa:Bird']],
                 'multiple' => true,
+                'dependency' => [['Primary Taxa:Bird']],
             ],
             'Common Bone' => [
                 'code' => 'TM',
-                'dependency' => [['Fauna Scope:Single Item'], ['Material:Bone', 'Material:Bone and Tooth']],
                 'multiple' => true,
+                'dependency' => [['Fauna Scope:Single Item'], ['Material:Bone', 'Material:Bone and Tooth']],
             ],
             'Mammal Bone' => [
                 'code' => 'TM',
-                'dependency' => [['Material:Bone'], ['Primary Taxa:Mammal']],
                 'multiple' => true,
+                'dependency' => [['Material:Bone'], ['Primary Taxa:Mammal']],
             ],
             'Bird Bone' => [
                 'code' => 'TM',
-                'dependency' => [['Material:Bone'], ['Primary Taxa:Bird']],
                 'multiple' => true,
+                'dependency' => [['Material:Bone'], ['Primary Taxa:Bird']],
             ],
             'Symmetry' => [
                 'code' => 'EM',

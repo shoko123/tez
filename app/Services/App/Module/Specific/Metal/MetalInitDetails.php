@@ -56,8 +56,8 @@ class MetalInitDetails   implements InitDetailsInterface
             ],
             'Modern Weaponry' => [
                 'code' => 'TM',
-                'dependency' => [['Primary Classification:Modern Weaponry']],
                 'multiple' => true,
+                'dependency' => [['Primary Classification:Modern Weaponry']],
             ],
             'Search-Description' => [
                 'label' => 'Search-Description',

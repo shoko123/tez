@@ -40,28 +40,28 @@ class GlassInitDetails implements InitDetailsInterface
             ],
             'Production' => [
                 'code' => 'TM',
-                'dependency' => [],
                 'multiple' => true,
+                'dependency' => [],
             ],
             'Vessel-Subtype' => [
                 'code' => 'TM',
-                'dependency' => [['Primary Classification:Vessel/Lamp']],
                 'multiple' => true,
+                'dependency' => [['Primary Classification:Vessel/Lamp']],
             ],
             'Color' => [
                 'code' => 'TM',
-                'dependency' => [],
                 'multiple' => true,
+                'dependency' => [],
             ],
             'Weathering' => [
                 'code' => 'TM',
-                'dependency' => [],
                 'multiple' => true,
+                'dependency' => [],
             ],
             'Weathering-Type' => [
                 'code' => 'TM',
-                'dependency' => [],
                 'multiple' => true,
+                'dependency' => [],
             ],
             'Order By' => [
                 'code' => 'OB',

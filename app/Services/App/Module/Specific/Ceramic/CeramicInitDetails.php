@@ -47,9 +47,8 @@ class CeramicInitDetails implements InitDetailsInterface
                 'dependency' => [['Registration Scope:Artifact']],
             ],
             'Includes Date' => [
-                'label' => 'Includes Date',
                 'code' => 'CT',
-                'options'  => [['label' => 'Yes', 'index' => 0], ['label' => 'No', 'index' => 1]]
+                'option_labels'  => ['Yes',  'No']
             ],
             'Search-Periods' => [
                 'label' => 'Search-Periods',
@@ -65,108 +64,107 @@ class CeramicInitDetails implements InitDetailsInterface
             ],
             'Ware Coarseness' => [
                 'code' => 'TM',
-                'dependency' => [['Registration Scope:Artifact']],
                 'multiple' => true,
+                'dependency' => [['Registration Scope:Artifact']],
             ],
             'Ware Color' => [
                 'code' => 'TM',
-                'dependency' => [['Registration Scope:Artifact']],
                 'multiple' => true,
+                'dependency' => [['Registration Scope:Artifact']],
             ],
             'Ware Temper' => [
                 'code' => 'TM',
-                'dependency' => [['Registration Scope:Artifact']],
                 'multiple' => true,
+                'dependency' => [['Registration Scope:Artifact']],
             ],
             'Grit Color' => [
                 'code' => 'TM',
-                'dependency' => [['Registration Scope:Artifact']],
                 'multiple' => true,
+                'dependency' => [['Registration Scope:Artifact']],
             ],
 
             'Life Stage' => [
                 'code' => 'TM',
-                'dependency' => [['Registration Scope:Artifact']],
                 'multiple' => true,
+                'dependency' => [['Registration Scope:Artifact']],
             ],
             'Production' => [
                 'code' => 'TM',
-                'dependency' => [['Registration Scope:Artifact']],
                 'multiple' => true,
+                'dependency' => [['Registration Scope:Artifact']],
             ],
             'Vessel Typology' => [
                 'code' => 'TM',
-                'dependency' => [['Primary Classification:Vessel/Lid']],
                 'multiple' => true,
+                'dependency' => [['Primary Classification:Vessel/Lid']],
             ],
             'Vessel Part' => [
                 'code' => 'TM',
-                'dependency' => [['Primary Classification:Vessel/Lid']],
                 'multiple' => true,
+                'dependency' => [['Primary Classification:Vessel/Lid']],
             ],
             'Vessel Base' => [
                 'code' => 'TM',
-                'dependency' => [['Vessel Part:Base']],
                 'multiple' => true,
+                'dependency' => [['Vessel Part:Base']],
             ],
 
             'Foot' => [
                 'code' => 'TM',
-                'dependency' => [['Vessel Part:Foot']],
                 'multiple' => true,
+                'dependency' => [['Vessel Part:Foot']],
             ],
             'Rim' => [
                 'code' => 'TM',
-                'dependency' => [['Vessel Part:Rim']],
                 'multiple' => true,
+                'dependency' => [['Vessel Part:Rim']],
             ],
             'Handle' => [
                 'code' => 'TM',
-                'dependency' => [['Vessel Part:Handle']],
                 'multiple' => true,
+                'dependency' => [['Vessel Part:Handle']],
             ],
             'Artifact Typology' => [
                 'code' => 'TM',
-                'dependency' => [['Primary Classification:Ceramic Artifact']],
                 'multiple' => true,
+                'dependency' => [['Primary Classification:Ceramic Artifact']],
             ],
             'Architectural/Installation Typology' => [
                 'code' => 'TM',
-                'dependency' => [['Primary Classification:Architectural/Installation']],
                 'multiple' => true,
+                'dependency' => [['Primary Classification:Architectural/Installation']],
             ],
             //// 
             'Plastic' => [
                 'code' => 'TM',
-                'dependency' => [['Registration Scope:Artifact']],
                 'multiple' => true,
+                'dependency' => [['Registration Scope:Artifact']],
             ],
             'Flat' => [
                 'code' => 'TM',
-                'dependency' => [['Registration Scope:Artifact']],
                 'multiple' => true,
+                'dependency' => [['Registration Scope:Artifact']],
             ],
             'Slip Color' => [
                 'code' => 'TM',
-                'dependency' => [['Flat:Slip']],
                 'multiple' => true,
+                'dependency' => [['Flat:Slip']],
             ],
             'Paint Color' => [
                 'code' => 'TM',
-                'dependency' => [['Flat:Paint']],
                 'multiple' => true,
+                'dependency' => [['Flat:Paint']],
             ],
             'Paint/Slip Pattern' => [
                 'code' => 'TM',
-                'dependency' => [['Flat:Paint', 'Flat:Slip']],
                 'multiple' => true,
+                'dependency' => [['Flat:Paint', 'Flat:Slip']],
             ],
             'Named Groups' => [
                 'code' => 'TM',
-                'dependency' => [],
                 'multiple' => true,
+                'dependency' => [],
             ],
-
             'Order By' => [
                 'code' => 'OB',
                 'options' => ['Area', 'Season', 'Locus No.', 'Basket No.', 'Artifact No.'],

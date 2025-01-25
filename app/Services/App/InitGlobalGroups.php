@@ -18,9 +18,8 @@ class InitGlobalGroups
                 'values_source_field' => 'id',
             ],
             'Registration Scope' => [
-                'label' => 'Registration Scope',
                 'code' => 'CT',
-                'options'  => [['label' => 'Basket', 'index' => 0], ['label' => 'Artifact', 'index' => 1]]
+                'option_labels'  => ['Basket', 'Artifact']
             ],
             'Media' => [
                 'label' => 'Media',
