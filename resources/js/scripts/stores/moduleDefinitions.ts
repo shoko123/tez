@@ -98,7 +98,7 @@ const moduleDefinitions: TModuleDefinitionImplementation = {
     categorizerFunc: (fields) => {
       const d = fields as TFields<'Ceramic'>
       return {
-        Scope: d.artifact_no === 0 ? 0 : 1,
+        'Registration Scope': d.artifact_no === 0 ? 0 : 1,
         'Includes Date': d.date_retrieved === null ? 1 : 0,
       }
     },
@@ -133,7 +133,7 @@ const moduleDefinitions: TModuleDefinitionImplementation = {
     categorizerFunc: (fields) => {
       const d = fields as TFields<'Lithic'>
       return {
-        Scope: d.artifact_no === 0 ? 0 : 1,
+        'Registration Scope': d.artifact_no === 0 ? 0 : 1,
       }
     },
     tabHeaders: [

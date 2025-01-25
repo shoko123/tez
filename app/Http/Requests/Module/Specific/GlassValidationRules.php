@@ -6,7 +6,7 @@ class GlassValidationRules extends ValidationRules
 {
     public function allowed_categorized_filter_group_names(): array
     {
-        return ['Scope'];
+        return [];
     }
 
     public function allowed_search_field_names(): array

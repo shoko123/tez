@@ -17,7 +17,7 @@ class LithicReadDetails implements ReadDetailsInterface
 
         foreach ($groups as $key => $group) {
             switch ($group['group_name']) {
-                case 'Scope':
+                case 'Registration Scope':
                     self::filterScope($group['selected']);
                     break;
 

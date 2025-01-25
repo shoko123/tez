@@ -17,8 +17,8 @@ class InitGlobalGroups
                 'values_source_module' => 'Area',
                 'values_source_field' => 'id',
             ],
-            'Scope' => [
-                'label' => 'Scope',
+            'Registration Scope' => [
+                'label' => 'Registration Scope',
                 'code' => 'CT',
                 'options'  => [['label' => 'Basket', 'index' => 0], ['label' => 'Artifact', 'index' => 1]]
             ],

@@ -44,7 +44,7 @@ class CeramicInitDetails implements InitDetailsInterface
                 'lookup_text_field' => 'name',
                 'useInTagger' => true,
                 'showAsTag' => true,
-                'dependency' => [['Scope:Artifact']],
+                'dependency' => [['Registration Scope:Artifact']],
             ],
             'Includes Date' => [
                 'label' => 'Includes Date',
@@ -65,33 +65,33 @@ class CeramicInitDetails implements InitDetailsInterface
             ],
             'Ware Coarseness' => [
                 'code' => 'TM',
-                'dependency' => [['Scope:Artifact']],
+                'dependency' => [['Registration Scope:Artifact']],
                 'multiple' => true,
             ],
             'Ware Color' => [
                 'code' => 'TM',
-                'dependency' => [['Scope:Artifact']],
+                'dependency' => [['Registration Scope:Artifact']],
                 'multiple' => true,
             ],
             'Ware Temper' => [
                 'code' => 'TM',
-                'dependency' => [['Scope:Artifact']],
+                'dependency' => [['Registration Scope:Artifact']],
                 'multiple' => true,
             ],
             'Grit Color' => [
                 'code' => 'TM',
-                'dependency' => [['Scope:Artifact']],
+                'dependency' => [['Registration Scope:Artifact']],
                 'multiple' => true,
             ],
 
             'Life Stage' => [
                 'code' => 'TM',
-                'dependency' => [['Scope:Artifact']],
+                'dependency' => [['Registration Scope:Artifact']],
                 'multiple' => true,
             ],
             'Production' => [
                 'code' => 'TM',
-                'dependency' => [['Scope:Artifact']],
+                'dependency' => [['Registration Scope:Artifact']],
                 'multiple' => true,
             ],
             'Vessel Typology' => [
@@ -125,7 +125,7 @@ class CeramicInitDetails implements InitDetailsInterface
                 'dependency' => [['Vessel Part:Handle']],
                 'multiple' => true,
             ],
-            'Ceramic Artifact Typology' => [
+            'Artifact Typology' => [
                 'code' => 'TM',
                 'dependency' => [['Primary Classification:Ceramic Artifact']],
                 'multiple' => true,
@@ -138,12 +138,12 @@ class CeramicInitDetails implements InitDetailsInterface
             //// 
             'Plastic' => [
                 'code' => 'TM',
-                'dependency' => [['Scope:Artifact']],
+                'dependency' => [['Registration Scope:Artifact']],
                 'multiple' => true,
             ],
             'Flat' => [
                 'code' => 'TM',
-                'dependency' => [['Scope:Artifact']],
+                'dependency' => [['Registration Scope:Artifact']],
                 'multiple' => true,
             ],
             'Slip Color' => [
@@ -181,12 +181,25 @@ class CeramicInitDetails implements InitDetailsInterface
                 'Season',
                 'Area',
                 'Registration Code',
-                'Scope',
-                'Primary Classification',
+                'Registration Scope',
                 'Media',
-                'Includes Date',
-                'Search-Periods',
-                'Search-Description',
+            ],
+            "Typology" => [
+                'Primary Classification',
+            ],
+            "Vessel Typology" => [
+                'Vessel Typology',
+                'Vessel Part',
+                'Vessel Base',
+                'Foot',
+                'Rim',
+                'Handle',
+            ],
+            "Artifact Typology" => [
+                'Artifact Typology',
+            ],
+            "Architectural/Installation Typology" => [
+                'Architectural/Installation Typology'
             ],
             "Ware" => [
                 'Ware Coarseness',
@@ -204,19 +217,7 @@ class CeramicInitDetails implements InitDetailsInterface
                 'Slip Color',
                 'Paint Color',
                 'Paint/Slip Pattern',
-
             ],
-            "Typology" => [
-                'Vessel Typology',
-                'Vessel Part',
-                'Vessel Base',
-                'Foot',
-                'Rim',
-                'Handle',
-                'Ceramic Artifact Typology',
-                'Architectural/Installation Typology'
-            ],
-
             'Cultures/Periods' => [
                 'Named Groups',
                 'Periods',
@@ -229,9 +230,11 @@ class CeramicInitDetails implements InitDetailsInterface
                 'Medieval Subperiods',
                 'Modern Subperiods'
             ],
-            // 'Ceramic Cultures' => [
-
-            // ],
+            'Search' => [
+                'Search-Periods',
+                'Search-Description',
+                'Includes Date',
+            ],
             'Order By' => [
                 'Order By',
             ],

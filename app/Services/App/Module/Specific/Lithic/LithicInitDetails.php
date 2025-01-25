@@ -36,21 +36,8 @@ class LithicInitDetails implements InitDetailsInterface
                 'showAsTag' => false,
                 'dependency' => [],
             ],
-            // 'Primary Classification' => [
-            //     'code' => 'LV',
-            //     'field_name' => 'lithic_primary_classification_id',
-            //     'lookup_table_name' => 'lithic_primary_classifications',
-            //     'lookup_text_field' => 'name',
-            //     'dependency' => [['Scope:Artifact']],
-            // ],
-
             'Types' => [
                 'code' => 'ON',
-            ],
-            'Includes Date' => [
-                'label' => 'Includes Date',
-                'code' => 'CT',
-                'options'  => [['label' => 'Yes', 'index' => 0], ['label' => 'No', 'index' => 1]]
             ],
             'Search-Description' => [
                 'label' => 'Search-Description',
@@ -72,7 +59,7 @@ class LithicInitDetails implements InitDetailsInterface
                 'Season',
                 'Area',
                 'Registration Code',
-                'Scope',
+                'Registration Scope',
                 'Media',
             ],
             "Typology" => [
