@@ -35,6 +35,10 @@ return new class extends Migration
             $table->unsignedTinyInteger('basket_no');
             $table->unsignedTinyInteger('artifact_no');
             //
+            $table->date('date_retrieved')->nullable();
+            $table->unsignedMediumInteger('weight')->nullable();
+            $table->string('field_description')->nullable();
+            //
             $table->unsignedTinyInteger('primary_taxon_id')->default(1);
             $table->unsignedTinyInteger('scope_id')->default(1);
             $table->unsignedTinyInteger('material_id')->default(1);

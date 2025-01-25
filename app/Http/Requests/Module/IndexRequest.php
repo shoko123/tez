@@ -54,10 +54,6 @@ class IndexRequest extends ModuleRequest
 
     public function messages(): array
     {
-        return [
-            'ids.*' => 'A non existing id - `:input` - was sent to the page() endpoint',
-            'ids' => 'page length exceeds the allowed max of 200',
-            'view' => 'View value sent - `:input` - is not allowed',
-        ];
+        return [];
     }
 }
