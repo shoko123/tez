@@ -11,6 +11,7 @@ use App\Services\App\DigModuleService;
 use App\Services\App\Module\InitDetailsInterface;
 use App\Models\Tag\TagGroup;
 use App\Exceptions\GeneralJsonException;
+use App\Services\App\InitGlobalGroups;
 
 class InitService extends DigModuleService
 {
@@ -44,7 +45,7 @@ class InitService extends DigModuleService
 
     protected function allGroups(): array
     {
-        return array_merge(self::$globalGroups, $this->details::modelGroups());
+        return array_merge(InitGlobalGroups::groups(), $this->details::modelGroups());
     }
 
     public function trio(): array
@@ -254,63 +255,4 @@ class InitService extends DigModuleService
             }),
         ]);
     }
-
-    protected static $globalGroups = [
-        'Season' => [
-            'code' => 'RV',
-            'values_source_module' => 'Season',
-            'values_source_field' => 'id',
-        ],
-        'Area' => [
-            'code' => 'RV',
-            'values_source_module' => 'Area',
-            'values_source_field' => 'id',
-        ],
-        'Scope' => [
-            'label' => 'Scope',
-            'code' => 'CT',
-            'options'  => [['label' => 'Basket', 'index' => 0], ['label' => 'Artifact', 'index' => 1]]
-        ],
-        'Media' => [
-            'label' => 'Media',
-            'code' => 'MD',
-            'options' => [],
-        ],
-        'Periods' => [
-            'code' => 'TG',
-            'dependency' => [],
-        ],
-        'Neolithic Subperiods' => [
-            'code' => 'TG',
-            'dependency' => [['Periods:Neolithic']],
-        ],
-        'Bronze Subperiods' => [
-            'code' => 'TG',
-            'dependency' => [['Periods:Bronze']],
-        ],
-        'Iron Subperiods' => [
-            'code' => 'TG',
-            'dependency' => [['Periods:Iron']],
-        ],
-        'Hellenistic Subperiods' => [
-            'code' => 'TG',
-            'dependency' => [['Periods:Hellenistic']],
-        ],
-        'Roman Subperiods' => [
-            'code' => 'TG',
-            'dependency' => [['Periods:Roman']],
-        ],
-        'Early-Islamic Subperiods' => [
-            'code' => 'TG',
-            'dependency' => [['Periods:Early Islamic']],
-        ],
-        'Medieval Subperiods' => [
-            'code' => 'TG',
-            'dependency' => [['Periods:Medieval']],
-        ],
-        'Modern Subperiods' => [
-            'code' => 'TG',
-            'dependency' => [['Periods:Modern']],
-        ],
-    ];
 }
