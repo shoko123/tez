@@ -78,25 +78,25 @@ class InitService extends DigModuleService
                 return $this->getOptionalNumericPropertyGroupDetails($label, $group);
 
             case 'EM':  // enum columns
-                return $this->getEnumGroupDetails($label, $group);
+                return $this->getEnumGroupDetails($group);
 
             case 'LV': // lookup values 
-                return $this->getLookupFieldGroupDetails($label, $group);
+                return $this->getLookupFieldGroupDetails($group);
 
             case 'RV':  // restricted value lists;
                 // they often belong to a different module.
                 // e.g. to filter Stone by area we use the area restricted values list
-                return $this->getRestrictedValuesGroupDetails($label, $group);
+                return $this->getRestrictedValuesGroupDetails($group);
 
             case 'CT': //categorized group
-                return $this->getCategorizedGroupDetails($label, $group);
+                return $this->getCategorizedGroupDetails($group);
 
             case 'SF': //field search
             case 'MD': //media
                 return $group;
 
             case 'OB': // order by values 
-                return $this->getOrderByGroupDetails($label, $group);
+                return $this->getOrderByGroupDetails($group);
 
             default:
                 throw new GeneralJsonException('***MODEL INIT() ERROR*** getGroupDetails() invalid code: ' . $group['code'], 500);
@@ -174,7 +174,7 @@ class InitService extends DigModuleService
         ]);
     }
 
-    private function getEnumGroupDetails($label, $group)
+    private function getEnumGroupDetails($group)
     {
         $vals = self::getEnumValues(self::$tableName, $group['field_name']);
         $options = array();
@@ -204,7 +204,7 @@ class InitService extends DigModuleService
         return $enum;
     }
 
-    private function getLookupFieldGroupDetails($label, $group)
+    private function getLookupFieldGroupDetails($group)
     {
         $options = DB::table($group['lookup_table_name'])->get();
         $text_field = $group['lookup_text_field'];
@@ -221,7 +221,7 @@ class InitService extends DigModuleService
     }
 
 
-    private function getRestrictedValuesGroupDetails($label, $group)
+    private function getRestrictedValuesGroupDetails($group)
     {
         // throw_if(is_null(self::$restrictedValues[$label]), new GeneralJsonException('** MODEL INIT ERROR - RVGroup Bad format for "' . $label . '" ***', 500));
 
@@ -250,7 +250,7 @@ class InitService extends DigModuleService
         );
     }
 
-    private function getCategorizedGroupDetails($label, $group)
+    private function getCategorizedGroupDetails($group)
     {
         $mapFunc = function ($v, $k) {
             return ['label' => $v, 'index' => $k];
@@ -261,7 +261,7 @@ class InitService extends DigModuleService
         return array_merge($group, ['options' => $options]);
     }
 
-    private function getOrderByGroupDetails($label, $group)
+    private function getOrderByGroupDetails($group)
     {
         $options = $this->model::orderByOptions();
 

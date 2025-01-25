@@ -22,9 +22,8 @@ class InitGlobalGroups
                 'option_labels'  => ['Basket', 'Artifact']
             ],
             'Media' => [
-                'label' => 'Media',
                 'code' => 'MD',
-                'options' => [],
+                'options' => [], // loaded to front end at appInit()
             ],
             'Periods' => [
                 'code' => 'TG',
