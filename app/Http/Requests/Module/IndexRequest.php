@@ -28,7 +28,7 @@ class IndexRequest extends ModuleRequest
             //
             //TODO validate that vals exist in the other tables' values (awkward)
             'query.discrete_field_values' => ['array'],
-            'query.discrete_field_values.*.label' => ['required', $this->rule_discrete_value_filter_group_name_is_valid()],
+            'query.discrete_field_values.*.group_name' => ['required', $this->rule_discrete_value_filter_group_name_is_valid()],
             'query.discrete_field_values.*.vals' => ['array'],
             'query.discrete_field_values.*.vals.*' => ['required', new RuleStringIntOrBool()],
             //
@@ -47,7 +47,7 @@ class IndexRequest extends ModuleRequest
             'query.media.*' => ['string'],
             //
             'query.order_by.*' => ['array'],
-            'query.order_by.*.label' => ['required', $this->rule_order_by_name_is_valid()],
+            'query.order_by.*.group_name' => ['required', $this->rule_order_by_group_name_is_valid()],
             'query.order_by.*.asc' => ['boolean'],
         ];
     }

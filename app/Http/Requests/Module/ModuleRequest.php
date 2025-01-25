@@ -73,7 +73,7 @@ class ModuleRequest extends FormRequest
         return 'in:' . implode(',', $groupNames);
     }
 
-    protected function rule_order_by_name_is_valid(): string
+    protected function rule_order_by_group_name_is_valid(): string
     {
         $groupNames = array_keys($this->model->orderByOptions());
         return 'in:' . implode(',', $groupNames);

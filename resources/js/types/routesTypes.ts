@@ -72,12 +72,12 @@ type TApiFilters = {
   onp_ids: number[] //optional numeric property
   categorized: { group_name: string; selected: { name: string; index: number }[] }[]
   discrete_field_values: {
-    label: string
+    group_name: string
     vals: TFieldValue[]
   }[]
   field_search: { field_name: string; vals: string[] }[]
   media: string[]
-  order_by: { label: string; asc: boolean }[]
+  order_by: { group_name: string; asc: boolean }[]
 }
 
 type TParseQuery = {

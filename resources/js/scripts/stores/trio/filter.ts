@@ -57,13 +57,13 @@ export const useFilterStore = defineStore('filter', () => {
         case 'EM':
           {
             const i = all.discrete_field_values.findIndex((x) => {
-              return x.label === group.label
+              return x.group_name === group.label
             })
 
             if (i === -1) {
               //if new group, push the option's group into the groups array with itself as the first option
               all.discrete_field_values.push({
-                label: group.label,
+                group_name: group.label,
                 vals: [option.extra],
               })
             } else {
@@ -136,7 +136,7 @@ export const useFilterStore = defineStore('filter', () => {
             assert(ordeByItem !== undefined, `Selected OrderBy option "${option.text} not found`)
 
             all.order_by.push({
-              label: <string>ordeByItem,
+              group_name: <string>ordeByItem,
               asc: option.text.slice(-1) === 'A',
             })
           }

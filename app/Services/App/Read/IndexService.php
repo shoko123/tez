@@ -84,12 +84,12 @@ class IndexService extends DigModuleService
         $discreteFilters = $this->model::discreteFilterOptions();
 
         foreach ($cols as $key => $data) {
-            if (!is_array($discreteFilters[$data['label']])) {
-                $this->builder->whereIn($discreteFilters[$data['label']], $data['vals']);
+            if (!is_array($discreteFilters[$data['group_name']])) {
+                $this->builder->whereIn($discreteFilters[$data['group_name']], $data['vals']);
             } else {
-                $field = $discreteFilters[$data['label']]['field'];
-                $start = $discreteFilters[$data['label']]['start'];
-                $length = $discreteFilters[$data['label']]['length'];
+                $field = $discreteFilters[$data['group_name']]['field'];
+                $start = $discreteFilters[$data['group_name']]['start'];
+                $length = $discreteFilters[$data['group_name']]['length'];
 
                 $qry = 'SUBSTRING(' . $field . ', ' . $start . ', ' . $length . ') ' .  ' in (' .
                     rtrim(str_repeat('?,', count($data['vals'])), ',') .
@@ -188,12 +188,12 @@ class IndexService extends DigModuleService
         $orderBy = $this->model::orderByOptions();
 
         foreach ($order_by as $key => $data) {
-            if (!is_array($orderBy[$data['label']])) {
-                $this->builder->orderBy($orderBy[$data['label']], $data['asc'] ? 'asc' : 'desc');
+            if (!is_array($orderBy[$data['group_name']])) {
+                $this->builder->orderBy($orderBy[$data['group_name']], $data['asc'] ? 'asc' : 'desc');
             } else {
-                $field = $orderBy[$data['label']]['field'];
-                $start = $orderBy[$data['label']]['start'];
-                $length = $orderBy[$data['label']]['length'];
+                $field = $orderBy[$data['group_name']]['field'];
+                $start = $orderBy[$data['group_name']]['start'];
+                $length = $orderBy[$data['group_name']]['length'];
                 $direction = $data['asc'] ? 'ASC' : 'DESC';
                 $line = 'SUBSTRING(' . $field . ', ' . $start . ', ' . $length . ') ' . $direction;
                 $this->builder->orderByRaw($line);
