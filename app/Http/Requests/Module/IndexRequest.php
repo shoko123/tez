@@ -28,7 +28,6 @@ class IndexRequest extends ModuleRequest
             //
             //TODO validate that vals exist in the other tables' values (awkward)
             'query.discrete_field_values' => ['array'],
-            'query.discrete_field_values.*.field_name' => ['required'], // TODO implement this!
             'query.discrete_field_values.*.label' => ['required', $this->rule_discrete_value_filter_group_name_is_valid()],
             'query.discrete_field_values.*.vals' => ['array'],
             'query.discrete_field_values.*.vals.*' => ['required', new RuleStringIntOrBool()],

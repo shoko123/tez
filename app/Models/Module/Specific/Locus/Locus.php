@@ -13,12 +13,17 @@ class Locus extends DigModuleModel
     protected $table = 'loci';
     protected $moduleTagTable = 'locus_tags';
 
-    static public function enumFields(): array
+    public static function restrictedValues(): array
     {
         return [];
     }
 
-    static public function dateFields(): array
+    public static function enumFields(): array
+    {
+        return [];
+    }
+
+    public static function dateFields(): array
     {
         return ['date_opened', 'date_closed'];
     }
@@ -87,7 +92,7 @@ class Locus extends DigModuleModel
         );
     }
 
-    static public function discreteFilterOptions(): array
+    public static function discreteFilterOptions(): array
     {
         return [
             'Area' => 'area_id',
@@ -95,7 +100,7 @@ class Locus extends DigModuleModel
         ];
     }
 
-    static public function orderByOptions(): array
+    public static function orderByOptions(): array
     {
         return [
             'Area' => 'area_id',

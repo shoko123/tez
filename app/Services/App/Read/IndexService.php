@@ -81,15 +81,15 @@ class IndexService extends DigModuleService
 
     public function applyFieldValueFilters(array $cols)
     {
-        $options = $this->model::discreteFilterOptions();
+        $discreteFilters = $this->model::discreteFilterOptions();
 
         foreach ($cols as $key => $data) {
-            if (!is_array($options[$data['label']])) {
-                $this->builder->whereIn($data['field_name'], $data['vals']);
+            if (!is_array($discreteFilters[$data['label']])) {
+                $this->builder->whereIn($discreteFilters[$data['label']], $data['vals']);
             } else {
-                $field = $options[$data['label']]['field'];
-                $start = $options[$data['label']]['start'];
-                $length = $options[$data['label']]['length'];
+                $field = $discreteFilters[$data['label']]['field'];
+                $start = $discreteFilters[$data['label']]['start'];
+                $length = $discreteFilters[$data['label']]['length'];
 
                 $qry = 'SUBSTRING(' . $field . ', ' . $start . ', ' . $length . ') ' .  ' in (' .
                     rtrim(str_repeat('?,', count($data['vals'])), ',') .
@@ -185,15 +185,15 @@ class IndexService extends DigModuleService
 
     public function applyOrderBy(array $order_by)
     {
-        $options = $this->model::orderByOptions();
+        $orderBy = $this->model::orderByOptions();
 
         foreach ($order_by as $key => $data) {
-            if (!is_array($options[$data['label']])) {
-                $this->builder->orderBy($options[$data['label']], $data['asc'] ? 'asc' : 'desc');
+            if (!is_array($orderBy[$data['label']])) {
+                $this->builder->orderBy($orderBy[$data['label']], $data['asc'] ? 'asc' : 'desc');
             } else {
-                $field = $options[$data['label']]['field'];
-                $start = $options[$data['label']]['start'];
-                $length = $options[$data['label']]['length'];
+                $field = $orderBy[$data['label']]['field'];
+                $start = $orderBy[$data['label']]['start'];
+                $length = $orderBy[$data['label']]['length'];
                 $direction = $data['asc'] ? 'ASC' : 'DESC';
                 $line = 'SUBSTRING(' . $field . ', ' . $start . ', ' . $length . ') ' . $direction;
                 $this->builder->orderByRaw($line);

@@ -10,19 +10,21 @@ class Area extends DigModuleModel
 {
     protected $table = 'areas';
 
-    static public function enumFields(): array
+    public static function restrictedValues(): array
+    {
+        return ['id' => [
+            'vals' => ['K', 'L', 'M', 'N', 'P', 'Q', 'S'],
+        ]];
+    }
+
+    public static function enumFields(): array
     {
         return [];
     }
 
-    static public function dateFields(): array
+    public static function dateFields(): array
     {
         return [];
-    }
-
-    static public function restrictedFieldValues(): array
-    {
-        return ['id' => ['K', 'L', 'M', 'N', 'P', 'Q', 'S']];
     }
 
     protected function derivedId(): Attribute
@@ -39,13 +41,12 @@ class Area extends DigModuleModel
         );
     }
 
-
-    static public function discreteFilterOptions(): array
+    public static function discreteFilterOptions(): array
     {
         return [];
     }
 
-    static public function orderByOptions(): array
+    public static function orderByOptions(): array
     {
         return [];
     }

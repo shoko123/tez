@@ -13,12 +13,17 @@ class Fauna extends DigModuleModel
     protected $table = 'fauna';
     protected $moduleTagTable = 'fauna_tags';
 
-    static public function enumFields(): array
+    public static function restrictedValues(): array
+    {
+        return [];
+    }
+
+    public static function enumFields(): array
     {
         return ['code', 'symmetry', 'weathering'];
     }
 
-    static public function dateFields(): array
+    public static function dateFields(): array
     {
         return ['date_retrieved'];
     }
@@ -67,7 +72,7 @@ class Fauna extends DigModuleModel
         );
     }
 
-    static public function discreteFilterOptions(): array
+    public static function discreteFilterOptions(): array
     {
         return [
             'Season' => [
@@ -93,7 +98,7 @@ class Fauna extends DigModuleModel
     }
 
 
-    static public function orderByOptions(): array
+    public static function orderByOptions(): array
     {
         return [
             'Season' => [
@@ -113,7 +118,6 @@ class Fauna extends DigModuleModel
             ],
             'Basket No.' => 'basket_no',
             'Artifact No.' => 'artifact_no',
-
         ];
     }
 }

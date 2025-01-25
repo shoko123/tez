@@ -29,21 +29,6 @@ class FaunaInitDetails implements InitDetailsInterface
     public static function modelGroups(): array
     {
         return [
-            'Season' => [
-                'code' => 'RV',
-                'source' => ['module' => 'Season', 'field' => 'id'],
-                'field_name' => 'locus_id',
-                'dependency' => [],
-                'manipulator' => function ($val) {
-                    return (string) ($val + 10);
-                },
-            ],
-            'Area' => [
-                'code' => 'RV',
-                'source' => ['module' => 'Area', 'field' => 'id'],
-                'field_name' => 'area_id',
-                'dependency' => [],
-            ],
             'Registration Code' => [
                 'code' => 'EM',
                 'field_name' => 'code',

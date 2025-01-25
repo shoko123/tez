@@ -9,12 +9,17 @@ class Survey extends DigModuleModel
 {
     protected $table = 'survey';
 
-    static public function enumFields(): array
+    public static function restrictedValues(): array
     {
         return [];
     }
 
-    static public function dateFields(): array
+    public static function enumFields(): array
+    {
+        return [];
+    }
+
+    public static function dateFields(): array
     {
         return ['surveyed_date'];
     }
@@ -33,12 +38,12 @@ class Survey extends DigModuleModel
         );
     }
 
-    static public function discreteFilterOptions(): array
+    public static function discreteFilterOptions(): array
     {
         return ['Area' => 'area_id'];
     }
 
-    static public function orderByOptions(): array
+    public static function orderByOptions(): array
     {
         return ['Area' => 'area_id', 'Feature No.' => 'feature_no'];
     }

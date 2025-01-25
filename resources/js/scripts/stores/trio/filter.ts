@@ -57,14 +57,13 @@ export const useFilterStore = defineStore('filter', () => {
         case 'EM':
           {
             const i = all.discrete_field_values.findIndex((x) => {
-              return x.field_name === group.field_name
+              return x.label === group.label
             })
 
             if (i === -1) {
               //if new group, push the option's group into the groups array with itself as the first option
               all.discrete_field_values.push({
                 label: group.label,
-                field_name: group.field_name!,
                 vals: [option.extra],
               })
             } else {

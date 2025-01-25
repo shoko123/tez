@@ -73,7 +73,6 @@ type TApiFilters = {
   categorized: { group_name: string; selected: { name: string; index: number }[] }[]
   discrete_field_values: {
     label: string
-    field_name: string
     vals: TFieldValue[]
   }[]
   field_search: { field_name: string; vals: string[] }[]

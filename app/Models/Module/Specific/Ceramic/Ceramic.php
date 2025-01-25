@@ -13,12 +13,17 @@ class Ceramic extends DigModuleModel
     protected $table = 'ceramics';
     protected $moduleTagTable = 'ceramic_tags';
 
-    static public function enumFields(): array
+    public static function restrictedValues(): array
     {
         return [];
     }
 
-    static public function dateFields(): array
+    public static function enumFields(): array
+    {
+        return [];
+    }
+
+    public static function dateFields(): array
     {
         return ['date_retrieved'];
     }
@@ -52,7 +57,7 @@ class Ceramic extends DigModuleModel
         );
     }
 
-    static public function discreteFilterOptions(): array
+    public static function discreteFilterOptions(): array
     {
         return [
             'Season' => [
@@ -72,7 +77,7 @@ class Ceramic extends DigModuleModel
         ];
     }
 
-    static public function orderByOptions(): array
+    public static function orderByOptions(): array
     {
         return [
             'Season' => [
@@ -93,7 +98,6 @@ class Ceramic extends DigModuleModel
             'Registration Code' => 'code',
             'Basket No.' => 'basket_no',
             'Artifact No.' => 'artifact_no',
-
         ];
     }
 }

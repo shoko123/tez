@@ -13,12 +13,17 @@ class Glass extends DigModuleModel
     protected $table = 'glass';
     protected $moduleTagTable = 'glass_tags';
 
-    static public function enumFields(): array
+    public static function restrictedValues(): array
     {
         return [];
     }
 
-    static public function dateFields(): array
+    public static function enumFields(): array
+    {
+        return [];
+    }
+
+    public static function dateFields(): array
     {
         return ['date_retrieved'];
     }
@@ -65,7 +70,7 @@ class Glass extends DigModuleModel
     }
 
 
-    static public function discreteFilterOptions(): array
+    public static function discreteFilterOptions(): array
     {
         return [
             'Season' => [
@@ -86,8 +91,7 @@ class Glass extends DigModuleModel
         ];
     }
 
-
-    static public function orderByOptions(): array
+    public static function orderByOptions(): array
     {
         return [
             'Season' => [
@@ -107,7 +111,6 @@ class Glass extends DigModuleModel
             ],
             'Basket No.' => 'basket_no',
             'Artifact No.' => 'artifact_no',
-
         ];
     }
 }

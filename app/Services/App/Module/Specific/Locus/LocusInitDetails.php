@@ -29,21 +29,6 @@ class LocusInitDetails  implements InitDetailsInterface
     public static function modelGroups(): array
     {
         return [
-            'Season' => [
-                'code' => 'RV',
-                'source' => ['module' => 'Season', 'field' => 'id'],
-                'field_name' => 'season_id',
-                'dependency' => [],
-                'manipulator' => function ($val) {
-                    return (string) ($val + 10);
-                },
-            ],
-            'Area' => [
-                'code' => 'RV',
-                'source' => ['module' => 'Area', 'field' => 'id'],
-                'field_name' => 'area_id',
-                'dependency' => [],
-            ],
             'Search-Description' => [
                 'label' => 'Search-Description',
                 'code' => 'SF',
@@ -69,9 +54,6 @@ class LocusInitDetails  implements InitDetailsInterface
     public static function categories(): array
     {
         return [
-            'Search' => [
-                'Search-Description',
-            ],
             'Registration' => [
                 'Season',
                 'Area',
@@ -80,6 +62,9 @@ class LocusInitDetails  implements InitDetailsInterface
             ],
             'Description' => [
                 'Locus Type'
+            ],
+            'Search' => [
+                'Search-Description',
             ],
             'Order By' => [
                 'Order By',

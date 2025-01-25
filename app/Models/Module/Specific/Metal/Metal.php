@@ -13,19 +13,19 @@ class Metal extends DigModuleModel
     protected $table = 'metals';
     protected $moduleTagTable = 'metal_tags';
 
-    static public function enumFields(): array
+    public static function restrictedValues(): array
     {
         return [];
     }
 
-    static public function dateFields(): array
+    public static function enumFields(): array
+    {
+        return [];
+    }
+
+    public static function dateFields(): array
     {
         return ['date_retrieved'];
-    }
-
-    static public function restrictedFieldValues(): array
-    {
-        return [];
     }
 
     public function locus()
@@ -74,8 +74,7 @@ class Metal extends DigModuleModel
         );
     }
 
-
-    static public function discreteFilterOptions(): array
+    public static function discreteFilterOptions(): array
     {
         return [
             'Season' => [
@@ -95,8 +94,7 @@ class Metal extends DigModuleModel
         ];
     }
 
-
-    static public function orderByOptions(): array
+    public static function orderByOptions(): array
     {
         return [
             'Season' => [
@@ -116,7 +114,6 @@ class Metal extends DigModuleModel
             ],
             'Basket No.' => 'basket_no',
             'Artifact No.' => 'artifact_no',
-
         ];
     }
 }

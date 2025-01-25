@@ -115,24 +115,25 @@ class InitService extends DigModuleService
 
     private function getRVGroupDetails($label, $group)
     {
-        throw_if(is_null($group['source']['module']), new GeneralJsonException('** MODEL INIT ERROR - RVGroup Bad format for "' . $label . '" ***', 500));
+        // throw_if(is_null(self::$restrictedValues[$label]), new GeneralJsonException('** MODEL INIT ERROR - RVGroup Bad format for "' . $label . '" ***', 500));
 
-        $model = GetService::getModel($group['source']['module']);
-        $res =  $model::restrictedFieldValues();
-
-        $mapFunc = function ($y)  use ($group) {
-            $manipulator = array_key_exists('manipulator', $group);
-            return ['label' => $manipulator ? $group['manipulator']($y) : $y, 'id' => $y];
+        $model = GetService::getModel($group['values_source_module']);
+        $resVals =  $model::restrictedValues();
+        $specific = $resVals[$group['values_source_field']];
+        $manipulator = array_key_exists('manipulator', $specific) ? $specific['manipulator'] : function ($val) {
+            return $val;
         };
 
-        $options = array_map($mapFunc, $res[$group['source']['field']]);
+        $mapFunc = function ($y) use ($manipulator) {
+            return ['label' => $manipulator($y), 'id' => $y];
+        };
 
-        unset($group['source']);
-        unset($group['manipulator']); // May or may not exist!
+        $options = array_map($mapFunc, $specific['vals']);
 
         return array_merge($group, [
             'label' => $label,
             'options' => $options,
+            'dependency' => []
         ]);
     }
 
@@ -255,15 +256,25 @@ class InitService extends DigModuleService
     }
 
     protected static $globalGroups = [
-        'Media' => [
-            'label' => 'Media',
-            'code' => 'MD',
-            'options' => [],
+        'Season' => [
+            'code' => 'RV',
+            'values_source_module' => 'Season',
+            'values_source_field' => 'id',
+        ],
+        'Area' => [
+            'code' => 'RV',
+            'values_source_module' => 'Area',
+            'values_source_field' => 'id',
         ],
         'Scope' => [
             'label' => 'Scope',
             'code' => 'CT',
             'options'  => [['label' => 'Basket', 'index' => 0], ['label' => 'Artifact', 'index' => 1]]
+        ],
+        'Media' => [
+            'label' => 'Media',
+            'code' => 'MD',
+            'options' => [],
         ],
         'Periods' => [
             'code' => 'TG',

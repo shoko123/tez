@@ -29,12 +29,6 @@ class SurveyInitDetails implements InitDetailsInterface
     public static function modelGroups(): array
     {
         return [
-            'Area' => [
-                'code' => 'RV',
-                'source' => ['module' => 'Area', 'field' => 'id'],
-                'field_name' => 'area_id',
-                'dependency' => [],
-            ],
             'Order By' => [
                 'label' => 'Order By',
                 'code' => 'OB',

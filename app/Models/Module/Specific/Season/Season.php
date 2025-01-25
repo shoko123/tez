@@ -10,19 +10,24 @@ class Season extends DigModuleModel
 {
     protected $table = 'seasons';
 
-    static public function enumFields(): array
+    public static function restrictedValues(): array
+    {
+        return ['id' => [
+            'vals' => ['3', '4', '5', '6', '7', '8'],
+            'manipulator' => function ($val) {
+                return (string) ($val + 2010);
+            }
+        ]];
+    }
+
+    public static function enumFields(): array
     {
         return [];
     }
 
-    static public function dateFields(): array
+    public static function dateFields(): array
     {
         return [];
-    }
-
-    static public function restrictedFieldValues(): array
-    {
-        return ['id' => ['3', '4', '5', '6', '7', '8']];
     }
 
     protected function derivedId(): Attribute
@@ -39,11 +44,12 @@ class Season extends DigModuleModel
         );
     }
 
-    static public function discreteFilterOptions(): array
+    public static function discreteFilterOptions(): array
     {
         return [];
     }
-    static public function orderByOptions(): array
+
+    public static function orderByOptions(): array
     {
         return [];
     }

@@ -21,17 +21,19 @@ abstract class DigModuleModel extends Model implements HasMedia
 
     protected $guarded = [];
 
+    abstract public static function restrictedValues(): array;
+
     abstract protected function short(): Attribute;
 
     abstract protected function derivedId(): Attribute;
 
-    abstract static public function enumFields(): array;
+    abstract public static function enumFields(): array;
 
-    abstract static public function dateFields(): array;
+    abstract public static function dateFields(): array;
 
-    abstract static public function discreteFilterOptions(): array;
+    abstract public static function discreteFilterOptions(): array;
 
-    abstract static public function orderByOptions(): array;
+    abstract public static function orderByOptions(): array;
 
     public function tableName(): string
     {

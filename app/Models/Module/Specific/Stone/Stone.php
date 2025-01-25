@@ -13,12 +13,17 @@ class Stone extends DigModuleModel
     protected $table = 'stones';
     protected $moduleTagTable = 'stone_tags';
 
-    static public function enumFields(): array
+    public static function restrictedValues(): array
+    {
+        return [];
+    }
+
+    public static function enumFields(): array
     {
         return ['code'];
     }
 
-    static public function dateFields(): array
+    public static function dateFields(): array
     {
         return ['date_retrieved'];
     }
@@ -69,7 +74,7 @@ class Stone extends DigModuleModel
         );
     }
 
-    static public function discreteFilterOptions(): array
+    public static function discreteFilterOptions(): array
     {
         return [
             'Season' => [
@@ -91,7 +96,7 @@ class Stone extends DigModuleModel
         ];
     }
 
-    static public function orderByOptions(): array
+    public static function orderByOptions(): array
     {
         return [
             'Season' => [
@@ -112,7 +117,6 @@ class Stone extends DigModuleModel
             'Code' => 'code',
             'Baske No.' => 'basket_no',
             'Artifact No.' => 'artifact_no',
-
         ];
     }
 }

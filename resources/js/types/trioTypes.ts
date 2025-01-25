@@ -5,6 +5,7 @@ type TrioSourceName = TrioSelectorSource | 'Item'
 
 // All groups have code & label keys.
 type TDefs = {
+  // enum
   EM: {
     API: {
       field_name: string
@@ -13,6 +14,7 @@ type TDefs = {
     }
     TRIO: { field_name: string; useInTagger: boolean; showAsTag: boolean; dependency: string[][] }
   }
+  // lookup value
   LV: {
     API: {
       table_name: string
@@ -20,20 +22,23 @@ type TDefs = {
       dependency: string[][]
       options: { id: number; label: string }[]
     }
-    TRIO: { field_name: string; dependency: string[][] }
+    TRIO: { field_name: string; useInTagger: boolean; showAsTag: boolean; dependency: string[][] }
   }
+  // restricted values (from a list). similar to enum either PK or possibly one that may need to be changed often.
   RV: {
     API: {
       options: { id: number; label: string }[]
     }
     TRIO: object
   }
+  // categorized (record => index)
   CT: {
     API: {
       options: { index: number; label: string }[]
     }
     TRIO: object
   }
+  // module specific tags
   TM: {
     API: {
       dependency: string[][]
@@ -43,6 +48,7 @@ type TDefs = {
     }
     TRIO: { multiple: boolean; dependency: string[][] }
   }
+  // global tags
   TG: {
     API: {
       dependency: string[][]
@@ -52,6 +58,7 @@ type TDefs = {
     }
     TRIO: { group_id: number; multiple: boolean; dependency: string[][] }
   }
+  // optional numeric propertites
   ON: {
     API: {
       onp_group_id: number
@@ -59,14 +66,17 @@ type TDefs = {
     }
     TRIO: { group_id: number }
   }
+  // textual search field (column)
   SF: {
     API: { field_name: string; options: string[] }
     TRIO: { field_name: string }
   }
+  // media
   MD: {
     API: { options: string[] }
     TRIO: object
   }
+  // order by
   OB: {
     API: { options: string[] }
     TRIO: object
@@ -106,12 +116,6 @@ type TOptionObj = { [key: string]: TOption }
 
 // These are the trio (front) groups, if ever one wants to narrow to a specific type.
 // I was too lazy, and instead made all possible properties optional and used the non-null assertion operator (!) when needed.
-type TGroupSpecific<C extends TCode> = Omit<TDefs[C]['TRIO'], 'options'> & {
-  code: C
-  label: string
-  optionKeys: string[]
-}
-
 type TGroup<C extends TCode = TCode> = Omit<TDefs[C]['TRIO'], 'options'> & {
   code: C
   label: string
@@ -151,7 +155,6 @@ export {
   TCategorizerFunc,
   TApiGroup,
   TGroupSpaceAndCode,
-  TGroupSpecific,
   TGroup,
   TCode,
 }
