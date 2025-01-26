@@ -1,6 +1,11 @@
 <template>
   <v-container v-if="item" fluid class="pa-0 ma-0">
     <v-row class="ga-1">
+      <v-text-field v-model="item.date_retrieved" label="Date Retrieved" readonly filled />
+      <v-text-field v-model="item.weight" label="Weight (gm)" readonly filled />
+      <v-text-field v-model="item.field_description" label="Field Description" readonly filled />
+    </v-row>
+    <v-row class="ga-1">
       <v-text-field v-model="lf.primary_taxon_id" label="Primary Taxon" readonly filled />
       <v-text-field v-model="lf.scope_id" label="Scope" readonly filled />
       <v-text-field v-model="lf.material_id" label="Material" readonly filled />
@@ -27,7 +32,7 @@
 
     <v-row class="ga-1">
       <!-- <v-textarea v-model="item.description" label="Specialist Description" readonly filled /> -->
-      <v-textarea v-model="item.notes" label="Specialist Notes" readonly filled />
+      <v-textarea v-model="item.specialist_notes" label="Specialist Notes" readonly filled />
     </v-row>
 
     <!-- <v-row class="ga-1">

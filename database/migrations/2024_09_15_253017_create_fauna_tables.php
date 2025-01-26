@@ -53,7 +53,7 @@ return new class extends Migration
             $table->string('burning', 400)->nullable();
             $table->enum('weathering', ['Unassigned', '0', '1', '2', '3', '4', '5']);
             $table->string('other_bsm', 200)->nullable();
-            $table->string('notes', 200)->nullable();
+            $table->string('specialist_notes', 200)->nullable();
             $table->string('measured', 200)->nullable();
 
             $table->foreign('locus_id')
