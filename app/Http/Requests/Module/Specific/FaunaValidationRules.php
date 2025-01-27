@@ -6,7 +6,7 @@ class FaunaValidationRules extends ValidationRules
 {
     public function allowed_categorized_filter_group_names(): array
     {
-        return [];
+        return ['Registration Scope'];
     }
 
     public function allowed_search_field_names(): array

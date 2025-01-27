@@ -149,6 +149,12 @@ const moduleDefinitions: TModuleDefinitionImplementation = {
     idDerived: smallFindsCommon.idDerived,
     slugRegExp: smallFindsCommon.slugRegExp,
     idFormatter: smallFindsCommon.idFormatter,
+    categorizerFunc: (fields) => {
+      const d = fields as TFields<'Fauna'>
+      return {
+        'Registration Scope': d.artifact_no === 0 ? 0 : 1,
+      }
+    },
     tabHeaders: [
       ['Name', 'start', 'tag'],
       ['Taxa', 'start', 'primary_taxon_id'],

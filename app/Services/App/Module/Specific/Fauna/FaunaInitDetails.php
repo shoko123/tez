@@ -146,9 +146,10 @@ class FaunaInitDetails implements InitDetailsInterface
     {
         return [
             'Registration' => [
+                'Registration Code',
+                'Registration Scope',
                 'Season',
                 'Area',
-                'Registration Code',
                 'Media',
             ],
             "Basic Characteristics" => [

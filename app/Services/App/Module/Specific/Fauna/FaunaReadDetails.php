@@ -9,9 +9,45 @@ use App\Services\App\Related\SmallFindsRelatedService;
 
 class FaunaReadDetails implements ReadDetailsInterface
 {
+    private static Builder $builder;
+
     public static function applyCategorizedFilters(Builder $builder, array $groups): Builder
     {
-        return $builder;
+        self::$builder = $builder;
+
+        foreach ($groups as $key => $group) {
+            switch ($group['group_name']) {
+                case 'Registration Scope':
+                    self::filterScope($group['selected']);
+                    break;
+
+                default:
+                    // Do nothing
+            }
+        }
+        return self::$builder;
+    }
+
+    private static function filterScope(array $vals)
+    {
+        if (count($vals) !== 1) {
+            return;
+        }
+
+        self::$builder->Where(function ($query) use ($vals) {
+            switch ($vals[0]['name']) {
+                case 'Basket':
+                    $query->where('artifact_no', 0);
+                    return;
+
+                case 'Artifact':
+                    $query->Where('artifact_no', '!=', 0);
+                    return;
+
+                default:
+                    return;
+            }
+        });
     }
 
     public static function defaultOrderBy(): array
