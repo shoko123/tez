@@ -10,13 +10,8 @@ class LithicOnp extends Model
 
     protected $table = 'lithic_onps';
 
-    public function onp_group()
-    {
-        return $this->belongsTo(LithicOnpGroup::class, 'onp_group_id');
-    }
-
     public function item()
     {
-        return $this->belongsToMany(Lithic::class, 'lithic-lithic_onps', 'num_id', 'item_id');
+        return $this->belongsToMany(Lithic::class, 'lithic-lithic_onps', 'onp_id', 'item_id');
     }
 }

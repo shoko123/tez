@@ -47,7 +47,7 @@ class Lithic extends DigModuleModel
 
     public function onps()
     {
-        return $this->belongsToMany(LithicOnp::class, 'lithic-lithic_onps', 'item_id', 'num_id')->withPivot('value');
+        return $this->belongsToMany(LithicOnp::class, 'lithic-lithic_onps', 'item_id', 'onp_id')->withPivot('value');
     }
 
     // protected function casts(): array

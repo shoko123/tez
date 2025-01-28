@@ -59,7 +59,7 @@ class ShowService extends DigModuleService
             $with_arr->push('global_tags.tag_group');
         }
         if ($this->uses_onps()) {
-            $with_arr->push('onps.onp_group');
+            $with_arr->push('onps');
         }
 
         $this->builder = $this->model->with($with_arr->toArray());
@@ -80,7 +80,7 @@ class ShowService extends DigModuleService
         }) : [];
 
         $onps = isset($item['onps']) ? $item->onps->map(function ($onp, int $key) {
-            return ['group_label' => $onp->onp_group->label, 'label' => $onp->label, 'value' => $onp->pivot->value];
+            return ['group_label' => $onp->group_label, 'label' => $onp->label, 'value' => $onp->pivot->value];
         }) : [];
 
         return [

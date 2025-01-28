@@ -78,7 +78,7 @@ class PageService extends DigModuleService
         }
 
         if (array_key_exists('onps', $this->tabularPageDetails)) {
-            array_push($this->withArr, 'onps.onp_group');
+            array_push($this->withArr, 'onps');
         }
     }
 

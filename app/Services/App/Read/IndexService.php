@@ -128,13 +128,13 @@ class IndexService extends DigModuleService
         $onpModel = new $onpName;
 
         $groups = [];
-        $onps = $onpModel->select('id', 'onp_group_id')->whereIn('id', $onp_ids)->get();
+        $onps = $onpModel->select('id', 'group_label')->whereIn('id', $onp_ids)->get();
 
         foreach ($onps as $onp) {
-            if (array_key_exists($onp->onp_group_id, $groups)) {
-                array_push($groups[$onp->onp_group_id], $onp->id);
+            if (array_key_exists($onp->group_label, $groups)) {
+                array_push($groups[$onp->group_label], $onp->id);
             } else {
-                $groups[$onp->onp_group_id] = [$onp->id];
+                $groups[$onp->group_label] = [$onp->id];
             }
         }
 

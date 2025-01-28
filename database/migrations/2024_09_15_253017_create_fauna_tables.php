@@ -113,12 +113,12 @@ return new class extends Migration
 
         Schema::create('fauna-fauna_onps', function (Blueprint $table) {
             $table->string('item_id', 11);
-            $table->unsignedSmallInteger('num_id');
+            $table->unsignedSmallInteger('onp_id');
             $table->unsignedSmallInteger('value');
 
-            $table->foreign('num_id')->references('id')->on('fauna_onps')->onUpdate('cascade');
+            $table->foreign('onp_id')->references('id')->on('fauna_onps')->onUpdate('cascade');
             $table->foreign('item_id')->references('id')->on('fauna')->onUpdate('cascade');
-            $table->primary(['item_id', 'num_id']);
+            $table->primary(['item_id', 'onp_id']);
         });
     }
 

@@ -152,20 +152,17 @@ class InitService extends DigModuleService
 
     private function getOptionalNumericPropertyGroupDetails($label, $group)
     {
-        $onpName = get_class($this->model) . 'OnpGroup';
-        $onpGroupModel = new $onpName;
-        $onpGroup = $onpGroupModel->with(['onps' => function ($q) {
-            $q->select('id', 'label', 'onp_group_id');
-        }])
-            ->select('id')
-            ->where('label', $label)
-            ->first();
+        $onpName = get_class($this->model) . 'Onp';
+        $onpModel = new $onpName;
+        $onpGroup = $onpModel
+            ->where($group['field_name'], $group['group_name'])
+            ->get();
 
         throw_if(is_null($onpGroup), new GeneralJsonException('** MODEL INIT ERROR - Group "' . $label . '" not found in module.onps table ***', 500));
 
+        unset($group['group_name']);
         return array_merge($group, [
-            'onp_group_id' => $onpGroup->id,
-            'options' => $onpGroup->onps->map(function ($y) {
+            'options' => $onpGroup->map(function ($y) {
                 return [
                     'label' => $y->label,
                     'onp_id' => $y->id,

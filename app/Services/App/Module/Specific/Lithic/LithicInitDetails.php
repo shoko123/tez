@@ -38,6 +38,8 @@ class LithicInitDetails implements InitDetailsInterface
             ],
             'Types' => [
                 'code' => 'ON',
+                'field_name' => 'group_label',
+                'group_name' => 'Count'
             ],
             'Search-Description' => [
                 'label' => 'Search-Description',

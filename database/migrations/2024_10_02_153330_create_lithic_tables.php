@@ -60,33 +60,21 @@ return new class extends Migration
             $table->primary(['item_id', 'tag_id']);
         });
 
-        ////
-
-        Schema::create('lithic_onp_groups', function (Blueprint $table) {
-            $table->tinyIncrements('id');
-            $table->string('label', 40);
-        });
-
         Schema::create('lithic_onps', function (Blueprint $table) {
             $table->smallIncrements('id');
-            $table->unsignedTinyInteger('onp_group_id');
-            $table->unsignedTinyInteger('order_column');
+            $table->enum('group_label', ['Count']);
             $table->string('label', 50);
-
-            $table->foreign('onp_group_id')
-                ->references('id')
-                ->on('lithic_onp_groups')
-                ->onUpdate('cascade');
+            $table->unsignedTinyInteger('order_column');
         });
 
         Schema::create('lithic-lithic_onps', function (Blueprint $table) {
             $table->string('item_id', 11);
-            $table->unsignedSmallInteger('num_id');
+            $table->unsignedSmallInteger('onp_id');
             $table->unsignedSmallInteger('value');
-
-            $table->foreign('num_id')->references('id')->on('lithic_onps')->onUpdate('cascade');
+            //
+            $table->foreign('onp_id')->references('id')->on('lithic_onps')->onUpdate('cascade');
             $table->foreign('item_id')->references('id')->on('lithics')->onUpdate('cascade');
-            $table->primary(['item_id', 'num_id']);
+            $table->primary(['item_id', 'onp_id']);
         });
     }
 
