@@ -96,19 +96,20 @@ return new class extends Migration
         Schema::create('fauna-fauna_tags', function (Blueprint $table) {
             $table->string('item_id', 11);
             $table->foreign('item_id')->references('id')->on('fauna')->onUpdate('cascade');
-
+            //
             $table->unsignedSmallInteger('tag_id')->unsigned();
             $table->foreign('tag_id')->references('id')->on('fauna_tags')->onUpdate('cascade');
-
+            //
             $table->primary(['item_id', 'tag_id']);
         });
 
         Schema::create('fauna_onps', function (Blueprint $table) {
             $table->smallIncrements('id');
-            $table->unsignedTinyInteger('order_column');
+            $table->enum('group_label', ['Measurements']);
             $table->string('label', 50);
-            $table->string('unit', 5)->nullable()->default(null);
-            $table->unsignedSmallInteger('divide_by')->default(1);
+            $table->unsignedTinyInteger('order_column');
+            //
+            $table->unique(['group_label', 'label']);
         });
 
         Schema::create('fauna-fauna_onps', function (Blueprint $table) {

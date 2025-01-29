@@ -65,6 +65,8 @@ class FaunaReadDetails implements ReadDetailsInterface
             ],
             'lookups' => [
                 'primary_taxon_id' => 'primaryTaxon',
+                'scope_id' => 'scope',
+                'material_id' => 'material',
             ]
         ];
     }

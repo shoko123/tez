@@ -89,7 +89,6 @@ return new class extends Migration
         Schema::dropIfExists('lithic_tag_groups');
         Schema::dropIfExists('lithic_tags');
         Schema::dropIfExists('lithic-lithic_tags');
-        Schema::dropIfExists('lithic_onp_groups');
         Schema::dropIfExists('lithic_onps');
         Schema::dropIfExists('lithic-lithic_onps');
     }

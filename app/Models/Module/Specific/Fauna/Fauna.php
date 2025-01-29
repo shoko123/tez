@@ -12,6 +12,7 @@ class Fauna extends DigModuleModel
 {
     protected $table = 'fauna';
     protected $moduleTagTable = 'fauna_tags';
+    protected $onpTable = 'fauna_onps';
 
     public static function restrictedValues(): array
     {
@@ -48,6 +49,20 @@ class Fauna extends DigModuleModel
         return $this->belongsTo(FaunaTaxa::class, 'primary_taxon_id');
     }
 
+    public function scope()
+    {
+        return $this->belongsTo(FaunaScope::class, 'scope_id');
+    }
+
+    public function material()
+    {
+        return $this->belongsTo(FaunaMaterial::class, 'material_id');
+    }
+
+    public function onps()
+    {
+        return $this->belongsToMany(FaunaOnp::class, 'fauna-fauna_onps', 'item_id', 'onp_id')->withPivot('value');
+    }
     // protected function casts(): array
     // {
     //     return [

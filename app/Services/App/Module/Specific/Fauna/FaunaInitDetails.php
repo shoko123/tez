@@ -128,6 +128,11 @@ class FaunaInitDetails implements InitDetailsInterface
                 'dependency' => [],
                 'multiple' => true,
             ],
+            'Measurements' => [
+                'code' => 'ON',
+                'field_name' => 'group_label',
+                'group_name' => 'Measurements'
+            ],
             ///
             'Search-Taxa' => [
                 'label' => 'Search-Taxa',
@@ -145,6 +150,9 @@ class FaunaInitDetails implements InitDetailsInterface
     public static function categories(): array
     {
         return [
+            'Measurements' => [
+                'Measurements',
+            ],
             'Registration' => [
                 'Registration Code',
                 'Registration Scope',
