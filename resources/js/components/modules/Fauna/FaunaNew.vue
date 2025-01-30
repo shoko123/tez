@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-row class="ga-1">
-      <template v-if="props.isCreate">
+      <template v-if="isCreate">
         <id-selector>
           <template #id-selector-activator>
             <v-btn v-model="nf.id" label="tag" class="bg-grey text-black my-1" @click="openIdSelectorModal = true">{{
@@ -14,36 +14,45 @@
 
         </id-selector>
       </template>
-      <template v-else>
-        <v-text-field v-model="tag" label="Label" filled disabled />
-      </template>
+    </v-row>
+
+    <v-row class="ga-1">
       <date-picker v-model="nf.date_retrieved" label="Date Retrieved" color="primary" clearable max-width="368">
       </date-picker>
+      <v-text-field v-model="nf.weight" label="Weight" :error-messages="errors.weight" filled />
     </v-row>
 
     <v-row class="ga-1">
       <v-text-field v-model="nf.field_description" label="Field Description" :error-messages="errors.field_description"
         filled />
-      <v-text-field v-model="nf.specialist_notes" label="Specialist Notes" :error-messages="errors.specialist_notes"
-        filled />
+      <v-text-field v-model="nf.taxa" label="Taxa" :error-messages="errors.taxa" filled />
+      <v-text-field v-model="nf.bone" label="Bone" :error-messages="errors.bone" filled />
     </v-row>
 
-    <!-- <v-row v-if="props.isCreate" class="ga-1">
-      <v-select v-model="nf.primary_taxon_id" label="Select" item-title="text" item-value="extra"
-        :items="taxonInfo.options"></v-select>
+    <template v-if="isArtifact">
+      <v-row class="ga-1">
+        <v-text-field v-model="nf.d_and_r" label="D&R" :error-messages="errors.d_and_r" filled />
+        <v-text-field v-model="nf.age" label="Age" :error-messages="errors.age" filled />
+        <v-text-field v-model="nf.breakage" label="Breakage" :error-messages="errors.taxa" filled />
+      </v-row>
 
-      <v-select v-model="nf.scope_id" label="Select" item-title="text" item-value="extra"
-        :items="scopeInfo.options"></v-select>
+      <v-row class="ga-1">
+        <v-text-field v-model="nf.butchery" label="Butchery" :error-messages="errors.bone" filled />
+        <v-text-field v-model="nf.burning" label="Burning" :error-messages="errors.d_and_r" filled />
+        <v-text-field v-model="nf.other_bsm" label="Other BSM" :error-messages="errors.age" filled />
+      </v-row>
 
-      <v-select v-model="nf.material_id" label="Select" item-title="text" item-value="extra"
-        :items="materialInfo.options"></v-select>
-    </v-row> -->
+    </template>
 
-    <v-row v-if="isArtifact" class="border-md mb-2" dense>
+    <v-row v-if="isArtifact" class="border-md" dense>
       <v-col v-for="(item, index) in dataNew.allOnps" :key="index" :cols="2">
         <v-text-field v-model="item.value" :label="item.label" :error-messages="onpsErrorMessages[index]" filled>
         </v-text-field>
       </v-col>
+    </v-row>
+    <v-row class="ga-1">
+      <v-text-field v-model="nf.specialist_notes" label="Specialist Notes" :error-messages="errors.specialist_notes"
+        filled />
     </v-row>
 
     <slot :id="nf.id" name="newItem" :v="v$" :new-fields="nf" />
@@ -68,11 +77,7 @@ import DatePicker from '../../form-elements/DatePicker.vue'
 const { tagAndSlugFromId, prepareNewFields } = useModuleStore()
 const { fields, tag } = storeToRefs(useItemStore())
 const { prepareOnps } = useItemNewStore()
-const { dataNew, openIdSelectorModal } = storeToRefs(useItemNewStore())
-
-const props = defineProps<{
-  isCreate: boolean
-}>()
+const { dataNew, openIdSelectorModal, isCreate } = storeToRefs(useItemNewStore())
 
 const defaultsAndRules: TFieldsDefaultsAndRules<'Fauna'> = {
   id: { d: null, r: { required, minValue: minLength(11), maxLength: maxLength(11) } },
@@ -85,9 +90,9 @@ const defaultsAndRules: TFieldsDefaultsAndRules<'Fauna'> = {
   weight: { d: null, r: { between: between(1, 2000) } },
   field_description: { d: null, r: { maxLength: maxLength(255) } },
   //
-  primary_taxon_id: { d: 99, r: { required, between: between(0, 99) } },
-  scope_id: { d: 99, r: { required, between: between(0, 99) } },
-  material_id: { d: 99, r: { required, between: between(0, 99) } },
+  primary_taxon_id: { d: 1, r: { required, between: between(0, 99) } },
+  scope_id: { d: 1, r: { required, between: between(0, 99) } },
+  material_id: { d: 1, r: { required, between: between(0, 99) } },
   //
   taxa: { d: null, r: { maxLength: maxLength(400) } },
   bone: { d: null, r: { maxLength: maxLength(400) } },
@@ -122,17 +127,23 @@ const rulesObj = computed(() => {
   }
 })
 
+const nf = computed(() => {
+  return dataNew.value.fields as TFields<'Fauna'>
+})
+
 // setup
 console.log(
-  `Fauna(${props.isCreate ? 'Create' : 'Update'}) fields: ${JSON.stringify(fields.value, null, 2)}`,
+  `Fauna(${isCreate.value ? 'Create' : 'Update'}) fields: ${JSON.stringify(fields.value, null, 2)}`,
 )
+
 prepareOnps()
-if (props.isCreate) {
+if (isCreate.value) {
   dataNew.value.fields = { ...defaultsObj.value }
   openIdSelectorModal.value = true
 } else {
   dataNew.value.fields = prepareNewFields(fields.value)
 }
+const v$ = useVuelidate(rulesObj.value, dataNew.value, { $autoDirty: true })
 // setup - end
 
 // ID selector related
@@ -157,16 +168,10 @@ const idSelectorTag = computed(() => {
 })
 // ID selector related - end
 
-// Standard fields validations and errors
-const nf = computed(() => {
-  return dataNew.value.fields as TFields<'Fauna'>
-})
 
 const isArtifact = computed(() => {
   return nf.value.artifact_no !== 0
 })
-
-const v$ = useVuelidate(rulesObj.value, dataNew.value, { $autoDirty: true })
 
 const errors = computed(() => {
   let errorObj: Partial<TFieldsErrors<'Fauna'>> = {}
