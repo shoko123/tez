@@ -126,13 +126,11 @@ async function getExistingLocusNos() {
     query: {
       "discrete_field_values": [
         {
-          "label": "Season",
-          "field_name": "season_id",
+          "group_name": "Season",
           "vals": [season.value]
         },
         {
-          "label": "Area",
-          "field_name": "area_id",
+          "group_name": "Area",
           "vals": [area.value]
         }
       ],
@@ -164,8 +162,7 @@ async function getExistingItemsForLocus() {
     query: {
       "discrete_field_values": [
         {
-          "label": "Locus Id",
-          "field_name": "locus_id",
+          "group_name": "Locus Id",
           "vals": [`${season.value}${area.value}${String(locusNo.value).padStart(3, '0')}`]
         },
       ],

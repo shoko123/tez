@@ -89,13 +89,11 @@ async function getExistingLociNos() {
     query: {
       "discrete_field_values": [
         {
-          "label": "Area",
-          "field_name": "area_id",
+          "group_name": "Area",
           "vals": [nf.value.area_id]
         },
         {
-          "label": "Season",
-          "field_name": "season_id",
+          "group_name": "Season",
           "vals": [nf.value.season_id]
         }
       ],

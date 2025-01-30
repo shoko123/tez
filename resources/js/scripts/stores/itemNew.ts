@@ -59,8 +59,8 @@ export const useItemNewStore = defineStore('itemNew', () => {
   })
 
   function prepareOnps() {
-    //iterate over groups and extract ON ones
-    console.log(`***** itemNew.prepareOnps() ******`)
+    // Iterate over all the groups and extract options for onp groups
+    // console.log(`***** itemNew.prepareOnps() ******`)
 
     dataNew.value.allOnps = []
     for (const property in groupLabelToGroupKeyObj.value) {
@@ -71,7 +71,6 @@ export const useItemNewStore = defineStore('itemNew', () => {
         addOnpGroup(group as TGroup<'ON'>)
       }
     }
-    // const group = trio.value.groupsObj[groupLabelToGroupKeyObj.value['Types']!]!
   }
 
   function addOnpGroup(group: TGroup<'ON'>) {
@@ -84,7 +83,8 @@ export const useItemNewStore = defineStore('itemNew', () => {
       }),
     )
 
-    console.log(` dataNew.value.onps: ${JSON.stringify(dataNew.value.allOnps, null, 2)} `)
+    // console.log(` dataNew.value.onps: ${JSON.stringify(dataNew.value.allOnps, null, 2)} `)
+
     // If update, copy existing onps values
     if (!isCreate.value) {
       onps.value.forEach((e) => {

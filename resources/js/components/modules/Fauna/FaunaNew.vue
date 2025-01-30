@@ -66,34 +66,40 @@ import FaunaIdSelector from './FaunaIdSelector.vue'
 import DatePicker from '../../form-elements/DatePicker.vue'
 
 const { tagAndSlugFromId, prepareNewFields } = useModuleStore()
+const { fields, tag } = storeToRefs(useItemStore())
+const { prepareOnps } = useItemNewStore()
+const { dataNew, openIdSelectorModal } = storeToRefs(useItemNewStore())
 
 const props = defineProps<{
   isCreate: boolean
 }>()
 
 const defaultsAndRules: TFieldsDefaultsAndRules<'Fauna'> = {
-  id: { d: null, r: { required, maxLength: maxLength(20) } },
+  id: { d: null, r: { required, minValue: minLength(11), maxLength: maxLength(11) } },
   locus_id: { d: '3S001', r: { required, minValue: minLength(5), maxValue: maxLength(5) } },
-  code: { d: 'PT', r: { required, maxLength: maxLength(2) } },
+  code: { d: 'PT', r: { required, minValue: minLength(2), maxLength: maxLength(2) } },
   basket_no: { d: 9, r: { between: between(0, 99) } },
   artifact_no: { d: 99, r: { required, between: between(0, 99) } },
+  //
   date_retrieved: { d: null, r: {} },
-  weight: { d: null, r: {} },
-  field_description: { d: null, r: {} },
+  weight: { d: null, r: { between: between(1, 2000) } },
+  field_description: { d: null, r: { maxLength: maxLength(255) } },
+  //
   primary_taxon_id: { d: 99, r: { required, between: between(0, 99) } },
   scope_id: { d: 99, r: { required, between: between(0, 99) } },
   material_id: { d: 99, r: { required, between: between(0, 99) } },
-  taxa: { d: null, r: { maxLength: maxLength(200) } },
-  bone: { d: null, r: { maxLength: maxLength(200) } },
-  symmetry: { d: null, r: { maxLength: maxLength(4) } },
-  d_and_r: { d: null, r: { maxLength: maxLength(400) } },
-  age: { d: null, r: { maxLength: maxLength(400) } },
-  breakage: { d: null, r: { maxLength: maxLength(400) } },
-  butchery: { d: null, r: { maxLength: maxLength(400) } },
-  burning: { d: null, r: { maxLength: maxLength(400) } },
-  weathering: { d: null, r: {} },
-  other_bsm: { d: null, r: { maxLength: maxLength(400) } },
-  specialist_notes: { d: null, r: { maxLength: maxLength(400) } },
+  //
+  taxa: { d: null, r: { maxLength: maxLength(400) } },
+  bone: { d: null, r: { maxLength: maxLength(400) } },
+  symmetry: { d: 'Unassigned', r: {} },
+  d_and_r: { d: null, r: { maxLength: maxLength(30) } },
+  age: { d: null, r: { maxLength: maxLength(50) } },
+  breakage: { d: null, r: { maxLength: maxLength(50) } },
+  butchery: { d: null, r: { maxLength: maxLength(100) } },
+  burning: { d: null, r: { maxLength: maxLength(100) } },
+  weathering: { d: 'Unassigned', r: {} },
+  other_bsm: { d: null, r: { maxLength: maxLength(200) } },
+  specialist_notes: { d: null, r: { maxLength: maxLength(200) } },
   measured: { d: null, r: {} },
 }
 
@@ -116,14 +122,11 @@ const rulesObj = computed(() => {
   }
 })
 
-const { fields, tag } = storeToRefs(useItemStore())
-const { dataNew, openIdSelectorModal } = storeToRefs(useItemNewStore())
-
 // setup
 console.log(
   `Fauna(${props.isCreate ? 'Create' : 'Update'}) fields: ${JSON.stringify(fields.value, null, 2)}`,
 )
-// prepareOnps()
+prepareOnps()
 if (props.isCreate) {
   dataNew.value.fields = { ...defaultsObj.value }
   openIdSelectorModal.value = true
@@ -154,22 +157,6 @@ const idSelectorTag = computed(() => {
 })
 // ID selector related - end
 
-// Lookup fields
-// const FaunaFieldsWithOptions = computed(() => {
-//   return fieldsWithOptions.value as Partial<Record<keyof TFields<'Fauna'>, TFieldInfo>>
-// })
-
-// const taxonInfo = computed(() => {
-//   return FaunaFieldsWithOptions.value['primary_taxon_id']!
-// })
-// const scopeInfo = computed(() => {
-//   return FaunaFieldsWithOptions.value['scope_id']!
-// })
-
-// const materialInfo = computed(() => {
-//   return FaunaFieldsWithOptions.value['material_id']!
-// })
-
 // Standard fields validations and errors
 const nf = computed(() => {
   return dataNew.value.fields as TFields<'Fauna'>
@@ -184,7 +171,7 @@ const v$ = useVuelidate(rulesObj.value, dataNew.value, { $autoDirty: true })
 const errors = computed(() => {
   let errorObj: Partial<TFieldsErrors<'Fauna'>> = {}
   for (const key in dataNew.value.fields) {
-    const message = v$.value.fields[key].$errors.length > 0 ? v$.value[key].$errors[0].$message : undefined
+    const message = v$.value.fields[key].$errors.length > 0 ? v$.value.fields[key].$errors[0].$message : undefined
     errorObj[key as keyof TFieldsErrors<'Fauna'>] = message
   }
   return errorObj

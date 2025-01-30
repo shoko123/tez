@@ -37,7 +37,7 @@ import { useNotificationsStore } from '../../scripts/stores/notifications'
 const { module, moduleToUrlModuleName } = storeToRefs(useModuleStore())
 let { routerPush } = useRoutesMainStore()
 let { showSpinner, showSnackbar } = useNotificationsStore()
-let { prepareOnps, upload } = useItemNewStore()
+let { upload } = useItemNewStore()
 let { isCreate } = storeToRefs(useItemNewStore())
 
 // OLD DYNAMIC FORM NEW LOADING
@@ -90,8 +90,6 @@ for (let key in moduleToUrlModuleName.value) {
   formNewObj.value[key as TModule] = markRaw(defineAsyncComponent(() => import(`../modules/${module.value}/${module.value}New.vue`))
   )
 }
-
-prepareOnps()
 
 // setup - end
 

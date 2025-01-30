@@ -62,13 +62,13 @@ import { required, helpers, between, minLength, maxLength } from '@vuelidate/val
 import { useModuleStore } from '../../../scripts/stores/module'
 import { useItemStore } from '../../../scripts/stores/item'
 import { useItemNewStore } from '../../../scripts/stores/itemNew'
-// import { useTrioStore } from '../../../scripts/stores/trio/trio'
 import IdSelector from '../../form-elements/IdSelector.vue'
 import LithicIdSelector from './LithicIdSelector.vue'
 import DatePicker from '../../form-elements/DatePicker.vue'
 
 const { tagAndSlugFromId, prepareNewFields } = useModuleStore()
-const { fields, tag, } = storeToRefs(useItemStore())
+const { fields, tag } = storeToRefs(useItemStore())
+const { prepareOnps } = useItemNewStore()
 const { dataNew, openIdSelectorModal } = storeToRefs(useItemNewStore())
 
 const props = defineProps<{
@@ -123,7 +123,7 @@ const isArtifact = computed(() => {
 console.log(
   `Lithic(${props.isCreate ? 'Create' : 'Update'}) fields: ${JSON.stringify(fields.value, null, 2)}`,
 )
-// prepareOnps()
+prepareOnps()
 if (props.isCreate) {
   dataNew.value.fields = { ...defaultsObj.value }
   openIdSelectorModal.value = true
