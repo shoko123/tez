@@ -2,10 +2,12 @@ import { ref, computed } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 import type { TApiFields, TFields, TFieldInfo } from '@/types/moduleTypes'
 import type { TApiItemShow } from '@/types/itemTypes'
+import type { TGroup } from '@/types/trioTypes'
 import { useCollectionsStore } from './collections/collections'
 import { useRoutesMainStore } from './routes/routesMain'
 import { useXhrStore } from './xhr'
 import { useModuleStore } from './module'
+import { useItemStore } from './item'
 import { useTrioStore } from './trio/trio'
 
 export const useItemNewStore = defineStore('itemNew', () => {
@@ -16,7 +18,8 @@ export const useItemNewStore = defineStore('itemNew', () => {
   const { send } = useXhrStore()
   const { getCollectionStore } = useCollectionsStore()
   const { itemFieldsOptions } = useTrioStore()
-
+  const { trio, groupLabelToGroupKeyObj } = storeToRefs(useTrioStore())
+  const { onps } = storeToRefs(useItemStore())
   const currentIds = ref<string[]>([])
   const slug = ref<string | undefined>(undefined)
   const tag = ref<string | undefined>(undefined)
@@ -26,8 +29,8 @@ export const useItemNewStore = defineStore('itemNew', () => {
 
   const dataNew = ref<{
     fields: Partial<TFields>
-    onps: { label: string; id: number; value: number | null }[]
-  }>({ fields: {}, onps: [] })
+    allOnps: { label: string; id: number; value: number | null }[]
+  }>({ fields: {}, allOnps: [] })
 
   const mainArray = computed(() => {
     return store.array as string[]
@@ -55,6 +58,42 @@ export const useItemNewStore = defineStore('itemNew', () => {
     return tmp as Partial<Record<keyof TFields, TFieldInfo>>
   })
 
+  function prepareOnps() {
+    //iterate over groups and extract ON ones
+    console.log(`***** itemNew.prepareOnps() ******`)
+
+    dataNew.value.allOnps = []
+    for (const property in groupLabelToGroupKeyObj.value) {
+      // console.log(`${property}: ${groupLabelToGroupKeyObj.value[property]}`)
+      const group = trio.value.groupsObj[groupLabelToGroupKeyObj.value[property]!]!
+
+      if (group.code === 'ON') {
+        addOnpGroup(group as TGroup<'ON'>)
+      }
+    }
+    // const group = trio.value.groupsObj[groupLabelToGroupKeyObj.value['Types']!]!
+  }
+
+  function addOnpGroup(group: TGroup<'ON'>) {
+    // console.log(`addOneGroup: ${JSON.stringify(group, null, 2)} `)
+    // Copy onps from trio
+    dataNew.value.allOnps = dataNew.value.allOnps.concat(
+      group.optionKeys.map((x) => {
+        const paramInfo = trio.value.optionsObj[x]!
+        return { label: paramInfo.text, id: paramInfo.extra as number, value: null }
+      }),
+    )
+
+    console.log(` dataNew.value.onps: ${JSON.stringify(dataNew.value.allOnps, null, 2)} `)
+    // If update, copy existing onps values
+    if (!isCreate.value) {
+      onps.value.forEach((e) => {
+        const index = dataNew.value.allOnps.findIndex((n) => n.label === e.label)
+        dataNew.value.allOnps[index]!.value = e.value
+      })
+    }
+  }
+
   async function upload(
     isCreate: boolean,
     newFields: Partial<TFields>,
@@ -67,7 +106,7 @@ export const useItemNewStore = defineStore('itemNew', () => {
       module: module.value,
       data: {
         fields: newFields,
-        onps: dataNew.value.onps
+        onps: dataNew.value.allOnps
           .filter((x) => {
             return x.value
           })
@@ -110,5 +149,6 @@ export const useItemNewStore = defineStore('itemNew', () => {
     fieldsWithOptions,
     itemNewClear,
     upload,
+    prepareOnps,
   }
 })

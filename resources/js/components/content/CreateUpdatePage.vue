@@ -37,7 +37,7 @@ import { useNotificationsStore } from '../../scripts/stores/notifications'
 const { module, moduleToUrlModuleName } = storeToRefs(useModuleStore())
 let { routerPush } = useRoutesMainStore()
 let { showSpinner, showSnackbar } = useNotificationsStore()
-let { upload } = useItemNewStore()
+let { prepareOnps, upload } = useItemNewStore()
 let { isCreate } = storeToRefs(useItemNewStore())
 
 // OLD DYNAMIC FORM NEW LOADING
@@ -82,12 +82,16 @@ let { isCreate } = storeToRefs(useItemNewStore())
 
 // setup -start
 
+console.log(`CreateUpdate setup(${module.value}.${isCreate.value ? 'Create' : 'Update'})`)// fields: ${JSON.stringify(fields.value, null, 2)}`,
+
 // Vue needs to statically 'compile' components
 const formNewObj = ref<Partial<Record<TModule, Component>>>({})
 for (let key in moduleToUrlModuleName.value) {
   formNewObj.value[key as TModule] = markRaw(defineAsyncComponent(() => import(`../modules/${module.value}/${module.value}New.vue`))
   )
 }
+
+prepareOnps()
 
 // setup - end
 

@@ -13,7 +13,7 @@
 
     <v-row class="ga-1">
       <v-text-field v-model="item.taxa" label="Taxa" readonly filled />
-      <v-text-field v-model="item.bone" label="Bone" readonly filled />
+      <v-text-field v-model="item.bone" label="Element/Material" readonly filled />
     </v-row>
 
     <v-row class="ga-1">

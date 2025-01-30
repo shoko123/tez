@@ -28,7 +28,7 @@
         filled />
     </v-row>
 
-    <v-row v-if="props.isCreate" class="ga-1">
+    <!-- <v-row v-if="props.isCreate" class="ga-1">
       <v-select v-model="nf.primary_taxon_id" label="Select" item-title="text" item-value="extra"
         :items="taxonInfo.options"></v-select>
 
@@ -37,10 +37,10 @@
 
       <v-select v-model="nf.material_id" label="Select" item-title="text" item-value="extra"
         :items="materialInfo.options"></v-select>
-    </v-row>
+    </v-row> -->
 
     <v-row v-if="isArtifact" class="border-md mb-2" dense>
-      <v-col v-for="(item, index) in dataNew.onps" :key="index" :cols="2">
+      <v-col v-for="(item, index) in dataNew.allOnps" :key="index" :cols="2">
         <v-text-field v-model="item.value" :label="item.label" :error-messages="onpsErrorMessages[index]" filled>
         </v-text-field>
       </v-col>
@@ -53,11 +53,11 @@
 
 
 <script lang="ts" setup>
-import { TFields, TFieldsErrors, TFieldInfo, TFieldsDefaultsAndRules } from '@/types/moduleTypes'
+import { TFields, TFieldsErrors, TFieldsDefaultsAndRules } from '@/types/moduleTypes'
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useVuelidate } from '@vuelidate/core'
-import { required, between, minLength, maxLength } from '@vuelidate/validators'
+import { required, between, minLength, maxLength, helpers } from '@vuelidate/validators'
 import { useModuleStore } from '../../../scripts/stores/module'
 import { useItemStore } from '../../../scripts/stores/item'
 import { useItemNewStore } from '../../../scripts/stores/itemNew'
@@ -102,17 +102,28 @@ const defaultsObj = computed(() => {
 })
 
 const rulesObj = computed(() => {
-  return Object.fromEntries(Object.entries(defaultsAndRules).map(([k, v]) => [k, v.r]))
+  const fieldsRules = Object.fromEntries(Object.entries(defaultsAndRules).map(([k, v]) => [k, v.r]))
+
+  return {
+    fields: fieldsRules,
+    allOnps: {
+      $each: helpers.forEach({
+        value: {
+          betweenValue: between(1, 999),
+        },
+      })
+    }
+  }
 })
 
 const { fields, tag } = storeToRefs(useItemStore())
-const { dataNew, openIdSelectorModal, fieldsWithOptions } = storeToRefs(useItemNewStore())
+const { dataNew, openIdSelectorModal } = storeToRefs(useItemNewStore())
 
 // setup
 console.log(
   `Fauna(${props.isCreate ? 'Create' : 'Update'}) fields: ${JSON.stringify(fields.value, null, 2)}`,
 )
-
+// prepareOnps()
 if (props.isCreate) {
   dataNew.value.fields = { ...defaultsObj.value }
   openIdSelectorModal.value = true
@@ -144,20 +155,21 @@ const idSelectorTag = computed(() => {
 // ID selector related - end
 
 // Lookup fields
-const FaunaFieldsWithOptions = computed(() => {
-  return fieldsWithOptions.value as Partial<Record<keyof TFields<'Fauna'>, TFieldInfo>>
-})
+// const FaunaFieldsWithOptions = computed(() => {
+//   return fieldsWithOptions.value as Partial<Record<keyof TFields<'Fauna'>, TFieldInfo>>
+// })
 
-const taxonInfo = computed(() => {
-  return FaunaFieldsWithOptions.value['primary_taxon_id']!
-})
-const scopeInfo = computed(() => {
-  return FaunaFieldsWithOptions.value['scope_id']!
-})
+// const taxonInfo = computed(() => {
+//   return FaunaFieldsWithOptions.value['primary_taxon_id']!
+// })
+// const scopeInfo = computed(() => {
+//   return FaunaFieldsWithOptions.value['scope_id']!
+// })
 
-const materialInfo = computed(() => {
-  return FaunaFieldsWithOptions.value['material_id']!
-})
+// const materialInfo = computed(() => {
+//   return FaunaFieldsWithOptions.value['material_id']!
+// })
+
 // Standard fields validations and errors
 const nf = computed(() => {
   return dataNew.value.fields as TFields<'Fauna'>
@@ -167,19 +179,19 @@ const isArtifact = computed(() => {
   return nf.value.artifact_no !== 0
 })
 
-const v$ = useVuelidate(rulesObj.value, dataNew.value.fields, { $autoDirty: true })
+const v$ = useVuelidate(rulesObj.value, dataNew.value, { $autoDirty: true })
 
 const errors = computed(() => {
   let errorObj: Partial<TFieldsErrors<'Fauna'>> = {}
   for (const key in dataNew.value.fields) {
-    const message = v$.value[key].$errors.length > 0 ? v$.value[key].$errors[0].$message : undefined
+    const message = v$.value.fields[key].$errors.length > 0 ? v$.value[key].$errors[0].$message : undefined
     errorObj[key as keyof TFieldsErrors<'Fauna'>] = message
   }
   return errorObj
 })
 
 const onpsErrorMessages = computed(() => {
-  const $msgs = v$.value.onps.$each.$message as unknown as string[]
+  const $msgs = v$.value.allOnps.$each.$message as unknown as string[]
   return $msgs.map(x => {
     return x.length > 0 ? x[0] : undefined
   })

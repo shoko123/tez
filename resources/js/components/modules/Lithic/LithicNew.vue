@@ -34,14 +34,14 @@
       {{ isBasket ? 'Type Counts' : 'Choose Type' }}
     </div>
     <v-row v-if="isBasket" class="border-md mb-2" dense>
-      <v-col v-for="(item, index) in dataNew.onps" :key="index" :cols="2">
+      <v-col v-for="(item, index) in dataNew.allOnps" :key="index" :cols="2">
         <v-text-field v-model="item.value" :label="item.label" :error-messages="onpsErrorMessages[index]" filled>
         </v-text-field>
       </v-col>
     </v-row>
 
     <v-row v-if="isArtifact" class="border-md mb-2" dense>
-      <v-chip v-for="(item, index) in dataNew.onps" :key="index" class="ma-2"
+      <v-chip v-for="(item, index) in dataNew.allOnps" :key="index" class="ma-2"
         :color="index === artifactTypeIndex ? 'primary' : ''" @click="optionClicked(index)">
         {{ item.label }}
       </v-chip>
@@ -62,14 +62,13 @@ import { required, helpers, between, minLength, maxLength } from '@vuelidate/val
 import { useModuleStore } from '../../../scripts/stores/module'
 import { useItemStore } from '../../../scripts/stores/item'
 import { useItemNewStore } from '../../../scripts/stores/itemNew'
-import { useTrioStore } from '../../../scripts/stores/trio/trio'
+// import { useTrioStore } from '../../../scripts/stores/trio/trio'
 import IdSelector from '../../form-elements/IdSelector.vue'
 import LithicIdSelector from './LithicIdSelector.vue'
 import DatePicker from '../../form-elements/DatePicker.vue'
 
 const { tagAndSlugFromId, prepareNewFields } = useModuleStore()
-const { trio, groupLabelToGroupKeyObj } = storeToRefs(useTrioStore())
-const { fields, tag, onps } = storeToRefs(useItemStore())
+const { fields, tag, } = storeToRefs(useItemStore())
 const { dataNew, openIdSelectorModal } = storeToRefs(useItemNewStore())
 
 const props = defineProps<{
@@ -98,7 +97,7 @@ const rulesObj = computed(() => {
 
   return {
     fields: fieldsRules,
-    onps: {
+    allOnps: {
       $each: helpers.forEach({
         value: {
           betweenValue: between(1, 999),
@@ -124,16 +123,13 @@ const isArtifact = computed(() => {
 console.log(
   `Lithic(${props.isCreate ? 'Create' : 'Update'}) fields: ${JSON.stringify(fields.value, null, 2)}`,
 )
-
+// prepareOnps()
 if (props.isCreate) {
   dataNew.value.fields = { ...defaultsObj.value }
-  prepareOnps(true)
   openIdSelectorModal.value = true
 } else {
   dataNew.value.fields = prepareNewFields(fields.value)
-  prepareOnps(false)
 }
-
 // setup - end
 
 // ID selector related
@@ -148,24 +144,6 @@ const defaultsForIdSelector = computed(() => {
     artifactNo: nf.value.id ? ds.artifact_no : null
   }
 })
-
-function prepareOnps(isCreate: boolean) {
-  const group = trio.value.groupsObj[groupLabelToGroupKeyObj.value['Types']!]!
-
-  // Copy onps from trio
-  dataNew.value.onps = group.optionKeys.map(x => {
-    const paramInfo = trio.value.optionsObj[x]!
-    return { label: paramInfo.text, id: paramInfo.extra as number, value: null }
-  })
-
-  // If update, copy existing onps values
-  if (!isCreate) {
-    onps.value.forEach(e => {
-      let index = dataNew.value.onps.findIndex((n) => n.label === e.label)
-      dataNew.value.onps[index]!.value = e.value
-    })
-  }
-}
 
 const idSelectorTag = computed(() => {
   if (nf.value.id === null) {
@@ -186,14 +164,14 @@ function optionClicked(index: number) {
   console.log(`option Clicked(${index})`)
 
   // Clear all onps except the newly clicked one
-  dataNew.value.onps.forEach(e => {
+  dataNew.value.allOnps.forEach(e => {
     e.value = null
   })
-  dataNew.value.onps[index]!.value = 1
+  dataNew.value.allOnps[index]!.value = 1
 }
 
 const artifactTypeIndex = computed(() => {
-  const index = dataNew.value.onps.findIndex((n) => n.value !== null)
+  const index = dataNew.value.allOnps.findIndex((n) => n.value !== null)
   return index < 0 ? null : index
 })
 
@@ -209,7 +187,9 @@ const fieldsErrorMessages = computed(() => {
 })
 
 const onpsErrorMessages = computed(() => {
-  const $msgs = v$.value.onps.$each.$message as unknown as string[]
+  const $msgs = v$.value.allOnps
+
+    .$each.$message as unknown as string[]
   return $msgs.map(x => {
     return x.length > 0 ? x[0] : undefined
   })
