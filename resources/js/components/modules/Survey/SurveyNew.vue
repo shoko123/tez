@@ -85,15 +85,13 @@ const nf = computed(() => {
 })
 
 // setup
-console.log(`Survey(${props.isCreate ? 'Create' : 'Update'}) fields: ${JSON.stringify(fields.value, null, 2)}`)
-
 if (props.isCreate) {
   dataNew.value.fields = { ...defaultsObj.value }
   openIdSelectorModal.value = true
 } else {
   dataNew.value.fields = prepareNewFields(fields.value)
 }
-
+console.log(`Survey(${props.isCreate ? 'Create' : 'Update'}) dataNew: ${JSON.stringify(dataNew.value, null, 2)}`)
 // setup - end
 
 const idSelectorTag = computed(() => {
@@ -103,9 +101,6 @@ const idSelectorTag = computed(() => {
   const tg = tagAndSlugFromId(nf.value.id)
   return tg.tag
 })
-
-// Lookup fields
-// none
 
 const v$ = useVuelidate(rulesObj.value, dataNew.value, { $autoDirty: true })
 

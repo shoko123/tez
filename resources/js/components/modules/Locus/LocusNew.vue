@@ -59,7 +59,7 @@ import { TFields, TFieldsErrors, TFieldsDefaultsAndRules } from '@/types/moduleT
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useVuelidate } from '@vuelidate/core'
-import { required, helpers, between, maxLength } from '@vuelidate/validators'
+import { required, between, maxLength } from '@vuelidate/validators'
 
 import { useModuleStore } from '../../../scripts/stores/module'
 import { useItemStore } from '../../../scripts/stores/item'
@@ -80,7 +80,7 @@ const defaultsAndRules: TFieldsDefaultsAndRules<'Locus'> = {
   id: { d: null, r: { required, maxLength: maxLength(11) } },
   area_id: { d: null, r: { required, maxLength: maxLength(1) } },
   season_id: { d: null, r: { required, maxLength: maxLength(1) } },
-  locus_no: { d: undefined, r: { required, between: between(1, 200) } },
+  locus_no: { d: undefined, r: { required, between: between(0, 999) } },
   square: { d: null, r: { maxLength: maxLength(20) } },
   date_opened: { d: null, r: {} },
   date_closed: { d: null, r: {} },
@@ -104,13 +104,6 @@ const rulesObj = computed(() => {
 
   return {
     fields: fieldsRules,
-    onps: {
-      $each: helpers.forEach({
-        value: {
-          betweenValue: between(1, 999),
-        },
-      })
-    }
   }
 })
 
@@ -119,19 +112,16 @@ const nf = computed(() => {
 })
 
 // setup
-console.log(`Locus(${props.isCreate ? 'Create' : 'Update'}) fields: ${JSON.stringify(fields.value, null, 2)}`)
-
 if (props.isCreate) {
   dataNew.value.fields = { ...defaultsObj.value }
   openIdSelectorModal.value = true
 } else {
   dataNew.value.fields = prepareNewFields(fields.value)
 }
-
+console.log(`Locus(${props.isCreate ? 'Create' : 'Update'}) dataNew: ${JSON.stringify(dataNew.value, null, 2)}`)
 // setup - end
 
 // ID selector related
-
 const idSelectorTag = computed(() => {
   if (nf.value.id === null) {
     return `[ID Not Selected]`

@@ -36,8 +36,8 @@ const { fields } = storeToRefs(useItemStore())
 const { dataNew } = storeToRefs(useItemNewStore())
 
 // setup
-console.log(`Area (Update) fields: ${JSON.stringify(fields.value, null, 2)}`)
 dataNew.value.fields = prepareNewFields(fields.value)
+console.log(`Area(Update) dataNew: ${JSON.stringify(dataNew.value, null, 2)}`)
 // setup - end
 
 // Standard fields validations and errors

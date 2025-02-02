@@ -29,16 +29,19 @@ class LocusInitDetails  implements InitDetailsInterface
     public static function modelGroups(): array
     {
         return [
-            'Search-Description' => [
+            'Search Description' => [
                 'code' => 'SF',
                 'field_name' => 'description',
             ],
-            'Square' => [
-                'code' => 'TM',
-                'multiple' => true,
-                'dependency' => [],
+            'Search Deposit' => [
+                'code' => 'SF',
+                'field_name' => 'deposit',
             ],
-            'Locus Type' => [
+            'Search Registration Notes' => [
+                'code' => 'SF',
+                'field_name' => 'registration_notes',
+            ],
+            'Square' => [
                 'code' => 'TM',
                 'multiple' => true,
                 'dependency' => [],
@@ -59,11 +62,10 @@ class LocusInitDetails  implements InitDetailsInterface
                 'Media',
                 'Square',
             ],
-            'Description' => [
-                'Locus Type'
-            ],
             'Search' => [
-                'Search-Description',
+                'Search Description',
+                'Search Deposit',
+                'Search Registration Notes',
             ],
             'Order By' => [
                 'Order By',

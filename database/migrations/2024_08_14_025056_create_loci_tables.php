@@ -6,15 +6,10 @@ use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('loci', function (Blueprint $table) {
-            $table->string('id', 5)->nullable();
+            $table->string('id', 5)->primary();
             $table->string('area_id', 1);
             $table->string('season_id', 1);
             $table->unsignedInteger('locus_no');
@@ -31,7 +26,13 @@ return new class extends Migration
             $table->string('registration_notes', 500)->nullable();
             $table->string('clean', 1)->nullable();
 
-            $table->unique('id');
+            $table->foreign('area_id')
+                ->references('id')->on('areas')
+                ->onUpdate('cascade');
+
+            $table->foreign('season_id')
+                ->references('id')->on('seasons')
+                ->onUpdate('cascade');
         });
 
         Schema::create('locus_tag_groups', function (Blueprint $table) {
@@ -63,17 +64,11 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        return;
-        Schema::dropIfExists('loci');
+        Schema::dropIfExists('locus-locus_tags');
         Schema::dropIfExists('locus_tag_groups');
         Schema::dropIfExists('locus_tags');
-        Schema::dropIfExists('locus-locus_tags');
+        Schema::dropIfExists('loci');
     }
 };

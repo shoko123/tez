@@ -11,7 +11,7 @@ class LocusValidationRules extends ValidationRules
 
     public function allowed_search_field_names(): array
     {
-        return ['description'];
+        return ['description', 'deposit', 'registration_notes'];
     }
 
     public function allowed_tagger_field_names(): array
