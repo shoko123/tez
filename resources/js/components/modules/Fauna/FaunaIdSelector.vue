@@ -158,7 +158,7 @@ async function getExistingItemsForLocus() {
   console.log(`getExistingItemsForLocus() season: ${season.value}, area; ${area.value}, locusNo: ${locusNo.value}`)
 
   const res = await send<string[]>('module/index', 'post', {
-    module: 'Ceramic',
+    module: 'Fauna',
     query: {
       "discrete_field_values": [
         {
@@ -213,7 +213,7 @@ function codeChanged() {
 }
 
 const nf = computed(() => {
-  return dataNew.value.fields as TFields<'Ceramic'>
+  return dataNew.value.fields as TFields<'Fauna'>
 })
 
 function accept() {
@@ -221,7 +221,7 @@ function accept() {
 
   nf.value.id = id.value!//`${season.value}${area.value}${String(locusNo.value).padStart(3, '0')}${code.value}${String(basketNo.value).padStart(2, '0')}${String(artifactNo.value).padStart(2, '0')}`
   nf.value.locus_id = id.value!.substring(0, 5)
-  nf.value.code = `${code.value}`
+  nf.value.code = code.value!
   nf.value.basket_no = basketNo.value!
   nf.value.artifact_no = artifactNo.value!
   openIdSelectorModal.value = false

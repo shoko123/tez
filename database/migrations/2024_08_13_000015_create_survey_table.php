@@ -15,8 +15,12 @@ return new class extends Migration
             $table->date('surveyed_date')->nullable();
             $table->unsignedSmallInteger('elevation')->nullable();
             $table->string('next_to', 50)->nullable();
-            $table->string('description', 1000)->nullable();
+            $table->string('description', 200)->nullable();
             $table->string('notes', 100)->nullable();
+
+            $table->foreign('area_id')
+                ->references('id')->on('areas')
+                ->onUpdate('cascade');
         });
     }
 

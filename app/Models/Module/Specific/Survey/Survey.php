@@ -5,9 +5,16 @@ namespace App\Models\Module\Specific\Survey;
 use App\Models\Module\DigModuleModel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
+use App\Services\App\Utils\GetService;
+
 class Survey extends DigModuleModel
 {
     protected $table = 'survey';
+
+    public function area()
+    {
+        return $this->belongsTo(GetService::getModel('Area'));
+    }
 
     public static function restrictedValues(): array
     {

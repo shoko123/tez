@@ -47,6 +47,8 @@ export const useItemNewStore = defineStore('itemNew', () => {
     return dataNew.value.fields.id
   })
 
+  prepareOnps()
+
   const fieldsWithOptions = computed(() => {
     if (Object.keys(dataNew.value.fields).length === 0) {
       return {}

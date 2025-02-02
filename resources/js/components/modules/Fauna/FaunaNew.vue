@@ -75,8 +75,7 @@ import FaunaIdSelector from './FaunaIdSelector.vue'
 import DatePicker from '../../form-elements/DatePicker.vue'
 
 const { tagAndSlugFromId, prepareNewFields } = useModuleStore()
-const { fields, tag } = storeToRefs(useItemStore())
-const { prepareOnps } = useItemNewStore()
+const { fields } = storeToRefs(useItemStore())
 const { dataNew, openIdSelectorModal, isCreate } = storeToRefs(useItemNewStore())
 
 const defaultsAndRules: TFieldsDefaultsAndRules<'Fauna'> = {
@@ -136,7 +135,6 @@ console.log(
   `Fauna(${isCreate.value ? 'Create' : 'Update'}) fields: ${JSON.stringify(fields.value, null, 2)}`,
 )
 
-prepareOnps()
 if (isCreate.value) {
   dataNew.value.fields = { ...defaultsObj.value }
   openIdSelectorModal.value = true

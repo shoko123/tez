@@ -11,7 +11,7 @@ class SurveyValidationRules extends ValidationRules
 
     public function allowed_search_field_names(): array
     {
-        return [];
+        return ['description'];
     }
 
     public function allowed_tagger_field_names(): array

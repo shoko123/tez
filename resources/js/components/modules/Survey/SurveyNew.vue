@@ -64,7 +64,7 @@ const defaultsAndRules: TFieldsDefaultsAndRules<'Survey'> = {
   surveyed_date: { d: null, r: {} },
   elevation: { d: null, r: { between: between(1, 200) } },
   next_to: { d: null, r: { maxLength: maxLength(50) } },
-  description: { d: null, r: { maxLength: maxLength(1000) } },
+  description: { d: null, r: { maxLength: maxLength(200) } },
   notes: { d: null, r: { maxLength: maxLength(100) } },
 }
 
@@ -77,13 +77,6 @@ const rulesObj = computed(() => {
 
   return {
     fields: fieldsRules,
-    onps: {
-      $each: helpers.forEach({
-        value: {
-          betweenValue: between(1, 999),
-        },
-      })
-    }
   }
 })
 

@@ -30,7 +30,6 @@ class LocusInitDetails  implements InitDetailsInterface
     {
         return [
             'Search-Description' => [
-                'label' => 'Search-Description',
                 'code' => 'SF',
                 'field_name' => 'description',
             ],
