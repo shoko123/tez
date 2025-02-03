@@ -8,17 +8,18 @@
     </v-row>
 
     <v-row class="ga-1">
-      <v-text-field v-model="lf.primary_classification_id" label="Primary Classification" readonly filled />
-    </v-row>
-
-    <v-row class="ga-1">
       <v-text-field v-model="item.field_description" label="Field Description" readonly filled />
       <v-text-field v-model="item.field_notes" label="Field Notes" readonly filled />
     </v-row>
 
     <v-row class="ga-1">
-      <v-textarea v-model="item.specialist_description" label="Specialist Description" readonly filled />
+      <v-text-field v-model="lf.primary_classification_id" label="Primary Classification" readonly filled />
+      <v-text-field v-model="item.specialist" label="Specialist" readonly filled />
+    </v-row>
+
+    <v-row class="ga-1">
       <v-textarea v-model="item.periods" label="Periods" readonly filled />
+      <v-textarea v-model="item.specialist_description" label="Specialist Description" readonly filled />
     </v-row>
   </v-container>
 </template>

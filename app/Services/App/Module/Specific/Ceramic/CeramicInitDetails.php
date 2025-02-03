@@ -46,6 +46,13 @@ class CeramicInitDetails implements InitDetailsInterface
                 'showAsTag' => true,
                 'dependency' => [['Registration Scope:Artifact']],
             ],
+            'Specialist' => [
+                'code' => 'EM',
+                'field_name' => 'specialist',
+                'useInTagger' => false,
+                'showAsTag' => false,
+                'dependency' => [],
+            ],
             'Includes Date' => [
                 'code' => 'CT',
                 'option_labels'  => ['Yes',  'No']
@@ -179,6 +186,7 @@ class CeramicInitDetails implements InitDetailsInterface
                 'Season',
                 'Area',
                 'Media',
+                'Specialist',
             ],
             "Typology" => [
                 'Primary Classification',

@@ -6,7 +6,7 @@ class CeramicValidationRules extends ValidationRules
 {
     public function allowed_categorized_filter_group_names(): array
     {
-        return ['Registration Scope', 'Includes Date'];
+        return ['Registration Scope', 'Specialist', 'Includes Date'];
     }
 
     public function allowed_search_field_names(): array

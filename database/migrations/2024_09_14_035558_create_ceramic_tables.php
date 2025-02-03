@@ -31,6 +31,7 @@ return new class extends Migration
             $table->string('level_top', 20)->nullable();
             $table->string('level_bottom', 20)->nullable();
             $table->unsignedTinyInteger('primary_classification_id')->default(1);
+            $table->enum('specialist', ['Unassigned', 'Tamar Shooval and Danny Rosenberg', 'Eliot Braun', 'Estelle Orrelle']);
             $table->string('periods', 250)->nullable();
             $table->string('specialist_description', 400)->nullable();
 

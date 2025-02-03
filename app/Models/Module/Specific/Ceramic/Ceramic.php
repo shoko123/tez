@@ -20,7 +20,7 @@ class Ceramic extends DigModuleModel
 
     public static function enumFields(): array
     {
-        return [];
+        return ['specialist'];
     }
 
     public static function dateFields(): array
@@ -72,6 +72,7 @@ class Ceramic extends DigModuleModel
             ],
             'Registration Code' => 'code',
             'Primary Classification' => 'primary_classification_id',
+            'Specialist' => 'specialist',
             'Locus Id' => 'locus_id' // This one is required by create to avoid duplicate ids.
             // It is not a part of the tag/filter system.
         ];

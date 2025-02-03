@@ -17,9 +17,10 @@ type TCeramic<T extends TModuleInfo = TModuleInfo> = {
     level_top: string
     level_bottom: string
     //
+    primary_classification_id: number
+    specialist: string
     periods: string
     specialist_description: string
-    primary_classification_id: number
   }
   apiTabularPageFields: Pick<TCeramic<T>['fields'], 'id' | 'periods' | 'specialist_description'>
 }
