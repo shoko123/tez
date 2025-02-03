@@ -53,7 +53,7 @@ class Ceramic extends DigModuleModel
     protected function short(): Attribute
     {
         return Attribute::make(
-            get: fn(mixed $value, array $attributes) => $attributes['periods'] ?? '[No description]'
+            get: fn(mixed $value, array $attributes) => $attributes['periods'] ?? '[No periods description]'
         );
     }
 
@@ -71,7 +71,7 @@ class Ceramic extends DigModuleModel
                 'length' => 1
             ],
             'Registration Code' => 'code',
-            'Primary Classification' => 'ceramic_primary_classification_id',
+            'Primary Classification' => 'primary_classification_id',
             'Locus Id' => 'locus_id' // This one is required by create to avoid duplicate ids.
             // It is not a part of the tag/filter system.
         ];

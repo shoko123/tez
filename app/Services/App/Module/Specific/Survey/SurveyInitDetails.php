@@ -29,7 +29,7 @@ class SurveyInitDetails implements InitDetailsInterface
     public static function modelGroups(): array
     {
         return [
-            'Search-Description' => [
+            'Search Description' => [
                 'code' => 'SF',
                 'field_name' => 'description',
             ],
@@ -49,7 +49,7 @@ class SurveyInitDetails implements InitDetailsInterface
                 'Media'
             ],
             'Search' => [
-                'Search-Description',
+                'Search Description',
             ],
             'Order By' => [
                 'Order By',

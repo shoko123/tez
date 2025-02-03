@@ -27,19 +27,18 @@ return new class extends Migration
             $table->date('date_retrieved')->nullable();
             $table->string('field_description', 400)->nullable();
             $table->string('field_notes', 400)->nullable();
-            $table->string('artifact_count', 10)->nullable();
             $table->string('square', 20)->nullable();
             $table->string('level_top', 20)->nullable();
             $table->string('level_bottom', 20)->nullable();
-            $table->unsignedTinyInteger('ceramic_primary_classification_id')->default(1);
+            $table->unsignedTinyInteger('primary_classification_id')->default(1);
             $table->string('periods', 250)->nullable();
-            $table->string('description', 400)->nullable();
+            $table->string('specialist_description', 400)->nullable();
 
             $table->foreign('locus_id')
                 ->references('id')->on('loci')
                 ->onUpdate('cascade');
 
-            $table->foreign('ceramic_primary_classification_id')
+            $table->foreign('primary_classification_id')
                 ->references('id')->on('ceramic_primary_classifications')
                 ->onUpdate('cascade');
 

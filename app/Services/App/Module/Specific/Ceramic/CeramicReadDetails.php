@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Services\App\Module\ReadDetailsInterface;
 use App\Services\App\Related\SmallFindsRelatedService;
 
-
 class CeramicReadDetails implements ReadDetailsInterface
 {
     private static Builder $builder;
@@ -89,7 +88,7 @@ class CeramicReadDetails implements ReadDetailsInterface
                 'date_retrieved',
                 'field_description',
                 'field_notes',
-                'description',
+                'specialist_description',
                 'periods'
             ]
         ];
@@ -97,7 +96,7 @@ class CeramicReadDetails implements ReadDetailsInterface
 
     public static function galleryPage(): array
     {
-        return ['id', 'description'];
+        return ['id', 'periods'];
     }
 
     public static function relatedModules(string $id): array

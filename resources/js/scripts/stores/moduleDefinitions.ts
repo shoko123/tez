@@ -108,7 +108,7 @@ const moduleDefinitions: TModuleDefinitionImplementation = {
       ['Field Reading', 'start', 'field_description'],
       ['Field Notes', 'start', 'field_notes'],
       ['Periods', 'start', 'periods'],
-      ['Description', 'start', 'description'],
+      ['Specialist Description', 'start', 'specialist_description'],
     ],
   },
   Stone: {

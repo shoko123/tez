@@ -24,11 +24,10 @@
       <v-text-field v-model="nf.level_top" label="Level Top" :error-messages="errors.level_top" class="mx-1" filled />
       <v-text-field v-model="nf.level_bottom" label="Level Bottom" :error-messages="errors.level_bottom" class="mx-1"
         filled />
-      <v-text-field v-model="nf.artifact_count" label="Artifact Count" :error-messages="errors.artifact_count" />
     </v-row>
 
     <v-row class="ga-1">
-      <v-select v-model="nf.ceramic_primary_classification_id" label="Select" item-title="text" item-value="extra"
+      <v-select v-model="nf.primary_classification_id" label="Select" item-title="text" item-value="extra"
         :items="primaryClassificationInfo.options"></v-select>
     </v-row>
 
@@ -39,7 +38,8 @@
     </v-row>
 
     <v-row class="ga-1">
-      <v-textarea v-model="nf.description" label="Specialist Description" :error-messages="errors.description" filled />
+      <v-textarea v-model="nf.specialist_description" label="Specialist Description"
+        :error-messages="errors.specialist_description" filled />
       <v-textarea v-model="nf.periods" label="Specialist Notes" :error-messages="errors.periods" filled />
     </v-row>
 
@@ -73,17 +73,18 @@ const defaultsAndRules: TFieldsDefaultsAndRules<'Ceramic'> = {
   code: { d: 'PT', r: { required, maxLength: maxLength(2) } },
   basket_no: { d: 9, r: { between: between(0, 99) } },
   artifact_no: { d: 99, r: { required, between: between(0, 99) } },
+  //
   date_retrieved: { d: null, r: {} },
   field_description: { d: null, r: { maxLength: maxLength(400) } },
   field_notes: { d: null, r: { maxLength: maxLength(400) } },
-  artifact_count: { d: null, r: { maxLength: maxLength(10) } },
+  //
   square: { d: null, r: { maxLength: maxLength(20) } },
   level_top: { d: null, r: { maxLength: maxLength(20) } },
   level_bottom: { d: null, r: { maxLength: maxLength(20) } },
   //
-  description: { d: null, r: { maxLength: maxLength(400) } },
+  specialist_description: { d: null, r: { maxLength: maxLength(400) } },
   periods: { d: null, r: { maxLength: maxLength(400) } },
-  ceramic_primary_classification_id: { d: 1, r: { between: between(1, 255) } },
+  primary_classification_id: { d: 1, r: { between: between(1, 255) } },
 }
 
 const defaultsObj = computed(() => {
@@ -138,7 +139,7 @@ const CeramicFieldsWithOptions = computed(() => {
 })
 
 const primaryClassificationInfo = computed(() => {
-  return CeramicFieldsWithOptions.value['ceramic_primary_classification_id']!
+  return CeramicFieldsWithOptions.value['primary_classification_id']!
 })
 
 // Standard fields validations and errors

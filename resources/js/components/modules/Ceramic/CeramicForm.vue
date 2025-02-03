@@ -5,11 +5,10 @@
       <v-text-field v-model="item.square" label="Square" readonly filled />
       <v-text-field v-model="item.level_top" label="Level Top" readonly filled />
       <v-text-field v-model="item.level_bottom" label="Level Bottom" readonly filled />
-      <v-text-field v-model="item.artifact_count" label="Artifact Count" readonly filled />
     </v-row>
 
     <v-row class="ga-1">
-      <v-text-field v-model="lf.ceramic_primary_classification_id" label="Primary Classification" readonly filled />
+      <v-text-field v-model="lf.primary_classification_id" label="Primary Classification" readonly filled />
     </v-row>
 
     <v-row class="ga-1">
@@ -18,7 +17,7 @@
     </v-row>
 
     <v-row class="ga-1">
-      <v-textarea v-model="item.description" label="Specialist Description" readonly filled />
+      <v-textarea v-model="item.specialist_description" label="Specialist Description" readonly filled />
       <v-textarea v-model="item.periods" label="Periods" readonly filled />
     </v-row>
   </v-container>

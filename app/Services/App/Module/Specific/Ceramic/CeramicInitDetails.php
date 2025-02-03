@@ -39,7 +39,7 @@ class CeramicInitDetails implements InitDetailsInterface
             ],
             'Primary Classification' => [
                 'code' => 'LV',
-                'field_name' => 'ceramic_primary_classification_id',
+                'field_name' => 'primary_classification_id',
                 'lookup_table_name' => 'ceramic_primary_classifications',
                 'lookup_text_field' => 'name',
                 'useInTagger' => true,
@@ -50,16 +50,14 @@ class CeramicInitDetails implements InitDetailsInterface
                 'code' => 'CT',
                 'option_labels'  => ['Yes',  'No']
             ],
-            'Search-Periods' => [
-                'label' => 'Search-Periods',
+            'Search Periods' => [
                 'code' => 'SF',
                 'field_name' => 'periods',
                 'options' => [],
             ],
-            'Search-Description' => [
-                'label' => 'Search-Description',
+            'Search Specialist-Description' => [
                 'code' => 'SF',
-                'field_name' => 'description',
+                'field_name' => 'specialist_description',
                 'options' => [],
             ],
             'Ware Coarseness' => [
@@ -176,10 +174,10 @@ class CeramicInitDetails implements InitDetailsInterface
     {
         return [
             'Registration' => [
-                'Season',
-                'Area',
                 'Registration Code',
                 'Registration Scope',
+                'Season',
+                'Area',
                 'Media',
             ],
             "Typology" => [
@@ -228,9 +226,9 @@ class CeramicInitDetails implements InitDetailsInterface
                 'Medieval Subperiods',
                 'Modern Subperiods'
             ],
-            'Search' => [
-                'Search-Periods',
-                'Search-Description',
+            'Search Text' => [
+                'Search Periods',
+                'Search Specialist-Description',
                 'Includes Date',
             ],
             'Order By' => [
