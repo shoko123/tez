@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-row class="ga-1">
-      <template v-if="props.isCreate">
+      <template v-if="isCreate">
         <id-selector>
           <template #id-selector-activator>
             <v-btn v-model="nf.id" label="tag" class="bg-grey text-black my-1" @click="openIdSelectorModal = true">{{
@@ -11,12 +11,9 @@
           <template #id-selector-form>
             <CeramicIdSelector :defaults="defaultsForIdSelector"></CeramicIdSelector>
           </template>
-
         </id-selector>
       </template>
-      <template v-else>
-        <v-text-field v-model="tag" label="Label" filled disabled />
-      </template>
+
       <date-picker v-model="nf.date_retrieved" label="Date Retrieved" color="primary" clearable max-width="368">
       </date-picker>
 
@@ -27,20 +24,23 @@
     </v-row>
 
     <v-row class="ga-1">
-      <v-select v-model="nf.primary_classification_id" label="Select" item-title="text" item-value="extra"
-        :items="primaryClassificationInfo.options"></v-select>
-    </v-row>
-
-    <v-row class="ga-1">
       <v-text-field v-model="nf.field_description" label="Field Description" :error-messages="errors.field_description"
         filled />
       <v-text-field v-model="nf.field_notes" label="Field Notes" :error-messages="errors.field_notes" filled />
     </v-row>
 
     <v-row class="ga-1">
+      <v-select v-model="nf.specialist" label="Specialist" item-title="text" item-value="text"
+        :items="specialistInfo.options"></v-select>
+
+      <v-select v-if="isCreate && isArtifact" v-model="nf.primary_classification_id" label="Primary Classification"
+        item-title="text" item-value="extra" :items="primaryClassificationInfo.options"></v-select>
+    </v-row>
+
+    <v-row class="ga-1">
+      <v-textarea v-model="nf.periods" label="Periods" :error-messages="errors.periods" filled />
       <v-textarea v-model="nf.specialist_description" label="Specialist Description"
         :error-messages="errors.specialist_description" filled />
-      <v-textarea v-model="nf.periods" label="Specialist Notes" :error-messages="errors.periods" filled />
     </v-row>
 
     <slot :id="nf.id" name="newItem" :v="v$" :new-fields="nf" />
@@ -63,10 +63,6 @@ import DatePicker from '../../form-elements/DatePicker.vue'
 
 const { tagAndSlugFromId, prepareNewFields } = useModuleStore()
 
-const props = defineProps<{
-  isCreate: boolean
-}>()
-
 const defaultsAndRules: TFieldsDefaultsAndRules<'Ceramic'> = {
   id: { d: null, r: { required, maxLength: maxLength(20) } },
   locus_id: { d: '3S001', r: { required, minValue: minLength(5), maxValue: maxLength(5) } },
@@ -82,9 +78,10 @@ const defaultsAndRules: TFieldsDefaultsAndRules<'Ceramic'> = {
   level_top: { d: null, r: { maxLength: maxLength(20) } },
   level_bottom: { d: null, r: { maxLength: maxLength(20) } },
   //
+  primary_classification_id: { d: 1, r: { between: between(1, 255) } },
+  specialist: { d: 'Unassigned', r: {} },
   specialist_description: { d: null, r: { maxLength: maxLength(400) } },
   periods: { d: null, r: { maxLength: maxLength(400) } },
-  primary_classification_id: { d: 1, r: { between: between(1, 255) } },
 }
 
 const defaultsObj = computed(() => {
@@ -95,15 +92,15 @@ const rulesObj = computed(() => {
   return Object.fromEntries(Object.entries(defaultsAndRules).map(([k, v]) => [k, v.r]))
 })
 
-const { fields, tag } = storeToRefs(useItemStore())
-const { dataNew, openIdSelectorModal, fieldsWithOptions } = storeToRefs(useItemNewStore())
+const { fields } = storeToRefs(useItemStore())
+const { dataNew, openIdSelectorModal, fieldsWithOptions, isCreate } = storeToRefs(useItemNewStore())
 
 // setup
 console.log(
-  `Ceramic(${props.isCreate ? 'Create' : 'Update'}) fields: ${JSON.stringify(fields.value, null, 2)}`,
+  `Ceramic(${isCreate.value ? 'Create' : 'Update'}) fields: ${JSON.stringify(fields.value, null, 2)}`,
 )
 
-if (props.isCreate) {
+if (isCreate.value) {
   dataNew.value.fields = { ...defaultsObj.value }
   openIdSelectorModal.value = true
 } else {
@@ -133,14 +130,24 @@ const idSelectorTag = computed(() => {
 })
 // ID selector related - end
 
+const isArtifact = computed(() => {
+  return nf.value.artifact_no !== 0
+})
+
 // Lookup fields
 const CeramicFieldsWithOptions = computed(() => {
   return fieldsWithOptions.value as Partial<Record<keyof TFields<'Ceramic'>, TFieldInfo>>
 })
 
+const specialistInfo = computed(() => {
+  return CeramicFieldsWithOptions.value['specialist']!
+})
+
 const primaryClassificationInfo = computed(() => {
   return CeramicFieldsWithOptions.value['primary_classification_id']!
 })
+
+
 
 // Standard fields validations and errors
 const nf = computed(() => {

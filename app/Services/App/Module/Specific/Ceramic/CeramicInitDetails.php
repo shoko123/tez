@@ -101,12 +101,12 @@ class CeramicInitDetails implements InitDetailsInterface
             'Vessel Typology' => [
                 'code' => 'TM',
                 'multiple' => true,
-                'dependency' => [['Primary Classification:Vessel/Lid']],
+                'dependency' => [['Primary Classification:Vessel/Part']],
             ],
             'Vessel Part' => [
                 'code' => 'TM',
                 'multiple' => true,
-                'dependency' => [['Primary Classification:Vessel/Lid']],
+                'dependency' => [['Primary Classification:Vessel/Part']],
             ],
             'Vessel Base' => [
                 'code' => 'TM',

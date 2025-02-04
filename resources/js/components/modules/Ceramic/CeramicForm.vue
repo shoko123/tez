@@ -13,7 +13,9 @@
     </v-row>
 
     <v-row class="ga-1">
-      <v-text-field v-model="lf.primary_classification_id" label="Primary Classification" readonly filled />
+
+      <v-text-field v-if="isArtifact" v-model="lf.primary_classification_id" label="Primary Classification" readonly
+        filled />
       <v-text-field v-model="item.specialist" label="Specialist" readonly filled />
     </v-row>
 
@@ -38,5 +40,9 @@ const item = computed(() => {
 
 const lf = computed(() => {
   return lookupEnums.value as TFields<'Ceramic'>
+})
+
+const isArtifact = computed(() => {
+  return item.value.artifact_no !== 0
 })
 </script>

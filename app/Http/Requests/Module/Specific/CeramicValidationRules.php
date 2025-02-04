@@ -33,6 +33,7 @@ class CeramicValidationRules extends ValidationRules
             'data.fields.level_top' => 'max:20',
             'data.fields.level_bottom' => 'max:20',
             //
+            'data.fields.specialist' => 'required|in:Unassigned,Tamar Shooval and Danny Rosenberg,Eliot Braun,Estelle Orrelle',
             'data.fields.specialist_description' => 'max:400',
             'data.fields.periods' => 'max:250',
             'data.fields.primary_classification_id' => 'required|exists:ceramic_primary_classifications,id',
